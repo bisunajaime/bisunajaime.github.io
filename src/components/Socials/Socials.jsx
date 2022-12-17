@@ -8,9 +8,9 @@ function Socials() {
 
     return (
         <section className="socials">
-            <a onClick={() => trackSocialSiteInteraction("linkedin",GA_TRACK_MY_SOCIAL_CLICK)} rel="noreferrer" href="https://linkedin.com/in/jose-jaime-bisuna" target="_blank"><LinkedIn htmlColor="black" fontSize="large" /></a>
-            <a onClick={() => trackSocialSiteInteraction("github",GA_TRACK_MY_SOCIAL_CLICK)} rel="noreferrer" href="https://github.com/jose-bamboo" target="_blank"><GitHub htmlColor="black" fontSize="large" /></a>
-            <a onClick={() => trackSocialSiteInteraction("twitter",GA_TRACK_MY_SOCIAL_CLICK)} rel="noreferrer" href="https://twitter.com/" target="_blank"><Twitter htmlColor="black" fontSize="large" /></a>
+            <a onClick={() => trackSocialSiteInteraction("linkedin", GA_TRACK_MY_SOCIAL_CLICK)} rel="noreferrer" href="https://linkedin.com/in/jose-jaime-bisuna" target="_blank"><LinkedIn htmlColor="black" fontSize="large" /></a>
+            <a onClick={() => trackSocialSiteInteraction("github", GA_TRACK_MY_SOCIAL_CLICK)} rel="noreferrer" href="https://github.com/bisunajaime" target="_blank"><GitHub htmlColor="black" fontSize="large" /></a>
+            <a onClick={() => trackSocialSiteInteraction("twitter", GA_TRACK_MY_SOCIAL_CLICK)} rel="noreferrer" href="https://twitter.com/" target="_blank"><Twitter htmlColor="black" fontSize="large" /></a>
         </section>
     )
 }

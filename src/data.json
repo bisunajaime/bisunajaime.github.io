@@ -57,7 +57,7 @@
                 "name": "Solution Challenge",
                 "cover_img": "/assets/images/activities/solchal.png",
                 "description": "Participated in Developer Student Clubs Solution challenge, where it was required for us to develop a application that solves local problems. (Bayanihan PH)",
-                "url_to_event": "https://github.com/jose-bamboo/solution-challenge"
+                "url_to_event": "https://github.com/bisunajaime/solution-challenge"
             },
             {
                 "name": "Samsung Workshop",
@@ -296,7 +296,7 @@
                 "/assets/images/cinemalist/twelve.png"
             ],
             "demo_video": "https://youtu.be/mvE_Wosaais",
-            "git_url": "https://github.com/jose-bamboo/cinemalist",
+            "git_url": "https://github.com/bisunajaime/cinemalist",
             "demo_app": "",
             "demo_url": "https://play.google.com/store/apps/details?id=com.bisunajaime.cinemalist",
             "color": "#ff99d6"
@@ -323,7 +323,7 @@
             "demo_video": "",
             "git_url": "",
             "demo_app": "",
-            "demo_url": "https://github.com/jose-bamboo",
+            "demo_url": "https://github.com/bisunajaime",
             "color": "#83B4FF"
         },
         {
@@ -349,7 +349,7 @@
                 "/assets/images/covidtracker/fifth.png"
             ],
             "demo_video": "https://youtu.be/dujHh9_RQEc",
-            "git_url": "https://github.com/jose-bamboo/ncovtracker-provider",
+            "git_url": "https://github.com/bisunajaime/ncovtracker-provider",
             "demo_app": "",
             "color": "#f9a8a7"
         },
@@ -418,7 +418,7 @@
                 "/assets/images/weatherapp/weatherapp.png"
             ],
             "demo_video": "https://bisunajaime-weatherapp.netlify.app/",
-            "git_url": "https://github.com/jose-bamboo/weather_app",
+            "git_url": "https://github.com/bisunajaime/weather_app",
             "demo_app": "",
             "color": "#7ba27c"
         },

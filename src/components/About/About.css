@@ -1,0 +1,109 @@
+.about {
+    height: 75vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2em;
+}
+
+.about__label {
+    padding: 1em 0;
+    text-align: center;
+    border-bottom: 1.5px solid black;
+    margin-bottom: 16px;
+    width: 300px;
+}
+
+.about__label > span {
+    letter-spacing: 5px;
+}
+
+.about__myinfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.about__myinfo > span {
+    text-align: center;
+    font-weight: 900;
+    font-size: 4em; 
+    line-height: 70px;
+}
+
+.about__quote {
+    max-width: 550px;
+    text-align: center;
+    margin: 16px 0;
+}
+
+.about__quote > p {
+    font-family: 'Roboto';
+}
+
+.about__resume {
+    margin-top: 1em;
+    padding: 1em;
+    background: black;
+}
+
+.about__resume > a {
+    padding: 1em;
+    text-decoration: none;
+}
+
+@media (max-width: 500px) {
+    .about {
+        height: 60vh !important;
+    }
+
+    .about__quote {
+        max-width: 300px !important;
+    }
+
+    .about__label {
+        width: 200px;
+    }
+
+    .about__label > span {
+        font-size: .8em;
+
+    }
+
+    .about__myinfo > span {
+        font-size: 2em !important;
+        line-height: 35px !important;
+    }
+
+    .about__quote > p {
+        font-size: .8em;
+    }
+}
+
+@media (max-width: 720px) {
+    .about {
+        padding: 0 1em !important;
+        height: 70vh !important;
+    }
+    
+    .about__myinfo > span{
+        font-size: 1.5em;
+        line-height: 30px;
+    }
+    
+    .about__quote {
+        margin: 8px 0;
+        max-width: 350px;
+    }
+    
+    .about__resume {
+        padding: .8em 1.5em;
+    }
+}
+@media (max-width: 1024px) {
+    .about__myinfo > span {
+        font-size: 3em;
+        line-height: 50px;
+    }
+}

@@ -1,0 +1,111 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto Slab';
+  scroll-behavior: smooth;
+}
+
+:root {
+  --mobile: 500px;
+  --laptop: 720px;
+  --desktop: 1024px;
+  --wide-desktop: 1240px;
+  --night-accent-color: rgb(255, 34, 100);
+  --light-accent-color: rgb(81, 84, 255);
+}
+
+body {
+
+  /* margin: 0; */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+.accent--text,
+.active {
+  color: var(--light-accent-color) !important;
+}
+
+.button--hover {
+  border: 2px solid var(--light-accent-color);
+  box-shadow: -8px 8px 0 var(--light-accent-color);
+  transform: translate(5px, -5px);
+  transition: box-shadow .25s ease,
+    transform .25s ease;
+}
+
+.button--hover:hover {
+  box-shadow: 0 0 0 var(--light-accent-color);
+  transform: translate(0px, 0px);
+}
+
+.hover--shadow {
+  box-shadow: 0 0 0 var(--light-accent-color);
+  transition: box-shadow .25s ease,
+    transform .25s ease,
+    border .15s ease;
+}
+
+.hover--shadow:hover {
+  box-shadow: -8px 8px 0 var(--light-accent-color);
+  transform: translate(5px, -5px);
+}
+
+.hover--shadow-inverted {
+
+  transform: translate(5px, -5px);
+  transition: box-shadow .15s ease,
+    transform .15s ease,
+    border .15s ease;
+}
+
+.hover--shadow-inverted:hover {
+  transform: translate(0px, 0px);
+  box-shadow: 0 0 0 var(--light-accent-color) !important;
+}
+
+.card--border {
+  border: 2px solid black;
+}
+
+h2,
+span,
+p,
+a,
+small {
+  /* color: rgb(2, 2, 2); */
+}
+
+.button {
+  background: black;
+  color: white;
+  padding: 1em 2em;
+  background: black;
+  outline: none;
+  /* font-weight: bold; */
+  border: none;
+  font-size: 1em;
+  margin: 1em 0;
+  cursor: pointer;
+}
+
+.line--small {
+  margin-top: .5em;
+  width: 50px;
+  height: 3px;
+  background: var(--light-accent-color);
+}
+
+textarea {
+  resize: none;
+}

@@ -1,0 +1,49 @@
+
+.experiences {
+    /* margin-bottom: 24px; */
+}
+
+.experiences__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 70%;
+    margin: 0 auto;
+    grid-gap: 16px;
+}
+
+.experience__image {
+    border: 2px solid black;
+    height: 250px;
+    width: 100%;
+}
+
+.experience__image > img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    background-size: cover;
+}
+
+.experience__details {
+    padding: 1em 0;
+}
+
+.experience__details > h1 {
+    margin-bottom: .25em;
+}
+
+.experience__details > p {
+    font-family: 'Roboto';
+}
+
+@media (max-width: 500px) {
+    .experiences__list {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .experiences__list {
+        grid-template-columns: 1fr;
+    }
+}

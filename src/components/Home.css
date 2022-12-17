@@ -1,0 +1,169 @@
+.header.night {
+    background: rgb(20, 19, 31);
+    /* background: rgb(24, 23, 44); */
+}
+
+.home.night {
+    background: rgb(26, 25, 51);
+}
+
+.home.night * {
+    color: white;
+}
+
+.home.night>.contact>* button {
+    background: var(--night-accent-color);
+}
+
+.home.night * .accent--text,
+.home.night * .active {
+    color: var(--night-accent-color) !important;
+}
+
+.home.night * p {
+    color: rgba(255, 255, 255, 0.521);
+}
+
+.home.night>.about>.about__label {
+    border-bottom-color: rgba(255, 255, 255, 0.493);
+    color: var(--night-accent-color) !important;
+}
+
+.home.night>* .hover--shadow {
+    box-shadow: 0 0 0 var(--night-accent-color) !important;
+}
+
+.home.night>* .hover--shadow:hover {
+
+    box-shadow: -8px 8px 0 var(--night-accent-color) !important;
+    transform: translate(5px, -5px);
+}
+
+.home.night>* .card--border {
+    border: 2px solid rgba(255, 255, 255, 0.25);
+}
+
+.home.night>* .card--border:hover {
+    border: 2px solid var(--night-accent-color);
+}
+
+.home.night>* .stack__header>span {
+    background-color: rgb(89, 88, 134);
+}
+
+.home.night>* .stacks>span {
+    opacity: .5;
+}
+
+.home.night>* .demo__about {
+
+    box-shadow: -8px 8px 0 var(--night-accent-color);
+    background: rgb(31, 29, 48);
+}
+
+.home.night>* .demo__about:hover {
+    /* border: 1px solid rgba(255, 255, 255, 0.493) !important; */
+    box-shadow: 0px 0px 0 var(--night-accent-color);
+}
+
+
+.home.night>* .button--hover {
+    border: 2px solid var(--night-accent-color);
+
+    box-shadow: -8px 8px 0 var(--night-accent-color);
+    transform: translate(5px, -5px);
+    transition: box-shadow .25s ease,
+        transform .25s ease;
+}
+
+.home.night>* .button--hover:hover {
+    box-shadow: 0 0 0 var(--night-accent-color);
+    transform: translate(0px, 0px);
+}
+
+
+.home.night>* .line--small {
+    margin-top: .5em;
+    width: 50px;
+    height: 3px;
+    background: var(--night-accent-color);
+}
+
+.home.night>* .techstack {
+    background: #14131f !important;
+}
+
+.home.light>*>.projects>.projects__loadmore>.button {
+    color: white !important;
+}
+
+/* LIGHT MODE */
+
+.home.light * {
+    color: black;
+}
+
+.home.light>* input,
+.home.light>* textarea,
+.home.light>* form button {
+    color: white;
+}
+
+.home.light>* .about__resume>a {
+    color: white !important;
+}
+
+.home.light>* .projects__loadmore>button {
+    color: white !important;
+}
+
+.home.light>* .demo__about {
+    background: white !important;
+    border: 1px solid black !important;
+}
+
+.home.light>* .demo__about>.stacks>span {
+    border: 1px solid black !important;
+    color: black !important;
+}
+
+.home.light>* .techstack {
+    background: white !important;
+}
+
+.home.light,
+.header {
+    background: #ffffff;
+}
+
+.home.light {
+    background: #f5f5ff;
+}
+
+.home.night,
+h1,
+h2,
+span,
+p,
+small {
+    color: white;
+}
+
+
+.home.light,
+h1,
+h2,
+span,
+p,
+small {
+    color: black;
+}
+
+
+.home.light>* label {
+    color: white !important;
+}
+
+.home.light>.footer>* {
+    color: white;
+}

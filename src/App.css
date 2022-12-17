@@ -1,0 +1,27 @@
+.section__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5em 0;
+}
+
+@media (max-width: 500px) {
+  .section__header {
+    padding: 2em 0;
+  }
+
+  .section__header > h2 {
+    font-size: 1.5em !important;
+  }
+}
+
+.section__header > small {
+  font-family: 'Roboto';
+  letter-spacing: 5px;
+}
+
+.section__header > h2 {
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+}

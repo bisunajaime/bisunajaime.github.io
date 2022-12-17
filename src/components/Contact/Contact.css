@@ -1,0 +1,57 @@
+.contact {
+    background: rgb(20, 19, 31);
+    padding-bottom: 2em;
+}
+
+.contact > .section__header > small,
+.contact > .section__header > h2{
+    color: white !important;
+}
+
+.contact__form {
+    max-width: 50%;
+    margin: 0 auto;
+}
+
+@media (max-width: 500px), (max-width: 1024px) {
+    .contact__form {
+        max-width: 90%;
+    }
+}
+
+.contact__form > form {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact__form > form > label {
+    color: white;
+    font-size: 1.5em;
+    margin: .5em 0;
+}
+
+.contact__form > form > input,
+.contact__form > form > textarea {
+    outline: none;
+    /* border: none; */
+    padding: 1em;
+    font-size: 1em;
+    font-family: 'Roboto';
+    color: white;
+    background-color: rgb(51, 49, 75);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.contact__form > form > button {
+    cursor: pointer;
+    margin-top: 1em;
+    padding: 1em;
+    outline: none;
+    font-size: 1em;
+    border: none;
+    background: rgb(81, 84, 255);
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-family: 'Roboto';
+}

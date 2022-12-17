@@ -1,0 +1,49 @@
+
+.organizations {
+    margin-bottom: 24px;
+}
+
+.organizations__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 70%;
+    margin: 0 auto;
+    grid-gap: 16px;
+}
+
+.organization__image {
+    border: 2px solid black;
+    height: 250px;
+    width: 100%;
+}
+
+.organization__image > img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    background-size: cover;
+}
+
+.organization__details {
+    padding: 1em 0;
+}
+
+.organization__details > h1 {
+    margin-bottom: .25em;
+}
+
+.organization__details > p {
+    font-family: 'Roboto';
+}
+
+@media (max-width: 500px) {
+    .organizations__list {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .organizations__list {
+        grid-template-columns: 1fr;
+    }
+}

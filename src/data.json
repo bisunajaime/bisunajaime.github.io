@@ -95,7 +95,8 @@
                 "JS",
                 "SASS",
                 "Bootstrap",
-                "Material Design"
+                "Material Design",
+                "ReactJS"
             ]
         },
         "backend": {
@@ -107,7 +108,8 @@
                 "C#",
                 "MySQL",
                 "MSSQL",
-                "Firebase"
+                "Firebase",
+                "ASP.NET Core"
             ]
         },
         "tools": {
@@ -127,8 +129,8 @@
                 "Laravel",
                 "Node",
                 "Express",
-                "Spring Boot",
-                "Hibernate"
+                "Microsoft Azure",
+                "MS Teams Development"
             ]
         },
         "ui": {

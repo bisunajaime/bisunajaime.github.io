@@ -1,8 +1,8 @@
-import { GitHub, LinkedIn, Twitter } from '@material-ui/icons'
 import React from 'react'
 import { trackSocialSiteInteraction } from '../../analytics/helper'
 import { GA_TRACK_MY_SOCIAL_CLICK } from '../../state/actions'
 import './Socials.css'
+import { GitHub, LinkedIn, Twitter } from '@mui/icons-material'
 
 function Socials() {
 

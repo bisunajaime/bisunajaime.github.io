@@ -1,10 +1,10 @@
-import { BrightnessHigh, BrightnessLow } from '@material-ui/icons'
 import React, { useEffect, useState } from 'react'
 import { trackNavigationInteraction } from '../../analytics/helper'
 import { GA_TRACK_NAVIGATION_CLICK, SET_CURRENT_TAB, SET_THEME } from '../../state/actions'
 import { useStateValue } from '../../state/AppDataProvider'
 import { TABS } from '../../state/reducer'
 import './Header.css'
+import { BrightnessHigh, BrightnessLow } from '@mui/icons-material'
 
 function Header() {
     const [{ currentTab, nightMode }, dispatcher] = useStateValue()

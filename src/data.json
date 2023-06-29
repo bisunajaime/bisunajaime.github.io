@@ -233,8 +233,8 @@
         },
         {
             "name": "Spotify Clone",
-            "description": "Spotify clone built with React and ContextAPI",
-            "short_description": "Spotify clone built with React and ContextAPI",
+            "description": "Task Management Board similar to JIRA/Trello built with React and Redux",
+            "short_description": "Task Management Board similar to JIRA/Trello built with React and Redux",
             "cover_img": "/assets/images/spotifyclone/cover.png",
             "is_desktop": true,
             "stack": [

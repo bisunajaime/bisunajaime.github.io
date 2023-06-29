@@ -250,9 +250,32 @@
                 "/assets/images/spotifyclone/spotify_4.png"
             ],
             "demo_video": "",
-            "git_url": "",
+            "git_url": "https://github.com/bisunajaime/task-management-board",
             "demo_url": "https://bisunajaime-spotifyclone.netlify.app",
             "color": "#5EE487"
+        },
+        {
+            "name": "Task Management Board",
+            "description": "Spotify clone built with React and ContextAPI",
+            "short_description": "Spotify clone built with React and ContextAPI",
+            "cover_img": "/assets/images/taskmanagementboard/cover.png",
+            "is_desktop": true,
+            "stack": [
+                "React",
+                "Redux",
+                "Antd"
+            ],
+            "sample_ui": [
+                "/assets/images/taskmanagementboard/1.png",
+                "/assets/images/taskmanagementboard/2.png",
+                "/assets/images/taskmanagementboard/3.png",
+                "/assets/images/taskmanagementboard/4.png",
+                "/assets/images/taskmanagementboard/5.png"
+            ],
+            "demo_video": "",
+            "git_url": "",
+            "demo_url": "https://bisunajaime-kanban.netlify.app",
+            "color": "#9EA8FF"
         },
         {
             "name": "FlutterPH #UIChallenge",

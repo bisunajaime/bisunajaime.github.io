@@ -19,7 +19,7 @@ function About() {
             </div>
             <Socials />
             <div className="about__resume button--hover">
-                <a onClick={() => trackResumeInteraction("resume", GA_TRACK_RESUME_CLICK)} rel="noreferrer" className="" href={process.env.PUBLIC_URL + "/files/JoseJaimeBisunaResume.pdf"} target="_blank">My Resume</a>
+                <a onClick={() => trackResumeInteraction("resume", GA_TRACK_RESUME_CLICK)} rel="noreferrer" className="" href={process.env.PUBLIC_URL + "/files/Resume - Jaime Bisuña.pdf"} target="_blank">My Resume</a>
             </div>
         </section>
     )

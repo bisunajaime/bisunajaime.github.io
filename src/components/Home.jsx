@@ -13,8 +13,8 @@ import './Home.css'
 import { useStateValue } from '../state/AppDataProvider'
 
 function Home() {
-    
-    const [{nightMode}, dispatcher] = useStateValue()
+
+    const [{ nightMode }] = useStateValue()
 
     return (
         <section className={`home ${nightMode ? 'night' : 'light'}`} id="home">

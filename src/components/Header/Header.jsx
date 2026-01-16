@@ -4,7 +4,7 @@ import { GA_TRACK_NAVIGATION_CLICK, SET_CURRENT_TAB, SET_THEME } from '../../sta
 import { useStateValue } from '../../state/AppDataProvider'
 import { TABS } from '../../state/reducer'
 import './Header.css'
-import { BrightnessHigh, BrightnessLow } from '@mui/icons-material'
+// import { BrightnessHigh, BrightnessLow } from '@mui/icons-material'
 
 function Header() {
     const [{ currentTab, nightMode }, dispatcher] = useStateValue()
@@ -38,9 +38,9 @@ function Header() {
     return (
         <section className={`header ${didScroll ? 'shadow' : ''} ${nightMode ? 'night' : 'light'}`}>
             <div className="header__logo">
-                <div className="themecontrol" onClick={updateTheme} style={{ cursor: 'pointer' }} >
+                {/* <div className="themecontrol" onClick={updateTheme} style={{ cursor: 'pointer' }} >
                     {nightMode ? <BrightnessLow /> : <BrightnessHigh />}
-                </div>
+                </div> */}
                 <span><span className="accent--text">Jaime</span> Bisuña</span>
             </div>
             <div className="header__links">

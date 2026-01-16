@@ -6,7 +6,7 @@ import { CLEAR_SELECTED_PROJECT, GA_TRACK_PROJECT_CLICK, GA_TRACK_PROJECT_LINK_C
 import { trackProjectInteraction } from '../../analytics/helper'
 
 function Projects() {
-    const [{projectsList}, dispatcher] = useStateValue()
+    const [{ projectsList }, dispatcher] = useStateValue()
 
     const loadMore = () => {
         dispatcher({
@@ -33,16 +33,16 @@ function Projects() {
                 data.projects.length === projectsList.length ? <div className="projects__loadmore" onClick={hide}>
                     <button className="button button--hover">Hide</button>
                 </div> : <div className="projects__loadmore">
-                <button className="button button--hover" onClick={loadMore}>Load More</button>
-            </div>
+                    <button className="button button--hover" onClick={loadMore}>Load More</button>
+                </div>
             }
         </section>
     )
 }
 
-const Project = ({index, project}) => {
+const Project = ({ index, project }) => {
 
-    const [{projectsList}, dispatcher] = useStateValue()
+    const [{ projectsList }, nightMode, dispatcher] = useStateValue()
 
     const setProject = async () => {
         dispatcher({
@@ -50,7 +50,7 @@ const Project = ({index, project}) => {
         })
         trackProjectInteraction(projectsList[index].name, GA_TRACK_PROJECT_CLICK)
         setTimeout(() => {
-            
+
             dispatcher({
                 type: SET_PROJECT_DEMO,
                 payload: {
@@ -63,8 +63,8 @@ const Project = ({index, project}) => {
 
     return <div className="project">
         <a href="#demo" className="project__image" onClick={setProject}>
-            <span>View Demo</span>
-            <img src={process.env.PUBLIC_URL + project.cover_img} alt={project.name}/>
+            <span>View UI</span>
+            <img src={process.env.PUBLIC_URL + project.cover_img} alt={project.name} />
         </a>
         <div className="project__details">
             {/* <div className="stacks">
@@ -73,9 +73,9 @@ const Project = ({index, project}) => {
             <h1>{project.name}</h1>
             <p>{project.short_description}</p>
             <div className="links">
-                <a onClick={() => trackProjectInteraction(project.name, GA_TRACK_PROJECT_LINK_CLICK)} className="accent--text link" rel="noreferrer" target="_blank" href={project.demo_url}>Live Demo</a>
-                <a onClick={() => trackProjectInteraction(project.name, GA_TRACK_PROJECT_LINK_CLICK)} className="accent--text link" rel="noreferrer" target="_blank" href={project.git_url}>Github</a>
-                <a onClick={() => trackProjectInteraction(project.name, GA_TRACK_PROJECT_LINK_CLICK)} className="accent--text link" rel="noreferrer" target="_blank" href={project.demo_video}>Video Demo</a>
+                <a onClick={() => trackProjectInteraction(project.name, GA_TRACK_PROJECT_LINK_CLICK)} style={{ backgroundColor: project.color }} className={`${!nightMode && 'accent--color'} link`} rel="noreferrer" target="_blank" href={project.demo_url}>Demo</a>
+                <a onClick={() => trackProjectInteraction(project.name, GA_TRACK_PROJECT_LINK_CLICK)} style={{ backgroundColor: project.color }} className={`${!nightMode && 'accent--color'} link`} rel="noreferrer" target="_blank" href={project.git_url}>Github</a>
+                <a onClick={() => trackProjectInteraction(project.name, GA_TRACK_PROJECT_LINK_CLICK)} style={{ backgroundColor: project.color }} className={`${!nightMode && 'accent--color'} link`} rel="noreferrer" target="_blank" href={project.demo_video}>Video</a>
             </div>
         </div>
     </div>

@@ -7,7 +7,7 @@ import 'swiper/swiper.min.css';
 
 function Demo() {
 
-    const [{ currentProject }, dispatcher] = useStateValue()
+    const [{ currentProject }] = useStateValue()
 
     if (currentProject === null) {
         return <div></div>

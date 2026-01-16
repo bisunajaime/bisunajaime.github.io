@@ -173,6 +173,10 @@
     text-decoration: none;
     font-size: .9em;
     margin-right: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: black;
+    font-weight: 500;
 }
 
 .project__details>.stacks {

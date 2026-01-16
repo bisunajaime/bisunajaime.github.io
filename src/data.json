@@ -1,10 +1,17 @@
 {
     "experiences": [
         {
+            "name": "Baret",
+            "role": "Full Stack Developer",
+            "from": "August 2024",
+            "to": "Present",
+            "cover_img": "/assets/images/experience/baret.png"
+        },
+        {
             "name": "FiveP",
             "role": "Full Stack Developer",
             "from": "April 2023",
-            "to": "Present",
+            "to": "August 2024",
             "cover_img": "/assets/images/experience/fivep.png"
         },
         {

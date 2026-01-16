@@ -42,7 +42,7 @@ function Projects() {
 
 const Project = ({ index, project }) => {
 
-    const [{ projectsList }, nightMode, dispatcher] = useStateValue()
+    const [{ projectsList }, dispatcher] = useStateValue()
 
     const setProject = async () => {
         dispatcher({
@@ -73,9 +73,9 @@ const Project = ({ index, project }) => {
             <h1>{project.name}</h1>
             <p>{project.short_description}</p>
             <div className="links">
-                <a onClick={() => trackProjectInteraction(project.name, GA_TRACK_PROJECT_LINK_CLICK)} style={{ backgroundColor: project.color }} className={`${!nightMode && 'accent--color'} link`} rel="noreferrer" target="_blank" href={project.demo_url}>Demo</a>
-                <a onClick={() => trackProjectInteraction(project.name, GA_TRACK_PROJECT_LINK_CLICK)} style={{ backgroundColor: project.color }} className={`${!nightMode && 'accent--color'} link`} rel="noreferrer" target="_blank" href={project.git_url}>Github</a>
-                <a onClick={() => trackProjectInteraction(project.name, GA_TRACK_PROJECT_LINK_CLICK)} style={{ backgroundColor: project.color }} className={`${!nightMode && 'accent--color'} link`} rel="noreferrer" target="_blank" href={project.demo_video}>Video</a>
+                <a onClick={() => trackProjectInteraction(project.name, GA_TRACK_PROJECT_LINK_CLICK)} style={{ backgroundColor: project.color }} className="link" rel="noreferrer" target="_blank" href={project.demo_url}>Demo</a>
+                <a onClick={() => trackProjectInteraction(project.name, GA_TRACK_PROJECT_LINK_CLICK)} style={{ backgroundColor: project.color }} className="link" rel="noreferrer" target="_blank" href={project.git_url}>Github</a>
+                <a onClick={() => trackProjectInteraction(project.name, GA_TRACK_PROJECT_LINK_CLICK)} style={{ backgroundColor: project.color }} className="link" rel="noreferrer" target="_blank" href={project.demo_video}>Video</a>
             </div>
         </div>
     </div>

@@ -1,7 +1,11 @@
-# Bisuna, Jose Jaime - Web Portfolio
 
-My web portfolio showcasing my projects, resume, events I hosted, events I attended, and organizations joined. Check it out at https://bisunajaime.netlify.app
+  # Portfolio website with wallpapers
 
-deploy to netlify & gh-pages
+  This is a code bundle for Portfolio website with wallpapers. The original project is available at https://www.figma.com/design/qLu6LzRP2JPzoOH53jvZxX/Portfolio-website-with-wallpapers.
 
-npm run build;netlify deploy --prod build;gh-pages -d build
+  ## Running the code
+
+  Run `npm i` to install the dependencies.
+
+  Run `npm run dev` to start the development server.
+  

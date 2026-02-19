@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardDescription, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { ExternalLink } from "lucide-react";
 import { portfolioData } from "../../data/portfolioData";

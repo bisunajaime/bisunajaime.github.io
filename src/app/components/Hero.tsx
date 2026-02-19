@@ -1,11 +1,13 @@
 import { useEffect, useState, type MouseEvent } from "react";
-import { FileText, FolderKanban, Github, Linkedin } from "lucide-react";
+import {
+  FileText, Github, Linkedin
+} from "lucide-react";
 import { topWallpapers } from "../../data/wallpaperData";
 
 const LINKS = {
   github: "https://github.com/bisunajaime",
   linkedin: "https://www.linkedin.com/in/jose-jaime-bisuna",
-  resume: "/files/ResumeJaimeBisuña.pdf",
+  resume: "/files/ResumeJaimeBisuna.pdf",
   email: "mailto:jaimebisuna@gmail.com",
 };
 

@@ -4,8 +4,8 @@ import { Hero } from "./components/Hero";
 import { Experience } from "./components/Experience";
 import { Projects } from "./components/Projects";
 import { TechStack } from "./components/TechStack";
-import { Events } from "./components/Events";
-import { Organizations } from "./components/Organizations";
+
+
 import { Wallpapers } from "./components/Wallpapers";
 import { Footer } from "./components/Footer";
 

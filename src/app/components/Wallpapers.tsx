@@ -1,8 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
-import { Download, X } from "lucide-react";
-import { sampleWallpapers, wallpaperCategories, type WallpaperCategory } from "../../data/wallpaperData";
-import { Dialog, DialogContent } from "./ui/dialog";
+import {
+
+  Download } from "lucide-react";
+import {
+
+
+  sampleWallpapers, type WallpaperCategory } from "../../data/wallpaperData";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Keyboard } from "swiper/modules";
 import type { Swiper as SwiperClass } from "swiper";

@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode } from "swiper/modules";
+
 import { ExternalLink, Github, Video } from "lucide-react";
 import { portfolioData } from "../../data/portfolioData";
 import { ImageWithFallback } from "./figma/ImageWithFallback";

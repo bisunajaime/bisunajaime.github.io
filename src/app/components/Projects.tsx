@@ -1,14 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./shared/card";
+import { Badge } from "./shared/badge";
+import { Button } from "./shared/button";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { ExternalLink, Github, Video } from "lucide-react";
 import { portfolioData } from "../../data/portfolioData";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { ImageWithFallback } from "./util/ImageWithFallback";
 import "swiper/css";
 import "swiper/css/free-mode";
+
+const INITIAL_PROJECTS = 6;
 
 export function Projects() {
   const [showAll, setShowAll] = useState(false);
@@ -18,7 +20,7 @@ export function Projects() {
   const hasMounted = useRef(false);
   const visibleProjects = showAll
     ? portfolioData.projects
-    : portfolioData.projects.slice(0, 3);
+    : portfolioData.projects.slice(0, INITIAL_PROJECTS);
 
   useEffect(() => {
     if (!hasMounted.current) {
@@ -37,19 +39,21 @@ export function Projects() {
   }, [activeProject]);
 
   return (
-    <section ref={sectionRef} id="projects" className="px-4 py-20">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl md:text-5xl text-center mb-4">Projects</h2>
-        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+    <section ref={sectionRef} id="projects" className="px-4 py-[var(--section-padding-y)] sm:px-6">
+      <div className="mx-auto w-full max-w-[var(--page-max-width)]">
+        <h2 className="text-center text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+          Projects
+        </h2>
+        <p className="mx-auto mt-4 max-w-2xl text-center text-base text-muted-foreground sm:text-lg mb-4 pb-4">
           A collection of mobile and web applications I've built over the years
         </p>
 
         {activeProject?.sample_ui?.length ? (
-          <div ref={carouselSectionRef} className="mb-12 space-y-4">
-            <div className="rounded-3xl border border-border bg-background/80 p-4 shadow-sm backdrop-blur-md">
+          <div ref={carouselSectionRef} className="mt-10 mb-12 space-y-4">
+            <div className="glass-panel rounded-3xl p-4 sm:p-5">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <h3 className="text-xl md:text-2xl font-semibold text-foreground">
+                  <h3 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
                     Project UI
                   </h3>
                   <p className="text-sm text-muted-foreground">
@@ -66,15 +70,10 @@ export function Projects() {
               </div>
             </div>
 
-            <div
-              className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden"
-              style={{ backgroundColor: activeProject.color || undefined }}
-            >
+            <div className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden">
               <div className="py-4 md:py-6">
                 <Swiper
                   key={activeProject.name}
-                  // freeMode
-                  // modules={[FreeMode]}
                   keyboard={{ enabled: true }}
                   grabCursor
                   spaceBetween={16}
@@ -85,8 +84,9 @@ export function Projects() {
                     <SwiperSlide
                       key={`${src}-${idx}`}
                       className="!w-auto"
+
                     >
-                      <div className="w-auto overflow-hidden rounded-xl">
+                      <div className="w-auto overflow-hidden rounded-2xl">
                         <ImageWithFallback
                           src={src}
                           alt={`${activeProject.name} UI ${idx + 1}`}
@@ -99,16 +99,16 @@ export function Projects() {
               </div>
             </div>
 
-            <div className="rounded-3xl border border-border bg-background/80 p-4 shadow-sm backdrop-blur-md">
-              <h4 className="text-lg font-semibold text-foreground">
+            <div className="glass-panel rounded-3xl p-4 sm:p-5">
+              <h4 className="text-lg font-semibold tracking-tight text-foreground">
                 {activeProject.name}
               </h4>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 {activeProject.short_description || activeProject.description}
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {activeProject.stack.map((tech, i) => (
-                  <Badge key={i} variant="secondary">
+                  <Badge key={i} variant="secondary" className="bg-secondary text-secondary-foreground">
                     {tech}
                   </Badge>
                 ))}
@@ -143,57 +143,57 @@ export function Projects() {
           </div>
         ) : null}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
           {visibleProjects.map((project, index) => (
             <Card
               key={index}
-              className="hover:shadow-lg transition-shadow overflow-hidden"
-              style={{ borderTop: `4px solid ${project.color}` }}
+              className="group h-full overflow-hidden border-border/90 bg-card/92 shadow-[var(--shadow-subtle)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-[var(--shadow-soft)]"
             >
-              <div
-                className="group relative h-60 overflow-hidden rounded-t-lg"
-                style={{
-                  backgroundColor: project.color || undefined
-                }}
-              >
+              <div className="group relative aspect-[4/3] overflow-hidden border-b border-border bg-secondary">
                 {project.cover_img && (
                   <ImageWithFallback
                     src={project.cover_img}
                     alt={project.name}
-                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                   />
                 )}
                 {project.sample_ui?.length ? (
                   <button
                     type="button"
                     onClick={() => setActiveProject(project)}
-                    className="absolute inset-0 flex cursor-pointer items-center justify-center bg-black/45 opacity-100 transition-opacity duration-300 sm:opacity-0 sm:pointer-events-none sm:group-hover:opacity-100 sm:group-hover:pointer-events-auto"
+                    className="absolute inset-0 flex cursor-pointer items-center justify-center bg-black/32 opacity-100 transition-opacity duration-300 sm:opacity-0 sm:pointer-events-none sm:group-hover:opacity-100 sm:group-hover:pointer-events-auto"
                     aria-label={`View ${project.name} UI`}
                   >
-                    <span className="rounded-full border border-white/60 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm">
+                    <span className="rounded-full border border-white/50 bg-black/45 px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm sm:text-sm">
                       View UI
                     </span>
                   </button>
                 ) : null}
               </div>
-              <CardHeader className="pb-0 pt-0">
-                <CardTitle>{project.name}</CardTitle>
-                <CardDescription className="line-clamp-2">
+              <CardHeader className="gap-2 px-4 pb-0 pt-4 sm:px-5">
+                <CardTitle className="text-base leading-tight tracking-tight sm:text-lg">
+                  {project.name}
+                </CardTitle>
+                <CardDescription className="line-clamp-3 text-xs leading-relaxed sm:text-sm">
                   {project.short_description || project.description}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="pt-0">
-                <div className="flex flex-wrap gap-2 mb-4">
+              <CardContent className="px-4 pb-4 pt-0 sm:px-5 sm:pb-5">
+                <div className="mb-3 flex flex-wrap gap-1.5 sm:gap-2">
                   {project.stack.map((tech, i) => (
-                    <Badge key={i} variant="secondary">
+                    <Badge
+                      key={i}
+                      variant="outline"
+                      className="border-border/80 bg-secondary/70 text-[0.68rem] text-secondary-foreground sm:text-xs"
+                    >
                       {tech}
                     </Badge>
                   ))}
                 </div>
-                <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                <p className="mb-4 line-clamp-3 text-xs leading-relaxed text-muted-foreground sm:text-sm">
                   {project.learnings}
                 </p>
-                <div className="flex gap-2 flex-wrap">
+                <div className="mt-auto flex flex-wrap gap-2">
                   {project.demo_url && (
                     <Button size="sm" variant="outline" className="gap-2" asChild>
                       <a href={project.demo_url} target="_blank" rel="noopener noreferrer">
@@ -223,12 +223,12 @@ export function Projects() {
             </Card>
           ))}
         </div>
-        {portfolioData.projects.length > 3 && (
+        {portfolioData.projects.length > INITIAL_PROJECTS && (
           <div className="mt-10 flex justify-center">
             <Button
               size="lg"
-              variant="outline"
-              className="gap-2 bg-black text-white hover:bg-black/90 hover:text-white"
+              variant="default"
+              className="gap-2"
               onClick={() => setShowAll((prev) => !prev)}
             >
               {showAll ? "Show less" : "Show more"}

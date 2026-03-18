@@ -37,64 +37,6 @@ export const portfolioData = {
       color: "#a7f2ffff"
     }
   ],
-  organizations: [
-    {
-      name: "Association of Information Management",
-      acronym: "AIM",
-      cover_img: "/assets/images/orgs/aim.png",
-      department: "Operations Department",
-      year: "2018 - 2019"
-    },
-    {
-      name: "Developer Students Club Benilde",
-      acronym: "DSC",
-      cover_img: "/assets/images/orgs/dsc.png",
-      department: "Research and Development Department",
-      year: "2019 - 2020"
-    }
-  ],
-  events: {
-    hosted: [
-      {
-        name: "Flutter Study Jam Pt. 1",
-        cover_img: "/assets/images/activities/flutter_sj.JPG",
-        description: "Speaker at DSC Benilde's event on Flutter, where I taught students the basics of developing a mobile application with Flutter. From installation to building a basic application using different kinds of widgets.",
-        url_to_event: "https://www.facebook.com/dsccsb/photos/a.158427545551051/195971265130012"
-      },
-      {
-        name: "Flutter Study Jam Pt. 2",
-        cover_img: "/assets/images/activities/flutter_sj1.png",
-        description: "Speaker at DSC Benilde's second event on Flutter, where I taught students how to integrate a qr code scanner to a mobile application, and how to create and read a qr code using the available flutter packages.",
-        url_to_event: "https://www.facebook.com/dsccsb/photos/pcb.191954185531720/191953975531741/"
-      },
-      {
-        name: "Flutter for Starters",
-        cover_img: "/assets/images/activities/flutter_forstarters.png",
-        description: "Guest Speaker at Flutter for starters Webinar hosted by Developer Student Clubs Philippines. Where I shared some mobile applications I've made and insights on why Flutter is a great tool for developers.",
-        url_to_event: "https://www.facebook.com/dsc.philippines/videos/1617848895036898"
-      }
-    ],
-    attended: [
-      {
-        name: "Solution Challenge",
-        cover_img: "/assets/images/activities/solchal.png",
-        description: "Participated in Developer Student Clubs Solution challenge, where it was required for us to develop a application that solves local problems. (Bayanihan PH)",
-        url_to_event: "https://github.com/bisunajaime/solution-challenge"
-      },
-      {
-        name: "Samsung Workshop",
-        cover_img: "/assets/images/placeholders/placeholder_box.png",
-        description: "Attended Samsung Workshop hosted by Association of Information Management (AIM) where we were taught by Samsung Developers how to create and design applications for Galaxy Watch using Tizen Studio.",
-        url_to_event: ""
-      },
-      {
-        name: "#FlutterPH UI Challenge",
-        cover_img: "/assets/images/activities/uichal.png",
-        description: "Participated in FlutterPH UI Challenge, individual submission of an Online Shop UI since the pandemic made us all move to online business.",
-        url_to_event: ""
-      }
-    ]
-  },
   techstacks: {
     frontend: {
       emoji: "🚀",
@@ -153,6 +95,34 @@ export const portfolioData = {
     }
   },
   projects: [
+    {
+      name: "Wallection",
+      description: "Wallpaper directory for wallpapers generated from my workstation using ComfyUI and Qwen/Flux models.",
+      short_description: "Qwen/Flux generated wallpapers from my local workstation using ComfyUI.",
+      stack: [
+        "React",
+        "TypeScript",
+        "Cloudflare",
+        "Claude Code",
+        "ComfyUI",
+        "Qwen/Flux Models",
+        "Image Generation"
+      ],
+      is_desktop: false,
+      learnings: "Vibe-coded wallpaper generator containing wallpapers I generated with Qwen and Flux models from my local workstation with ComfyUI.",
+      cover_img: "/assets/images/wallection/cover.png",
+      sample_ui: [
+        "/assets/images/wallection/first.png",
+        "/assets/images/wallection/second.png",
+        "/assets/images/wallection/third.png",
+        "/assets/images/wallection/fourth.png",
+      ],
+      demo_video: "",
+      git_url: "",
+      demo_app: "",
+      demo_url: "https://wallection.bisunajaime.workers.dev/",
+      color: "rgb(137, 137, 137)"
+    },
     {
       name: "NeedL - Patient",
       description: "Mobile app for patient users to request laboratory test bookings from nearby clinics at a set location.",

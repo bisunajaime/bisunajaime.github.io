@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
+import { About } from "./components/About";
 import { Experience } from "./components/Experience";
 import { Projects } from "./components/Projects";
 import { TechStack } from "./components/TechStack";
-
-
 import { Wallpapers } from "./components/Wallpapers";
 import { Footer } from "./components/Footer";
 
@@ -13,10 +12,10 @@ export default function App() {
   const [activeSection, setActiveSection] = useState("hero");
   const scrollTargetRef = useRef<string | null>(null);
   const scrollEndTimeoutRef = useRef<number | null>(null);
+  const sections = ["hero", "about", "experience", "projects", "skills", "wallpapers", "contact"];
 
   const updateActiveSection = () => {
-    const sections = ["hero", "experience", "projects", "techstack", "events", "organizations", "wallpapers"];
-    const scrollPosition = window.scrollY + 100;
+    const scrollPosition = window.scrollY + 140;
 
     for (const sectionId of sections) {
       const element = document.getElementById(sectionId);
@@ -35,7 +34,7 @@ export default function App() {
     scrollTargetRef.current = sectionId;
     const element = document.getElementById(sectionId);
     if (element) {
-      const offset = 80; // Account for fixed navigation
+      const offset = 96;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
 
@@ -79,28 +78,13 @@ export default function App() {
     <div className="min-h-screen bg-background text-foreground">
       <Navigation activeSection={activeSection} onNavigate={handleNavigate} />
 
-      <main className="pt-20 pb-28 md:pt-16 md:pb-0">
-        <div id="hero">
-          <Hero />
-        </div>
-        <div id="experience">
-          <Experience />
-        </div>
-        <div id="projects">
-          <Projects />
-        </div>
-        <div id="techstack">
-          <TechStack />
-        </div>
-        {/* <div id="events">
-          <Events />
-        </div>
-        <div id="organizations">
-          <Organizations />
-        </div> */}
-        <div id="wallpapers">
-          <Wallpapers />
-        </div>
+      <main className="pb-2">
+        <Hero />
+        <About />
+        <Experience />
+        <Projects />
+        <TechStack />
+        <Wallpapers />
       </main>
 
       <Footer />

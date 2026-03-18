@@ -1,115 +1,62 @@
-import { Card, CardDescription, CardTitle } from "./ui/card";
-import { Button } from "./ui/button";
+import { Button } from "./shared/button";
 import { ExternalLink } from "lucide-react";
 import { portfolioData } from "../../data/portfolioData";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
-
-const normalizeHexColor = (hex: string) => {
-  const trimmed = hex.trim().replace("#", "");
-  if (trimmed.length === 3 || trimmed.length === 4) {
-    return `${trimmed[0]}${trimmed[0]}${trimmed[1]}${trimmed[1]}${trimmed[2]}${trimmed[2]}`;
-  }
-  if (trimmed.length === 6 || trimmed.length === 8) {
-    return trimmed.slice(0, 6);
-  }
-  return null;
-};
-
-const getContrastTextColor = (hex: string) => {
-  const normalized = normalizeHexColor(hex);
-  if (!normalized) {
-    return "#000000";
-  }
-
-  const r = parseInt(normalized.slice(0, 2), 16);
-  const g = parseInt(normalized.slice(2, 4), 16);
-  const b = parseInt(normalized.slice(4, 6), 16);
-  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-
-  return luminance > 0.62 ? "#000000" : "#ffffff";
-};
+import { ImageWithFallback } from "./util/ImageWithFallback";
 
 export function Experience() {
   return (
-    <section id="experience" className="min-h-screen px-4 py-20 bg-background">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-center mb-4">
-          <h2 className="text-4xl md:text-5xl text-center">Experience</h2>
-        </div>
-        <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
+    <section id="experience" className="px-4 py-[var(--section-padding-y)] sm:px-6">
+      <div className="mx-auto w-full max-w-[var(--page-max-width)]">
+        <h2 className="text-center text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+          Experience
+        </h2>
+        <p className="mx-auto mt-4 max-w-2xl text-center text-base text-muted-foreground sm:text-lg">
           My professional journey as a developer
         </p>
-        
-        <div className="max-w-4xl mx-auto">
-          <div className="relative">
-            {/* Timeline line */}
-            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-purple-500 to-pink-500" />
-            
-            {/* Experience items */}
-            <div className="space-y-8">
-              {portfolioData.experiences.map((exp, index) => {
-                const visitColor = exp.color || "#3b82f6";
-                const visitTextColor = getContrastTextColor(visitColor);
 
-                return (
-                  <div
-                    key={index}
-                    className={`relative flex items-center ${
-                      index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                    } flex-col md:gap-8`}
-                  >
-                    {/* Timeline dot */}
-                    <div className="absolute left-8 md:left-1/2 w-4 h-4 bg-blue-600 rounded-full border-4 border-background shadow-lg transform -translate-x-1/2 z-10" />
+        <div className="relative mx-auto mt-10 max-w-4xl">
+          <div className="absolute bottom-0 left-[0.95rem] top-0 w-px bg-border sm:left-[1.45rem]" />
+          <div className="space-y-6">
+            {portfolioData.experiences.map((exp, index) => (
+              <article key={`${exp.name}-${index}`} className="relative pl-10 sm:pl-14">
+                <span className="absolute left-[0.57rem] top-6 size-3 rounded-full bg-primary ring-4 ring-background sm:left-[1.08rem]" />
+                <div className="rounded-2xl border border-border bg-card/90 p-5 shadow-[var(--shadow-subtle)] backdrop-blur-sm sm:p-6">
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+                    <div className="h-14 w-24 overflow-hidden rounded-sm border border-border bg-secondary">
+                      <ImageWithFallback
+                        src={exp.cover_img}
+                        alt={exp.name}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
 
-                    {/* Content */}
-                    <div className={`w-full md:w-[calc(50%-2rem)] ${
-                      index % 2 === 0 ? 'md:text-right md:pr-8' : 'md:text-left md:pl-8'
-                    } pl-20 md:pl-0`}>
-                      <Card className="hover:shadow-lg transition-shadow">
-                        <div className="flex flex-col md:flex-row items-start gap-4 p-6">
-                          <div className="flex-shrink-0 w-24 h-14 bg-gradient-to-br from-blue-100/80 to-purple-100/80 dark:from-blue-500/20 dark:to-purple-500/20 rounded-lg overflow-hidden">
-                            <ImageWithFallback
-                              src={exp.cover_img}
-                              alt={exp.name}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div className="flex-1 text-left">
-                            <CardTitle className="text-xl mb-1">{exp.name}</CardTitle>
-                            <CardDescription className="text-base mb-2">
-                              {exp.role}
-                            </CardDescription>
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <span>{exp.from}</span>
-                              <span>-</span>
-                              <span className={exp.to === "Present" ? "text-blue-600 font-medium" : ""}>
-                                {exp.to}
-                              </span>
-                            </div>
-                            {exp.website ? (
-                              <Button
-                                size="sm"
-                                className="mt-3 gap-2 border-0 font-semibold shadow-sm transition-all hover:brightness-110"
-                                style={{
-                                  backgroundColor: visitColor,
-                                  color: visitTextColor,
-                                }}
-                                asChild
-                              >
-                                <a href={exp.website} target="_blank" rel="noopener noreferrer">
-                                  Visit
-                                  <ExternalLink className="size-4" />
-                                </a>
-                              </Button>
-                            ) : null}
-                          </div>
-                        </div>
-                      </Card>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">
+                        {exp.name}
+                      </h3>
+                      <p className="mt-1 text-sm font-medium text-muted-foreground sm:text-base">
+                        {exp.role}
+                      </p>
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        {exp.from} -{" "}
+                        <span className={exp.to === "Present" ? "font-semibold text-primary" : ""}>
+                          {exp.to}
+                        </span>
+                      </p>
+
+                      {exp.website ? (
+                        <Button size="sm" variant="outline" className="mt-4 gap-2" asChild>
+                          <a href={exp.website} target="_blank" rel="noopener noreferrer">
+                            Visit Company
+                            <ExternalLink className="size-4" />
+                          </a>
+                        </Button>
+                      ) : null}
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </div>

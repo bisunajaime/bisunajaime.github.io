@@ -45,10 +45,6 @@ export function collectAssetUrls(options: CollectOptions = {}): PreloadGroup {
 
   // All portfolio covers
   portfolioData.experiences.forEach((exp) => addUrl(all, exp.cover_img, includeRemote));
-  portfolioData.organizations.forEach((org) => addUrl(all, org.cover_img, includeRemote));
-  portfolioData.events.hosted.forEach((event) => addUrl(all, event.cover_img, includeRemote));
-  portfolioData.events.attended.forEach((event) => addUrl(all, event.cover_img, includeRemote));
-
   portfolioData.projects.forEach((project) => {
     addUrl(all, project.cover_img, includeRemote);
     addUrls(all, project.sample_ui ?? [], includeRemote);

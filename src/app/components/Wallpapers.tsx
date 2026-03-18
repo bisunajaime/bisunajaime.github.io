@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Download } from "lucide-react";
 import { Button } from "./shared/button";
 import {
@@ -7,9 +7,19 @@ import {
   type WallpaperCategory,
 } from "../../data/wallpaperData";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Keyboard } from "swiper/modules";
 import type { Swiper as SwiperClass } from "swiper";
 import "swiper/css";
+
+function isTypingTarget(target: EventTarget | null) {
+  if (!(target instanceof HTMLElement)) return false;
+
+  return (
+    target.tagName === "INPUT" ||
+    target.tagName === "TEXTAREA" ||
+    target.tagName === "SELECT" ||
+    target.isContentEditable
+  );
+}
 
 export function Wallpapers() {
   const [selectedCategory, setSelectedCategory] = useState<WallpaperCategory>("all");
@@ -17,13 +27,17 @@ export function Wallpapers() {
     sampleWallpapers[0]?.id ?? null,
   );
 
+  const sectionRef = useRef<HTMLElement | null>(null);
   const previewRef = useRef<HTMLDivElement | null>(null);
   const swiperRef = useRef<SwiperClass | null>(null);
 
-  const filteredWallpapers =
-    selectedCategory === "all"
-      ? sampleWallpapers
-      : sampleWallpapers.filter((wallpaper) => wallpaper.category === selectedCategory);
+  const filteredWallpapers = useMemo(
+    () =>
+      selectedCategory === "all"
+        ? sampleWallpapers
+        : sampleWallpapers.filter((wallpaper) => wallpaper.category === selectedCategory),
+    [selectedCategory],
+  );
 
   const handleCategoryChange = (category: WallpaperCategory) => {
     setSelectedCategory(category);
@@ -67,13 +81,54 @@ export function Wallpapers() {
     }
   }, [filteredWallpapers, selectedWallpaper]);
 
+  useEffect(() => {
+    const handleArrowNavigation = (event: KeyboardEvent) => {
+      if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+      if (isTypingTarget(event.target)) return;
+      if (!filteredWallpapers.length || !selectedWallpaper || !sectionRef.current) return;
+
+      const sectionBounds = sectionRef.current.getBoundingClientRect();
+      const isSectionVisible =
+        sectionBounds.top < window.innerHeight && sectionBounds.bottom > 0;
+
+      if (!isSectionVisible) return;
+
+      const currentIndex = filteredWallpapers.findIndex(
+        (wallpaper) => wallpaper.id === selectedWallpaper,
+      );
+
+      if (currentIndex < 0) return;
+
+      const delta = event.key === "ArrowRight" ? 1 : -1;
+      const nextIndex = Math.min(
+        filteredWallpapers.length - 1,
+        Math.max(0, currentIndex + delta),
+      );
+
+      if (nextIndex === currentIndex) return;
+
+      event.preventDefault();
+      setSelectedWallpaper(filteredWallpapers[nextIndex].id);
+      swiperRef.current?.slideTo(nextIndex);
+    };
+
+    window.addEventListener("keydown", handleArrowNavigation);
+    return () => {
+      window.removeEventListener("keydown", handleArrowNavigation);
+    };
+  }, [filteredWallpapers, selectedWallpaper]);
+
   const selectedWallpaperData =
     filteredWallpapers.find((wallpaper) => wallpaper.id === selectedWallpaper) ??
     filteredWallpapers[0];
   const downloadUrl = selectedWallpaperData?.downloadUrl || selectedWallpaperData?.url;
 
   return (
-    <section id="wallpapers" className="px-4 py-[var(--section-padding-y)] sm:px-6">
+    <section
+      ref={sectionRef}
+      id="wallpapers"
+      className="px-4 py-[var(--section-padding-y)] sm:px-6"
+    >
       <div className="mx-auto w-full max-w-[var(--page-max-width)]">
         <h2 className="text-center text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           Wallpaper Pack
@@ -131,7 +186,6 @@ export function Wallpapers() {
 
         <div className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 overflow-hidden">
           <Swiper
-            modules={[Keyboard]}
             onSwiper={(swiper) => {
               swiperRef.current = swiper;
             }}
@@ -143,7 +197,6 @@ export function Wallpapers() {
             }}
             slidesPerView={2.15}
             spaceBetween={14}
-            keyboard={{ enabled: true }}
             breakpoints={{
               640: { slidesPerView: 3.15, spaceBetween: 16 },
               1024: { slidesPerView: 4.1, spaceBetween: 18 },

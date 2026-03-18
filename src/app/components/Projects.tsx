@@ -115,7 +115,7 @@ export function Projects() {
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
                 {activeProject.demo_url && (
-                  <Button size="sm" variant="outline" className="gap-2" asChild>
+                  <Button size="sm" variant="default" className="gap-2" asChild>
                     <a href={activeProject.demo_url} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="size-4" />
                       Demo
@@ -123,7 +123,7 @@ export function Projects() {
                   </Button>
                 )}
                 {activeProject.git_url && (
-                  <Button size="sm" variant="outline" className="gap-2" asChild>
+                  <Button size="sm" variant="default" className="gap-2" asChild>
                     <a href={activeProject.git_url} target="_blank" rel="noopener noreferrer">
                       <Github className="size-4" />
                       Code
@@ -131,7 +131,7 @@ export function Projects() {
                   </Button>
                 )}
                 {activeProject.demo_video && (
-                  <Button size="sm" variant="outline" className="gap-2" asChild>
+                  <Button size="sm" variant="default" className="gap-2" asChild>
                     <a href={activeProject.demo_video} target="_blank" rel="noopener noreferrer">
                       <Video className="size-4" />
                       Video
@@ -195,7 +195,7 @@ export function Projects() {
                 </p>
                 <div className="mt-auto flex flex-wrap gap-2">
                   {project.demo_url && (
-                    <Button size="sm" variant="outline" className="gap-2" asChild>
+                    <Button size="sm" variant="default" className="gap-2" asChild>
                       <a href={project.demo_url} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="size-4" />
                         Demo
@@ -203,7 +203,7 @@ export function Projects() {
                     </Button>
                   )}
                   {project.git_url && (
-                    <Button size="sm" variant="outline" className="gap-2" asChild>
+                    <Button size="sm" variant="default" className="gap-2" asChild>
                       <a href={project.git_url} target="_blank" rel="noopener noreferrer">
                         <Github className="size-4" />
                         Code
@@ -211,7 +211,7 @@ export function Projects() {
                     </Button>
                   )}
                   {project.demo_video && (
-                    <Button size="sm" variant="outline" className="gap-2" asChild>
+                    <Button size="sm" variant="default" className="gap-2" asChild>
                       <a href={project.demo_video} target="_blank" rel="noopener noreferrer">
                         <Video className="size-4" />
                         Video

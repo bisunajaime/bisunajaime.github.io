@@ -49,29 +49,33 @@ async function bootstrap() {
   if (!rootElement) return;
 
   const root = createRoot(rootElement);
+  const renderWithTheme = (content: JSX.Element) => {
+    root.render(
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        {content}
+      </ThemeProvider>,
+    );
+  };
+
   const { critical, background, all } = collectAssetUrls({
     includeRemote: INCLUDE_REMOTE_ASSETS,
   });
   const blockingList = BLOCK_ON_ALL_ASSETS ? all : critical;
 
-  root.render(<LoadingScreen loaded={0} total={blockingList.length} />);
+  renderWithTheme(<LoadingScreen loaded={0} total={blockingList.length} />);
   await preloadImages(blockingList, {
     timeoutMs: 15000,
     onProgress: (loaded, total) => {
-      root.render(<LoadingScreen loaded={loaded} total={total} />);
+      renderWithTheme(<LoadingScreen loaded={loaded} total={total} />);
     },
   });
 
-  root.render(
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <App />
-    </ThemeProvider>,
-  );
+  renderWithTheme(<App />);
 
   if (!BLOCK_ON_ALL_ASSETS) {
     prefetchImages(background);

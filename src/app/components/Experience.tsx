@@ -45,7 +45,7 @@ export function Experience() {
                       </p>
 
                       {exp.website ? (
-                        <Button size="sm" variant="default" className="mt-4 gap-2" asChild>
+                        <Button size="sm" variant="outline" className="mt-4 gap-2" asChild>
                           <a href={exp.website} target="_blank" rel="noopener noreferrer">
                             Visit Company
                             <ExternalLink className="size-4" />

@@ -145,11 +145,10 @@ export function Wallpapers() {
                 type="button"
                 key={category}
                 onClick={() => handleCategoryChange(category)}
-                className={`inline-flex h-11 items-center rounded-full border px-4 text-sm font-medium capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
-                  selectedCategory === category
-                    ? "border-primary/25 bg-primary/12 text-primary"
-                    : "border-border bg-background text-muted-foreground hover:bg-secondary hover:text-foreground"
-                }`}
+                className={`inline-flex h-11 items-center rounded-full border px-4 text-sm font-medium capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${selectedCategory === category
+                  ? "border-primary/25 bg-primary/12 text-primary"
+                  : "border-border bg-background text-muted-foreground hover:bg-secondary hover:text-foreground"
+                  }`}
               >
                 {category}
               </button>
@@ -195,6 +194,7 @@ export function Wallpapers() {
                 setSelectedWallpaper(nextWallpaper.id);
               }
             }}
+            centeredSlides
             slidesPerView={2.15}
             spaceBetween={14}
             breakpoints={{
@@ -210,16 +210,15 @@ export function Wallpapers() {
                   type="button"
                   onClick={() => handleWallpaperSelect(wallpaper.id)}
                   aria-label={`Preview ${wallpaper.name}`}
-                  className={`group relative w-full overflow-hidden rounded-2xl border bg-secondary/70 transition-all ${
-                    selectedWallpaper === wallpaper.id
-                      ? "border-primary/60 ring-2 ring-primary/30"
-                      : "border-border hover:border-primary/30"
-                  }`}
+                  className={`group relative w-full overflow-hidden rounded-2xl border bg-secondary/70 transition-all ${selectedWallpaper === wallpaper.id
+                    ? "border-primary/60 ring-2 ring-primary/30"
+                    : "border-border hover:border-primary/30"
+                    }`}
                 >
                   <img
                     src={wallpaper.thumbnail}
                     alt={wallpaper.name}
-                    className="aspect-video h-auto w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                    className={`aspect-video h-auto w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.25] ${selectedWallpaper === wallpaper.id ? "scale-[1.25]" : ""}`}
                   />
                 </button>
               </SwiperSlide>

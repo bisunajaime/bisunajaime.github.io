@@ -50,7 +50,7 @@ export function Hero() {
             <div className="mx-auto lg:mx-0">
               <div className="relative">
                 <img
-                  src="/logo512.png"
+                  src="/logo512.webp"
                   alt="Jaime Bisuna profile"
                   className="h-28 w-28 rounded-full border border-border/80 object-cover shadow-[var(--shadow-subtle)] sm:h-36 sm:w-36"
                 />

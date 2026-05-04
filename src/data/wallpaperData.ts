@@ -83,7 +83,7 @@ export const sampleWallpapers: Wallpaper[] = [
     thumbnail: "/assets/images/wallpapers/korea.jpg",
     category: "nature",
     name: "Korea 🌔",
-    downloadUrl: "/assets/images/wallpapers/download/korea.png"
+    downloadUrl: "/assets/images/wallpapers/download/korea.webp"
   },
   {
     id: "nature-2",
@@ -91,7 +91,7 @@ export const sampleWallpapers: Wallpaper[] = [
     thumbnail: "/assets/images/wallpapers/korea2.jpg",
     category: "nature",
     name: "Korea 2 🌃",
-    downloadUrl: "/assets/images/wallpapers/download/korea2.png"
+    downloadUrl: "/assets/images/wallpapers/download/korea2.webp"
   },
   {
     id: "cozy-1",
@@ -99,7 +99,7 @@ export const sampleWallpapers: Wallpaper[] = [
     thumbnail: "/assets/images/wallpapers/kyoto.jpg",
     category: "cozy",
     name: "Kyoto 🍁",
-    downloadUrl: "/assets/images/wallpapers/download/kyoto.png"
+    downloadUrl: "/assets/images/wallpapers/download/kyoto.webp"
   },
   {
     id: "abstract-1",
@@ -107,7 +107,7 @@ export const sampleWallpapers: Wallpaper[] = [
     thumbnail: "/assets/images/wallpapers/paris.jpg",
     category: "abstract",
     name: "Paris 🌷",
-    downloadUrl: "/assets/images/wallpapers/download/paris.png"
+    downloadUrl: "/assets/images/wallpapers/download/paris.webp"
   },
   {
     id: "winter-1",
@@ -115,7 +115,7 @@ export const sampleWallpapers: Wallpaper[] = [
     thumbnail: "/assets/images/wallpapers/hokkaido.jpg",
     category: "winter",
     name: "Hokkaido ❄️",
-    downloadUrl: "/assets/images/wallpapers/download/hokkaido.png"
+    downloadUrl: "/assets/images/wallpapers/download/hokkaido.webp"
   },
   {
     id: "winter-2",
@@ -123,7 +123,7 @@ export const sampleWallpapers: Wallpaper[] = [
     thumbnail: "/assets/images/wallpapers/sapporo.jpg",
     category: "winter",
     name: "Sapporo ❄️",
-    downloadUrl: "/assets/images/wallpapers/download/sapporo.png"
+    downloadUrl: "/assets/images/wallpapers/download/sapporo.webp"
   },
   {
     id: "winter-3",
@@ -131,7 +131,7 @@ export const sampleWallpapers: Wallpaper[] = [
     thumbnail: "/assets/images/wallpapers/snowy_sapporo.jpg",
     category: "winter",
     name: "Snowy Sapporo ⛄",
-    downloadUrl: "/assets/images/wallpapers/download/snowy_sapporo.png"
+    downloadUrl: "/assets/images/wallpapers/download/snowy_sapporo.webp"
   },
   {
     id: "winter-4",
@@ -139,7 +139,7 @@ export const sampleWallpapers: Wallpaper[] = [
     thumbnail: "/assets/images/wallpapers/snowy_ny.jpg",
     category: "winter",
     name: "Snowy New York 2 ⛄",
-    downloadUrl: "/assets/images/wallpapers/download/snowy_ny.png"
+    downloadUrl: "/assets/images/wallpapers/download/snowy_ny.webp"
   },
   {
     id: "winter-5",
@@ -147,7 +147,7 @@ export const sampleWallpapers: Wallpaper[] = [
     thumbnail: "/assets/images/wallpapers/snowy_ny_2.jpg",
     category: "winter",
     name: "Snowy New York ⛄",
-    downloadUrl: "/assets/images/wallpapers/download/snowy_ny_2.png"
+    downloadUrl: "/assets/images/wallpapers/download/snowy_ny_2.webp"
   },
   {
     id: "minimal-1",
@@ -155,6 +155,6 @@ export const sampleWallpapers: Wallpaper[] = [
     thumbnail: "/assets/images/wallpapers/venice_canal.jpg",
     category: "minimal",
     name: "Venice Canal 🌕",
-    downloadUrl: "/assets/images/wallpapers/download/venice_canal.png"
+    downloadUrl: "/assets/images/wallpapers/download/venice_canal.webp"
   }
 ];

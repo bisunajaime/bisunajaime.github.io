@@ -96,6 +96,36 @@ export const portfolioData = {
   },
   projects: [
     {
+      name: "Greenwash Laundry POS",
+      description: "A full-stack Point-of-Sale system for laundry services, featuring an admin dashboard with kanban-style order tracking, real-time updates via Socket.IO, SMS notifications, PDF report generation, thermal printer integration, and a Flutter-based Android tablet POS.",
+      short_description: "Full-stack Laundry POS with admin dashboard, real-time updates, and Flutter Android tablet app.",
+      stack: [
+        "React",
+        "Vite",
+        "Tailwind CSS",
+        "Radix UI",
+        "@dnd-kit",
+        "Sonner",
+        "Node.js",
+        "Express 5",
+        "TypeScript",
+        "PostgreSQL",
+        "Knex.js",
+        "Socket.IO",
+        "Flutter",
+        "Sentry"
+      ],
+      is_desktop: true,
+      learnings: "Built a complete laundry POS ecosystem spanning a React admin dashboard with drag-and-drop kanban boards, a Node.js backend with PostgreSQL and real-time Socket.IO updates, and a Flutter Android tablet app with BLE thermal printer integration.",
+      cover_img: "/assets/images/greenwash/cover.webp",
+      sample_ui: [],
+      demo_video: "",
+      git_url: "",
+      demo_app: "",
+      demo_url: "https://greenwash.ph",
+      color: "#22c55e"
+    },
+    {
       name: "Wallection",
       description: "Wallpaper directory for wallpapers generated from my workstation using ComfyUI and Qwen/Flux models.",
       short_description: "Qwen/Flux generated wallpapers from my local workstation using ComfyUI.",

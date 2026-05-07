@@ -3,20 +3,33 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./sha
 import { Badge } from "./shared/badge";
 import { Button } from "./shared/button";
 import { Swiper, SwiperSlide } from "swiper/react";
+import type { Swiper as SwiperClass } from "swiper";
 
-import { ExternalLink, Github, Video } from "lucide-react";
+import { ExternalLink, Github, Video, Loader2 } from "lucide-react";
 import { portfolioData } from "../../data/portfolioData";
 import { ImageWithFallback } from "./util/ImageWithFallback";
 import "swiper/css";
 import "swiper/css/free-mode";
+
+function isTypingTarget(target: EventTarget | null) {
+  if (!(target instanceof HTMLElement)) return false;
+  return (
+    target.tagName === "INPUT" ||
+    target.tagName === "TEXTAREA" ||
+    target.tagName === "SELECT" ||
+    target.isContentEditable
+  );
+}
 
 const INITIAL_PROJECTS = 6;
 
 export function Projects() {
   const [showAll, setShowAll] = useState(false);
   const [activeProject, setActiveProject] = useState<(typeof portfolioData.projects)[number] | null>(null);
+  const [carouselReady, setCarouselReady] = useState(false);
   const sectionRef = useRef<HTMLElement | null>(null);
   const carouselSectionRef = useRef<HTMLDivElement | null>(null);
+  const swiperRef = useRef<SwiperClass | null>(null);
   const hasMounted = useRef(false);
   const visibleProjects = showAll
     ? portfolioData.projects
@@ -36,6 +49,52 @@ export function Projects() {
     if (activeProject && carouselSectionRef.current) {
       carouselSectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
+  }, [activeProject]);
+
+  useEffect(() => {
+    if (!activeProject?.sample_ui?.length) {
+      setCarouselReady(false);
+      return;
+    }
+
+    setCarouselReady(false);
+
+    const preloadPromises = activeProject.sample_ui.map((src) => {
+      return new Promise<void>((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve();
+        img.onerror = () => resolve();
+        img.src = src;
+      });
+    });
+
+    Promise.all(preloadPromises).then(() => {
+      setCarouselReady(true);
+      requestAnimationFrame(() => {
+        swiperRef.current?.update();
+        swiperRef.current?.loopDestroy?.();
+        swiperRef.current?.loopCreate?.();
+      });
+    });
+  }, [activeProject]);
+
+  useEffect(() => {
+    if (!activeProject) return;
+
+    const handleArrowNavigation = (event: KeyboardEvent) => {
+      if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+      if (isTypingTarget(event.target)) return;
+
+      event.preventDefault();
+      if (event.key === "ArrowRight") {
+        swiperRef.current?.slideNext();
+      } else {
+        swiperRef.current?.slidePrev();
+      }
+    };
+
+    window.addEventListener("keydown", handleArrowNavigation);
+    return () => window.removeEventListener("keydown", handleArrowNavigation);
   }, [activeProject]);
 
   return (
@@ -72,30 +131,36 @@ export function Projects() {
 
             <div className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden">
               <div className="py-4 md:py-6">
-                <Swiper
-                  key={activeProject.name}
-                  keyboard={{ enabled: true }}
-                  grabCursor
-                  spaceBetween={16}
-                  slidesPerView="auto"
-                  className="pb-2"
-                >
-                  {activeProject.sample_ui.map((src, idx) => (
-                    <SwiperSlide
-                      key={`${src}-${idx}`}
-                      className="!w-auto"
-
-                    >
-                      <div className="w-auto overflow-hidden rounded-2xl">
-                        <ImageWithFallback
-                          src={src}
-                          alt={`${activeProject.name} UI ${idx + 1}`}
-                          className="max-h-[60vh] w-auto max-w-[85vw] sm:max-w-[70vw] md:max-w-[55vw] lg:max-w-[45vw] object-contain"
-                        />
-                      </div>
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+                {!carouselReady ? (
+                  <div className="flex h-[40vh] items-center justify-center">
+                    <Loader2 className="size-8 animate-spin text-muted-foreground" />
+                  </div>
+                ) : (
+                  <Swiper
+                    key={activeProject.name}
+                    onSwiper={(swiper) => { swiperRef.current = swiper; }}
+                    grabCursor
+                    centeredSlides
+                    spaceBetween={16}
+                    slidesPerView="auto"
+                    className="pb-2"
+                  >
+                    {activeProject.sample_ui.map((src, idx) => (
+                      <SwiperSlide
+                        key={`${src}-${idx}`}
+                        className="!w-auto"
+                      >
+                        <div className="w-auto overflow-hidden rounded-2xl">
+                          <ImageWithFallback
+                            src={src}
+                            alt={`${activeProject.name} UI ${idx + 1}`}
+                            className="max-h-[60vh] w-auto max-w-[85vw] sm:max-w-[70vw] md:max-w-[55vw] lg:max-w-[45vw] object-contain"
+                          />
+                        </div>
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                )}
               </div>
             </div>
 

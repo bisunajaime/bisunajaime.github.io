@@ -195,6 +195,7 @@ export function Wallpapers() {
               }
             }}
             centeredSlides
+            loop
             slidesPerView={2.15}
             spaceBetween={14}
             breakpoints={{

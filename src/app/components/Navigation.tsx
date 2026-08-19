@@ -3,13 +3,8 @@ import { ArrowUpRight, Menu, Moon, Pause, Play, SkipBack, SkipForward, SunMedium
 import { useTheme } from "next-themes";
 import { cn } from "./shared/utils";
 import { useMusic } from "../audio/MusicProvider";
-import { formatTime, labelColorFor } from "../audio/trackDisplay";
+import { formatTime, labelColorFor, sliderFill } from "../audio/trackDisplay";
 import { Vinyl } from "../audio/Vinyl";
-
-const MINI_SLIDER_CLASS =
-  "h-1 w-full cursor-pointer appearance-none rounded-full bg-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring " +
-  "[&::-webkit-slider-thumb]:size-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[var(--track-accent)] " +
-  "[&::-moz-range-thumb]:size-3 [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-[var(--track-accent)]";
 
 interface NavigationProps {
   activeSection: string;
@@ -87,6 +82,7 @@ function MiniPlayer({ onOpenSection }: { onOpenSection: () => void }) {
     changeVolume,
     toggleMute,
     requestMusicTab,
+    canControlVolume,
   } = useMusic();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -235,10 +231,8 @@ function MiniPlayer({ onOpenSection }: { onOpenSection: () => void }) {
                 disabled={safeDuration <= 0}
                 onChange={(event) => seek(Number(event.target.value))}
                 aria-label="Seek"
-                className={MINI_SLIDER_CLASS}
-                style={{
-                  background: `linear-gradient(to right, var(--track-accent) ${progress}%, var(--border) ${progress}%)`,
-                }}
+                className="media-slider"
+                style={sliderFill(progress)}
               />
               <span className="w-8 shrink-0 text-[0.65rem] tabular-nums text-muted-foreground">
                 {formatTime(safeDuration)}
@@ -292,19 +286,19 @@ function MiniPlayer({ onOpenSection }: { onOpenSection: () => void }) {
                     <Volume2 className="size-3.5" />
                   )}
                 </button>
-                <input
-                  type="range"
-                  min={0}
-                  max={1}
-                  step={0.01}
-                  value={isMuted ? 0 : volume}
-                  onChange={(event) => changeVolume(Number(event.target.value))}
-                  aria-label="Volume"
-                  className={MINI_SLIDER_CLASS}
-                  style={{
-                    background: `linear-gradient(to right, var(--track-accent) ${(isMuted ? 0 : volume) * 100}%, var(--border) ${(isMuted ? 0 : volume) * 100}%)`,
-                  }}
-                />
+                {canControlVolume ? (
+                  <input
+                    type="range"
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value={isMuted ? 0 : volume}
+                    onChange={(event) => changeVolume(Number(event.target.value))}
+                    aria-label="Volume"
+                    className="media-slider"
+                    style={sliderFill((isMuted ? 0 : volume) * 100)}
+                  />
+                ) : null}
               </div>
             </div>
 

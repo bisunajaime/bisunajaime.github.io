@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 /*
  * Shared between the full player and the nav mini player, so the two can't
  * drift apart on colour or time formatting.
@@ -26,4 +28,9 @@ export function formatTime(seconds: number) {
   const total = Math.floor(seconds);
   const minutes = Math.floor(total / 60);
   return `${minutes}:${String(total % 60).padStart(2, "0")}`;
+}
+
+/* Percentage fill for .media-slider, consumed by its track pseudo-element. */
+export function sliderFill(percent: number) {
+  return { "--slider-pct": `${percent}%` } as CSSProperties;
 }

@@ -30,6 +30,8 @@ interface MusicContextValue {
   changeVolume: (value: number) => void;
   toggleMute: () => void;
   setQueue: (ids: string[]) => void;
+  /* False on iOS, where volume is hardware-only and the setter is ignored. */
+  canControlVolume: boolean;
   /* Bumped when something asks the AI Work section to switch to the Music tab. */
   musicTabRequest: number;
   requestMusicTab: () => void;
@@ -54,6 +56,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const [isMuted, setIsMuted] = useState(false);
   const [isReactive, setIsReactive] = useState(false);
   const [musicTabRequest, setMusicTabRequest] = useState(0);
+  const [canControlVolume, setCanControlVolume] = useState(true);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -182,6 +185,27 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     audio.muted = isMuted;
   }, [volume, isMuted]);
 
+  /*
+   * iOS treats volume as hardware-controlled: assigning to it is silently
+   * ignored, no error. Probe by writing a value and reading it back, so the UI
+   * can hide a slider that could never do anything. muted still works.
+   */
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const probe = 0.123;
+    const original = audio.volume;
+
+    try {
+      audio.volume = probe;
+      setCanControlVolume(Math.abs(audio.volume - probe) < 0.01);
+      audio.volume = original;
+    } catch {
+      setCanControlVolume(false);
+    }
+  }, []);
+
   useEffect(() => {
     return () => {
       disarmGestureRef.current?.();
@@ -296,6 +320,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
         setQueue,
         musicTabRequest,
         requestMusicTab,
+        canControlVolume,
       }}
     >
       {children}

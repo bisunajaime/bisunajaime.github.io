@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useMusic } from "../audio/MusicProvider";
-import { formatTime, labelColorFor } from "../audio/trackDisplay";
+import { formatTime, labelColorFor, sliderFill } from "../audio/trackDisplay";
 import { Vinyl } from "../audio/Vinyl";
 import { Waveform } from "../audio/Waveform";
 import {
@@ -22,18 +22,6 @@ function formatTotal(seconds: number) {
   return rest ? `${hours} hr ${rest} min` : `${hours} hr`;
 }
 
-/** Shared styling for the seek and volume sliders. */
-const SLIDER_CLASS =
-  "h-1.5 w-full cursor-pointer appearance-none rounded-full bg-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring " +
-  "[&::-webkit-slider-thumb]:size-3.5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[var(--track-accent)] [&::-webkit-slider-thumb]:shadow-[var(--shadow-subtle)] " +
-  "[&::-moz-range-thumb]:size-3.5 [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-[var(--track-accent)]";
-
-function fillStyle(percent: number) {
-  return {
-    background: `linear-gradient(to right, var(--track-accent) ${percent}%, var(--border) ${percent}%)`,
-  };
-}
-
 const ALL_GENRES = "All";
 
 export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
@@ -53,6 +41,7 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
     changeVolume,
     toggleMute,
     setQueue,
+    canControlVolume,
   } = useMusic();
 
   const [genre, setGenre] = useState(ALL_GENRES);
@@ -194,8 +183,8 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
             disabled={!canPlay || safeDuration <= 0}
             onChange={(event) => seek(Number(event.target.value))}
             aria-label="Seek"
-            className={SLIDER_CLASS}
-            style={fillStyle(progress)}
+            className="media-slider"
+            style={sliderFill(progress)}
           />
           <span className="w-10 shrink-0 text-xs tabular-nums text-muted-foreground">
             {formatTime(safeDuration)}
@@ -251,17 +240,21 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
               <Volume2 className="size-4" />
             )}
           </button>
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.01}
-            value={isMuted ? 0 : volume}
-            onChange={(event) => changeVolume(Number(event.target.value))}
-            aria-label="Volume"
-            className={SLIDER_CLASS}
-            style={fillStyle((isMuted ? 0 : volume) * 100)}
-          />
+          {canControlVolume ? (
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              value={isMuted ? 0 : volume}
+              onChange={(event) => changeVolume(Number(event.target.value))}
+              aria-label="Volume"
+              className="media-slider"
+              style={sliderFill((isMuted ? 0 : volume) * 100)}
+            />
+          ) : (
+            <span className="text-xs text-muted-foreground">Use device volume</span>
+          )}
         </div>
 
         <Waveform

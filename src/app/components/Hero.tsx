@@ -4,7 +4,7 @@ import { ArrowRight, FileText, Github, Linkedin, Mail } from "lucide-react";
 const LINKS = {
   github: "https://github.com/bisunajaime",
   linkedin: "https://www.linkedin.com/in/jose-jaime-bisuna",
-  resume: "/files/ResumeJaimeBisuna.pdf",
+  resume: "/files/JaimeBisunaResume.pdf",
 };
 
 export function Hero() {

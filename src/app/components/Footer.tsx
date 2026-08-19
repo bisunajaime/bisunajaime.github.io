@@ -2,7 +2,7 @@ export function Footer() {
   const links = [
     { label: "GitHub", href: "https://github.com/bisunajaime" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/jose-jaime-bisuna" },
-    { label: "Resume", href: "/files/ResumeJaimeBisuna.pdf" },
+    { label: "Resume", href: "/files/JaimeBisunaResume.pdf" },
   ];
 
   return (

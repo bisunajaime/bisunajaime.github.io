@@ -49,6 +49,28 @@ function ThemeToggle() {
   );
 }
 
+function MuteButton() {
+  const { isMuted, isPlaying, track, toggleMute } = useMusic();
+  const label = isMuted ? "Unmute music" : "Mute music";
+
+  return (
+    <button
+      type="button"
+      onClick={toggleMute}
+      data-music-control
+      className="relative inline-flex size-11 items-center justify-center rounded-xl border border-border bg-background/75 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      aria-label={label}
+      aria-pressed={isMuted}
+      title={track ? `${label} — ${track.name}` : label}
+    >
+      {isMuted ? <VolumeX className="size-4" /> : <Volume2 className="size-4" />}
+      {isPlaying && !isMuted ? (
+        <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-[var(--track-accent)]" />
+      ) : null}
+    </button>
+  );
+}
+
 function MiniPlayer({ onOpenSection }: { onOpenSection: () => void }) {
   const {
     tracks,
@@ -68,6 +90,9 @@ function MiniPlayer({ onOpenSection }: { onOpenSection: () => void }) {
   } = useMusic();
 
   const [isOpen, setIsOpen] = useState(false);
+  /* Touch devices have no hover, so the panel needs a tap to open it. */
+  const [isCoarsePointer, setIsCoarsePointer] = useState(false);
+  const rootRef = useRef<HTMLDivElement | null>(null);
 
   /* Grace period so crossing the gap to the panel does not dismiss it. */
   const graceTimer = useRef<number | null>(null);
@@ -93,6 +118,27 @@ function MiniPlayer({ onOpenSection }: { onOpenSection: () => void }) {
   };
 
   useEffect(() => clearTimers, []);
+
+  useEffect(() => {
+    const query = window.matchMedia("(hover: none)");
+    const sync = () => setIsCoarsePointer(query.matches);
+
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+
+  /* Without hover there is no mouseleave, so a tap elsewhere has to dismiss it. */
+  useEffect(() => {
+    if (!isOpen || !isCoarsePointer) return;
+
+    const handleOutside = (event: PointerEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) close();
+    };
+
+    document.addEventListener("pointerdown", handleOutside);
+    return () => document.removeEventListener("pointerdown", handleOutside);
+  }, [isOpen, isCoarsePointer]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -124,19 +170,21 @@ function MiniPlayer({ onOpenSection }: { onOpenSection: () => void }) {
 
   return (
     <div
+      ref={rootRef}
+      data-music-control
       className="relative"
-      onMouseEnter={open}
-      onMouseLeave={scheduleClose}
+      onMouseEnter={isCoarsePointer ? undefined : open}
+      onMouseLeave={isCoarsePointer ? undefined : scheduleClose}
       onFocus={open}
-      onBlur={scheduleClose}
+      onBlur={isCoarsePointer ? undefined : scheduleClose}
       style={{ "--track-accent": labelColorFor(track.genre) } as CSSProperties}
     >
       <button
         type="button"
-        onClick={toggleMute}
+        onClick={() => (isCoarsePointer ? (isOpen ? close() : open()) : toggleMute())}
         className="relative inline-flex size-11 items-center justify-center rounded-xl border border-border bg-background/75 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        aria-label={muteLabel}
-        aria-pressed={isMuted}
+        aria-label={isCoarsePointer ? `Music controls — ${track.name}` : muteLabel}
+        aria-pressed={isCoarsePointer ? undefined : isMuted}
         aria-expanded={isOpen}
         title={`${muteLabel} — ${track.name}`}
       >
@@ -152,7 +200,8 @@ function MiniPlayer({ onOpenSection }: { onOpenSection: () => void }) {
           role="group"
           aria-label="Mini player"
           /* No gap to the trigger — the pointer must be able to reach the panel. */
-          className="absolute right-0 top-full z-50 w-72 pt-2"
+          /* Anchored to the viewport on phones — 288px hanging off a mid-bar button overflows. */
+          className="fixed inset-x-3 top-[4.75rem] z-50 pt-0 sm:absolute sm:inset-x-auto sm:right-0 sm:top-full sm:w-72 sm:pt-2"
         >
           <div className="mini-player-in rounded-2xl border border-border bg-popover p-3 shadow-[var(--shadow-soft)]">
             <div className="flex items-center gap-2.5">
@@ -402,12 +451,7 @@ export function Navigation({ activeSection, onNavigate }: NavigationProps) {
           </p>
           <div className="mt-2 flex items-center gap-2">
             <ThemeToggle />
-            <MiniPlayer
-              onOpenSection={() => {
-                setIsMenuOpen(false);
-                onNavigate("wallpapers");
-              }}
-            />
+            <MuteButton />
           </div>
         </div>
       </div>

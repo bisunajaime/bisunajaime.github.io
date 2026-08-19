@@ -59,6 +59,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const audioCtxRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const shouldAutoPlayRef = useRef(false);
+  const disarmGestureRef = useRef<(() => void) | null>(null);
   /* Auto-advance order. Defaults to everything; the player narrows it to the active filter. */
   const queueRef = useRef<string[]>(tracks.map((item) => item.id));
 
@@ -103,6 +104,45 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     void audioCtxRef.current?.resume().catch(() => undefined);
   }, []);
 
+  /*
+   * Starts playback on the first interaction anywhere, for when autoplay was
+   * blocked. Stays armed until playback actually begins.
+   */
+  const armGestureStart = useCallback(() => {
+    if (disarmGestureRef.current) return;
+
+    /*
+     * Capture phase: a handler calling stopPropagation — the mobile drawer
+     * does — would otherwise stop the event before it reaches document.
+     */
+    const options = { capture: true } as const;
+
+    const startOnGesture = (event: Event) => {
+      /*
+       * Clicks on a music control are handled by that control. Starting
+       * playback here as well would let its own toggle immediately pause what
+       * we just began — pointerdown always precedes click. Stay armed.
+       */
+      const target = event.target as HTMLElement | null;
+      if (target?.closest?.("[data-music-control]")) return;
+
+      disarm();
+      ensureAudioGraph();
+      resumeContext();
+      void audioRef.current?.play().catch(() => undefined);
+    };
+
+    const disarm = () => {
+      document.removeEventListener("pointerdown", startOnGesture, options);
+      document.removeEventListener("keydown", startOnGesture, options);
+      disarmGestureRef.current = null;
+    };
+
+    document.addEventListener("pointerdown", startOnGesture, options);
+    document.addEventListener("keydown", startOnGesture, options);
+    disarmGestureRef.current = disarm;
+  }, [ensureAudioGraph, resumeContext]);
+
   /* Pick a random lo-fi track on first load and try to start it. */
   useEffect(() => {
     if (!tracks.length) return;
@@ -128,25 +168,11 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     shouldAutoPlayRef.current = false;
 
     void audio.play().catch(() => {
-      /*
-       * Browsers block audible autoplay without prior interaction. Rather than
-       * fail silently, arm a one-shot listener so the first click or keypress
-       * anywhere starts it.
-       */
+      /* Browsers block audible autoplay without prior interaction. */
       setIsPlaying(false);
-
-      const startOnGesture = () => {
-        document.removeEventListener("pointerdown", startOnGesture);
-        document.removeEventListener("keydown", startOnGesture);
-        ensureAudioGraph();
-        resumeContext();
-        void audioRef.current?.play().catch(() => undefined);
-      };
-
-      document.addEventListener("pointerdown", startOnGesture);
-      document.addEventListener("keydown", startOnGesture);
+      armGestureStart();
     });
-  }, [selectedId, ensureAudioGraph, resumeContext]);
+  }, [selectedId, armGestureStart]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -158,6 +184,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     return () => {
+      disarmGestureRef.current?.();
       void audioCtxRef.current?.close().catch(() => undefined);
     };
   }, []);
@@ -278,9 +305,17 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       */}
       <audio
         ref={audioRef}
-        src={track?.audioSrc}
+        /*
+         * Held empty until a track is actually chosen. `track` falls back to
+         * tracks[0] for the first render, and preload="metadata" would make the
+         * browser start fetching that file before the random pick replaces it.
+         */
+        src={selectedId ? track?.audioSrc : undefined}
         preload="metadata"
-        onPlay={() => setIsPlaying(true)}
+        onPlay={() => {
+          setIsPlaying(true);
+          disarmGestureRef.current?.();
+        }}
         onPause={() => setIsPlaying(false)}
         onEnded={handleEnded}
         onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}

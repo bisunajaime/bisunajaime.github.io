@@ -142,6 +142,7 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
 
   return (
     <div
+      data-music-control
       className="mt-8 grid gap-6 lg:grid-cols-2 lg:items-stretch"
       style={{ "--track-accent": labelColorFor(track.genre) } as CSSProperties}
     >

@@ -32,6 +32,9 @@ export function collectAssetUrls(options: CollectOptions = {}): PreloadGroup {
   const all = new Set<string>();
   const critical = new Set<string>();
 
+  // Hero video poster frame (paints before the loop starts)
+  addUrl(critical, "/assets/images/lofi-jaime-poster.webp", includeRemote);
+
   // Hero wallpapers (critical for initial render)
   const heroWallpaper = topWallpapers[0];
   if (heroWallpaper) {

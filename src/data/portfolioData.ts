@@ -97,8 +97,9 @@ export const portfolioData = {
   projects: [
     {
       name: "PackPal",
+      ai_assisted: true,
       description: "An AI travel prep app that builds a personalized packing list from a destination, trip dates, and one of 10 traveler personas. Lists adapt to real weather using Open-Meteo forecasts up to 16 days out and historical averages beyond that. Scout, the in-app AI assistant, edits the list conversationally \u2014 adding or removing items, checking things off, and answering destination questions. Also generates local insights (visa requirements, language cheat sheet, emergency contacts, safety tips, and 12 curated things to do), per-place checklists with season-aware activity suggestions, and read-only share links with QR codes so travel companions can view a trip without signing up.",
-      short_description: "AI packing lists that adapt to destination, dates, and real weather forecasts.",
+      short_description: "Smart travel packing list generator. Tell it where you're going, what you'll do, and how you travel — get a personalized, weather-aware packing list with an AI trip assistant.",
       stack: [
         "Next.js",
         "React",
@@ -106,8 +107,6 @@ export const portfolioData = {
         "Tailwind CSS",
         "Clerk",
         "PostgreSQL",
-        "Open-Meteo API",
-        "lucide-react",
         "Vercel"
       ],
       is_desktop: false,
@@ -122,16 +121,14 @@ export const portfolioData = {
     },
     {
       name: "PlateLoad",
+      ai_assisted: true,
       description: "An Olympic barbell plate calculator that finds every symmetric way to hit a target weight using the Eleiko or Metcon plates a gym actually owns. A depth-first combination engine runs on integer math to avoid floating-point drift, with six ranking modes (Recommended, Competition, Fewest plates, Compact, Use what I have, All), sleeve capacity warnings, a warm-up percentage generator, shareable loads via URL params, and favorites/recents. Ships as an offline-capable PWA with a custom SVG barbell rendered to Eleiko and Metcon geometry.",
-      short_description: "Offline-first PWA that solves every symmetric barbell loading for a target weight.",
+      short_description: "A mobile-first barbell plate calculator. Type a target, and PlateLoad subtracts the bar and collars, then finds every symmetric way to load the remainder out of the plates your gym actually owns",
       stack: [
         "React 19",
         "TypeScript",
         "Vite",
         "Tailwind CSS",
-        "vite-plugin-pwa",
-        "Vitest",
-        "oxlint"
       ],
       is_desktop: false,
       learnings: "Wrote the combination search in integer math so plate totals never drift, then layered six ranking heuristics over the same solver. Also built a brand-accurate SVG barbell and made the whole thing work offline with no backend, keeping inventory and history in localStorage.",
@@ -145,23 +142,19 @@ export const portfolioData = {
     },
     {
       name: "Greenwash Laundry POS",
+      ai_assisted: true,
       description: "A full-stack Point-of-Sale system for laundry services, featuring an admin dashboard with kanban-style order tracking, real-time updates via Socket.IO, SMS notifications, PDF report generation, thermal printer integration, and a Flutter-based Android mobile/tablet POS.",
       short_description: "Full-stack Laundry POS with admin dashboard, real-time updates, and Flutter Android tablet app.",
       stack: [
         "React",
         "Vite",
         "Tailwind CSS",
-        "Radix UI",
-        "@dnd-kit",
-        "Sonner",
         "Node.js",
         "Express 5",
         "TypeScript",
         "PostgreSQL",
         "Knex.js",
-        "Socket.IO",
         "Flutter",
-        "Sentry"
       ],
       is_desktop: true,
       learnings: "Built a complete laundry POS ecosystem spanning a React admin dashboard with drag-and-drop kanban boards, a Node.js backend with PostgreSQL and real-time Socket.IO updates, and a Flutter Android tablet app with BLE thermal printer integration.",

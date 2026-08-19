@@ -46,6 +46,8 @@
 
   --surface-glass: rgba(255, 255, 255, 0.75);
   --surface-glass-border: rgba(255, 255, 255, 0.85);
+  /* Specular sheen along a frosted edge — the bright lip of real glass. */
+  --glass-specular: rgba(255, 255, 255, 0.7);
   --shadow-soft: 0 20px 50px -38px rgba(0, 0, 0, 0.38);
   --shadow-subtle: 0 12px 30px -24px rgba(0, 0, 0, 0.22);
 
@@ -91,6 +93,7 @@
 
   --surface-glass: rgba(16, 16, 19, 0.78);
   --surface-glass-border: rgba(235, 235, 245, 0.16);
+  --glass-specular: rgba(235, 235, 245, 0.16);
   --shadow-soft: 0 20px 50px -36px rgba(0, 0, 0, 0.72);
   --shadow-subtle: 0 12px 30px -24px rgba(0, 0, 0, 0.58);
 
@@ -183,6 +186,22 @@
     border: 1px solid var(--surface-glass-border);
     backdrop-filter: saturate(180%) blur(20px);
     box-shadow: var(--shadow-subtle);
+  }
+
+  /*
+   * Same frosting recipe as .glass-panel, but as a bare stackable layer: no
+   * tint, border, or shadow of its own. Several of these with rising blur radii
+   * and offset masks ramp the frost gradually — one 20px layer leaves a visible
+   * seam where it stops, a ramp does not. Each layer frosts what the layer
+   * beneath it already frosted, so the radii compound.
+   */
+  .frost-layer {
+    position: absolute;
+    inset: 0;
+    backdrop-filter: saturate(180%) blur(var(--frost-blur, 20px));
+    -webkit-backdrop-filter: saturate(180%) blur(var(--frost-blur, 20px));
+    mask-image: var(--frost-mask);
+    -webkit-mask-image: var(--frost-mask);
   }
 
   /*

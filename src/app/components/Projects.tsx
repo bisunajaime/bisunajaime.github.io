@@ -1,11 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./shared/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./shared/card";
 import { Badge } from "./shared/badge";
 import { Button } from "./shared/button";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperClass } from "swiper";
 
-import { ExternalLink, Github, Video, Loader2 } from "lucide-react";
+import { ExternalLink, Github, Video, Loader2, Sparkles } from "lucide-react";
 import { portfolioData } from "../../data/portfolioData";
 import { ImageWithFallback } from "./util/ImageWithFallback";
 import "swiper/css";
@@ -23,10 +29,40 @@ function isTypingTarget(target: EventTarget | null) {
 
 const INITIAL_PROJECTS = 6;
 
+/*
+ * Height of the fixed nav plus a little air. scrollIntoView({block: "start"})
+ * parks the target at viewport 0, which is behind the bar — so scroll by hand.
+ */
+const NAV_OFFSET = 96;
+
+function scrollToElement(element: HTMLElement | null) {
+  if (!element) return;
+
+  window.scrollTo({
+    top: element.getBoundingClientRect().top + window.pageYOffset - NAV_OFFSET,
+    behavior: "smooth",
+  });
+}
+
+/*
+ * Only some projects carry the flag, so the array's element type is a union that
+ * lacks the key on most members. Reading it through an optional-prop parameter
+ * keeps that union assignable instead of forcing a cast.
+ *
+ * Wording is deliberate: "AI-assisted" describes how the project was built.
+ * Several of these also ship AI features, and "AI-powered" would blur the two.
+ */
+const isAiAssisted = (project: { ai_assisted?: boolean }) =>
+  project.ai_assisted === true;
+
 export function Projects() {
   const [showAll, setShowAll] = useState(false);
-  const [activeProject, setActiveProject] = useState<(typeof portfolioData.projects)[number] | null>(null);
+  const [activeProject, setActiveProject] = useState<
+    (typeof portfolioData.projects)[number] | null
+  >(null);
   const [carouselReady, setCarouselReady] = useState(false);
+  /* Bumped by every "View UI" press so a repeat press still scrolls. */
+  const [viewRequest, setViewRequest] = useState(0);
   const sectionRef = useRef<HTMLElement | null>(null);
   const carouselSectionRef = useRef<HTMLDivElement | null>(null);
   const swiperRef = useRef<SwiperClass | null>(null);
@@ -41,15 +77,19 @@ export function Projects() {
       return;
     }
     if (!showAll) {
-      sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      scrollToElement(sectionRef.current);
     }
   }, [showAll]);
 
+  /*
+   * Keyed on the click counter, not the project: pressing "View UI" on the card
+   * that is already open leaves activeProject untouched, and the viewer still
+   * expects to be taken back up to the panel.
+   */
   useEffect(() => {
-    if (activeProject && carouselSectionRef.current) {
-      carouselSectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, [activeProject]);
+    if (!activeProject || !viewRequest) return;
+    scrollToElement(carouselSectionRef.current);
+  }, [activeProject, viewRequest]);
 
   useEffect(() => {
     if (!activeProject?.sample_ui?.length) {
@@ -98,7 +138,11 @@ export function Projects() {
   }, [activeProject]);
 
   return (
-    <section ref={sectionRef} id="projects" className="px-4 py-[var(--section-padding-y)] sm:px-6">
+    <section
+      ref={sectionRef}
+      id="projects"
+      className="px-4 py-[var(--section-padding-y)] sm:px-6"
+    >
       <div className="mx-auto w-full max-w-[var(--page-max-width)]">
         <h2 className="text-center text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           Projects
@@ -138,7 +182,9 @@ export function Projects() {
                 ) : (
                   <Swiper
                     key={activeProject.name}
-                    onSwiper={(swiper) => { swiperRef.current = swiper; }}
+                    onSwiper={(swiper) => {
+                      swiperRef.current = swiper;
+                    }}
                     grabCursor
                     centeredSlides
                     spaceBetween={16}
@@ -146,10 +192,7 @@ export function Projects() {
                     className="pb-2"
                   >
                     {activeProject.sample_ui.map((src, idx) => (
-                      <SwiperSlide
-                        key={`${src}-${idx}`}
-                        className="!w-auto"
-                      >
+                      <SwiperSlide key={`${src}-${idx}`} className="!w-auto">
                         <div className="w-auto overflow-hidden rounded-2xl">
                           <ImageWithFallback
                             src={src}
@@ -173,7 +216,11 @@ export function Projects() {
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {activeProject.stack.map((tech, i) => (
-                  <Badge key={i} variant="secondary" className="bg-secondary text-secondary-foreground">
+                  <Badge
+                    key={i}
+                    variant="secondary"
+                    className="bg-secondary text-secondary-foreground"
+                  >
                     {tech}
                   </Badge>
                 ))}
@@ -181,7 +228,11 @@ export function Projects() {
               <div className="mt-4 flex flex-wrap gap-2">
                 {activeProject.demo_url && (
                   <Button size="sm" variant="default" className="gap-2" asChild>
-                    <a href={activeProject.demo_url} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={activeProject.demo_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <ExternalLink className="size-4" />
                       Demo
                     </a>
@@ -189,7 +240,11 @@ export function Projects() {
                 )}
                 {activeProject.git_url && (
                   <Button size="sm" variant="default" className="gap-2" asChild>
-                    <a href={activeProject.git_url} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={activeProject.git_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <Github className="size-4" />
                       Code
                     </a>
@@ -197,7 +252,11 @@ export function Projects() {
                 )}
                 {activeProject.demo_video && (
                   <Button size="sm" variant="default" className="gap-2" asChild>
-                    <a href={activeProject.demo_video} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={activeProject.demo_video}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <Video className="size-4" />
                       Video
                     </a>
@@ -225,7 +284,10 @@ export function Projects() {
                 {project.sample_ui?.length ? (
                   <button
                     type="button"
-                    onClick={() => setActiveProject(project)}
+                    onClick={() => {
+                      setActiveProject(project);
+                      setViewRequest((count) => count + 1);
+                    }}
                     className="absolute inset-0 flex cursor-pointer items-center justify-center bg-black/32 opacity-100 transition-opacity duration-300 sm:opacity-0 sm:pointer-events-none sm:group-hover:opacity-100 sm:group-hover:pointer-events-auto"
                     aria-label={`View ${project.name} UI`}
                   >
@@ -236,15 +298,27 @@ export function Projects() {
                 ) : null}
               </div>
               <CardHeader className="gap-2 px-4 pb-0 pt-4 sm:px-5">
+                {isAiAssisted(project) ? (
+                  <p
+                    className="inline-flex items-center gap-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground"
+                    title="Built with AI assistance"
+                  >
+                    <Sparkles
+                      className="size-3 text-primary"
+                      aria-hidden="true"
+                    />
+                    AI-assisted
+                  </p>
+                ) : null}
                 <CardTitle className="text-base leading-tight tracking-tight sm:text-lg">
                   {project.name}
                 </CardTitle>
-                <CardDescription className="line-clamp-3 text-xs leading-relaxed sm:text-sm">
+                <CardDescription className="line-clamp-4 text-xs leading-relaxed sm:text-sm">
                   {project.short_description || project.description}
                 </CardDescription>
               </CardHeader>
               <CardContent className="px-4 pb-4 pt-0 sm:px-5 sm:pb-5">
-                <div className="mb-3 flex flex-wrap gap-1.5 sm:gap-2">
+                <div className="mb-4 flex flex-wrap gap-1.5 sm:gap-2">
                   {project.stack.map((tech, i) => (
                     <Badge
                       key={i}
@@ -255,29 +329,53 @@ export function Projects() {
                     </Badge>
                   ))}
                 </div>
-                <p className="mb-4 line-clamp-3 text-xs leading-relaxed text-muted-foreground sm:text-sm">
-                  {project.learnings}
-                </p>
                 <div className="mt-auto flex flex-wrap gap-2">
                   {project.demo_url && (
-                    <Button size="sm" variant="default" className="gap-2" asChild>
-                      <a href={project.demo_url} target="_blank" rel="noopener noreferrer">
+                    <Button
+                      size="sm"
+                      variant="default"
+                      className="gap-2"
+                      asChild
+                    >
+                      <a
+                        href={project.demo_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <ExternalLink className="size-4" />
                         Demo
                       </a>
                     </Button>
                   )}
                   {project.git_url && (
-                    <Button size="sm" variant="default" className="gap-2" asChild>
-                      <a href={project.git_url} target="_blank" rel="noopener noreferrer">
+                    <Button
+                      size="sm"
+                      variant="default"
+                      className="gap-2"
+                      asChild
+                    >
+                      <a
+                        href={project.git_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <Github className="size-4" />
                         Code
                       </a>
                     </Button>
                   )}
                   {project.demo_video && (
-                    <Button size="sm" variant="default" className="gap-2" asChild>
-                      <a href={project.demo_video} target="_blank" rel="noopener noreferrer">
+                    <Button
+                      size="sm"
+                      variant="default"
+                      className="gap-2"
+                      asChild
+                    >
+                      <a
+                        href={project.demo_video}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <Video className="size-4" />
                         Video
                       </a>

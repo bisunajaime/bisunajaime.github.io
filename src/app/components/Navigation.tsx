@@ -1,10 +1,29 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { ArrowUpRight, Menu, Moon, Pause, Play, SkipBack, SkipForward, SunMedium, Volume2, VolumeX, X } from "lucide-react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type RefObject,
+} from "react";
+import {
+  ArrowUpRight,
+  Menu,
+  Moon,
+  Pause,
+  Play,
+  SkipBack,
+  SkipForward,
+  SunMedium,
+  Volume2,
+  VolumeX,
+  X,
+} from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "./shared/utils";
 import { useMusic } from "../audio/MusicProvider";
 import { formatTime, labelColorFor, sliderFill } from "../audio/trackDisplay";
 import { Vinyl } from "../audio/Vinyl";
+import { Waveform } from "../audio/Waveform";
 
 interface NavigationProps {
   activeSection: string;
@@ -44,24 +63,63 @@ function ThemeToggle() {
   );
 }
 
-function MuteButton() {
-  const { isMuted, isPlaying, track, toggleMute } = useMusic();
-  const label = isMuted ? "Unmute music" : "Mute music";
+/*
+ * Live level, the same component the Music tab chip uses so the two read as one
+ * system. Deliberately unboxed — no border or fill — so the bars sit directly in
+ * the bar rather than in a chip. Motion is the play indicator: bars fall still
+ * and dim while paused, which is why the transport needs no separate dot.
+ *
+ * progress is pinned at 100 so every bar renders at full strength. The Waveform
+ * dims bars past the playhead to show progress, which is wanted in the player
+ * but reads as half-broken at this size.
+ */
+function NavLevel({
+  isPlaying,
+  analyserRef,
+  isReactive,
+}: {
+  isPlaying: boolean;
+  analyserRef: RefObject<AnalyserNode | null>;
+  isReactive: boolean;
+}) {
+  return (
+    <Waveform
+      isPlaying={isPlaying}
+      progress={100}
+      analyserRef={analyserRef}
+      isReactive={isReactive}
+      barCount={16}
+      barClassName="w-[2px]"
+      maxHeight={26}
+      dim={isPlaying ? 1 : 0.45}
+      className="pointer-events-none flex h-6 w-[3.5rem] items-center justify-center gap-[2px] overflow-hidden"
+    />
+  );
+}
+
+/* Bare hit area — the bars are the control, so nothing frames them. */
+const TRANSPORT_CLASS =
+  "inline-flex h-11 items-center justify-center rounded-lg px-1 opacity-80 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+
+function PlayPauseButton() {
+  const { isPlaying, isReactive, analyserRef, track, toggle } = useMusic();
+  const label = isPlaying ? "Pause music" : "Play music";
 
   return (
     <button
       type="button"
-      onClick={toggleMute}
+      onClick={toggle}
       data-music-control
-      className="relative inline-flex size-11 items-center justify-center rounded-xl border border-border bg-background/75 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className={TRANSPORT_CLASS}
       aria-label={label}
-      aria-pressed={isMuted}
+      aria-pressed={isPlaying}
       title={track ? `${label} — ${track.name}` : label}
     >
-      {isMuted ? <VolumeX className="size-4" /> : <Volume2 className="size-4" />}
-      {isPlaying && !isMuted ? (
-        <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-[var(--track-accent)]" />
-      ) : null}
+      <NavLevel
+        isPlaying={isPlaying}
+        analyserRef={analyserRef}
+        isReactive={isReactive}
+      />
     </button>
   );
 }
@@ -83,6 +141,8 @@ function MiniPlayer({ onOpenSection }: { onOpenSection: () => void }) {
     toggleMute,
     requestMusicTab,
     canControlVolume,
+    isReactive,
+    analyserRef,
   } = useMusic();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -163,6 +223,7 @@ function MiniPlayer({ onOpenSection }: { onOpenSection: () => void }) {
   const seekValue = Math.min(currentTime, safeDuration);
   const progress = safeDuration > 0 ? (seekValue / safeDuration) * 100 : 0;
   const muteLabel = isMuted ? "Unmute music" : "Mute music";
+  const transportLabel = isPlaying ? "Pause music" : "Play music";
 
   return (
     <div
@@ -177,18 +238,22 @@ function MiniPlayer({ onOpenSection }: { onOpenSection: () => void }) {
     >
       <button
         type="button"
-        onClick={() => (isCoarsePointer ? (isOpen ? close() : open()) : toggleMute())}
-        className="relative inline-flex size-11 items-center justify-center rounded-xl border border-border bg-background/75 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        aria-label={isCoarsePointer ? `Music controls — ${track.name}` : muteLabel}
-        aria-pressed={isCoarsePointer ? undefined : isMuted}
+        onClick={() =>
+          isCoarsePointer ? (isOpen ? close() : open()) : toggle()
+        }
+        className={TRANSPORT_CLASS}
+        aria-label={
+          isCoarsePointer ? `Music controls — ${track.name}` : transportLabel
+        }
+        aria-pressed={isCoarsePointer ? undefined : isPlaying}
         aria-expanded={isOpen}
-        title={`${muteLabel} — ${track.name}`}
+        title={`${transportLabel} — ${track.name}`}
       >
-        {isMuted ? <VolumeX className="size-4" /> : <Volume2 className="size-4" />}
-        {/* Quiet cue that something is playing, so a muted tab is not a mystery. */}
-        {isPlaying && !isMuted ? (
-          <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-[var(--track-accent)]" />
-        ) : null}
+        <NavLevel
+          isPlaying={isPlaying}
+          analyserRef={analyserRef}
+          isReactive={isReactive}
+        />
       </button>
 
       {isOpen ? (
@@ -293,7 +358,9 @@ function MiniPlayer({ onOpenSection }: { onOpenSection: () => void }) {
                     max={1}
                     step={0.01}
                     value={isMuted ? 0 : volume}
-                    onChange={(event) => changeVolume(Number(event.target.value))}
+                    onChange={(event) =>
+                      changeVolume(Number(event.target.value))
+                    }
                     aria-label="Volume"
                     className="media-slider"
                     style={sliderFill((isMuted ? 0 : volume) * 100)}
@@ -371,7 +438,9 @@ export function Navigation({ activeSection, onNavigate }: NavigationProps) {
                   type="button"
                   key={section.id}
                   onClick={() => handleNavigate(section.id)}
-                  aria-current={activeSection === section.id ? "page" : undefined}
+                  aria-current={
+                    activeSection === section.id ? "page" : undefined
+                  }
                   className={cn(
                     "inline-flex h-11 items-center rounded-xl px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                     activeSection === section.id
@@ -393,9 +462,15 @@ export function Navigation({ activeSection, onNavigate }: NavigationProps) {
                 className="inline-flex size-11 items-center justify-center rounded-xl border border-border bg-background/75 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden"
                 aria-expanded={isMenuOpen}
                 aria-controls="mobile-menu"
-                aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                aria-label={
+                  isMenuOpen ? "Close navigation menu" : "Open navigation menu"
+                }
               >
-                {isMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+                {isMenuOpen ? (
+                  <X className="size-5" />
+                ) : (
+                  <Menu className="size-5" />
+                )}
               </button>
             </div>
           </div>
@@ -405,7 +480,9 @@ export function Navigation({ activeSection, onNavigate }: NavigationProps) {
       <div
         className={cn(
           "fixed inset-0 z-50 bg-black/35 transition-opacity md:hidden",
-          isMenuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
+          isMenuOpen
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0",
         )}
         onClick={() => setIsMenuOpen(false)}
         aria-hidden={!isMenuOpen}
@@ -445,7 +522,7 @@ export function Navigation({ activeSection, onNavigate }: NavigationProps) {
           </p>
           <div className="mt-2 flex items-center gap-2">
             <ThemeToggle />
-            <MuteButton />
+            <PlayPauseButton />
           </div>
         </div>
       </div>

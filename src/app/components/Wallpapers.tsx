@@ -10,12 +10,15 @@ import { Waveform } from "../audio/Waveform";
 const TABS = [
   { id: "music", label: "Music" },
   { id: "wallpapers", label: "Wallpapers" },
-  { id: "images", label: "Images" },
-  { id: "videos", label: "Videos" },
-  { id: "websites", label: "Websites" },
+  /* Hidden until there is content to show — drop `hidden` to bring one back. */
+  { id: "images", label: "Images", hidden: true },
+  { id: "videos", label: "Videos", hidden: true },
+  { id: "websites", label: "Websites", hidden: true },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];
+
+const VISIBLE_TABS = TABS.filter((tab) => !(tab as { hidden?: boolean }).hidden);
 
 const ITEM_TABS: Record<Exclude<TabId, "wallpapers" | "images" | "music">, AIWorkItem[]> = {
   videos: aiVideos,
@@ -102,8 +105,13 @@ function handleDownload(url: string) {
 
 export function Wallpapers() {
   const [activeTab, setActiveTab] = useState<TabId>("music");
-  const { isPlaying, isReactive, analyserRef } = useMusic();
+  const { isPlaying, isReactive, analyserRef, musicTabRequest } = useMusic();
   const [lightbox, setLightbox] = useState<{ items: LightboxItem[]; index: number } | null>(null);
+
+  /* The nav mini player can ask this section to show Music when it scrolls here. */
+  useEffect(() => {
+    if (musicTabRequest > 0) setActiveTab("music");
+  }, [musicTabRequest]);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
 
   const openItem = lightbox ? lightbox.items[lightbox.index] : null;
@@ -123,9 +131,10 @@ export function Wallpapers() {
   const handleTabKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
     if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
 
-    const currentIndex = TABS.findIndex((tab) => tab.id === activeTab);
+    const currentIndex = VISIBLE_TABS.findIndex((tab) => tab.id === activeTab);
     const delta = event.key === "ArrowRight" ? 1 : -1;
-    const nextTab = TABS[(currentIndex + delta + TABS.length) % TABS.length];
+    const nextTab =
+      VISIBLE_TABS[(currentIndex + delta + VISIBLE_TABS.length) % VISIBLE_TABS.length];
 
     event.preventDefault();
     setActiveTab(nextTab.id);
@@ -198,7 +207,7 @@ export function Wallpapers() {
             onKeyDown={handleTabKeyDown}
             className="mx-auto flex w-max min-w-full justify-start gap-2 sm:justify-center"
           >
-            {TABS.map((tab) => {
+            {VISIBLE_TABS.map((tab) => {
               const isActive = activeTab === tab.id;
 
               return (

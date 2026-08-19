@@ -239,23 +239,6 @@
     display: none;
   }
 
-  /* Faster than the entrance — a dismissal should not make you wait. */
-  .mini-player-out {
-    animation: mini-player-out 120ms ease-in both;
-    transform-origin: top right;
-  }
-}
-
-@keyframes mini-player-out {
-  from {
-    opacity: 1;
-    transform: none;
-  }
-
-  to {
-    opacity: 0;
-    transform: translateY(-4px) scale(0.97);
-  }
 }
 
 @keyframes mini-player-in {
@@ -309,8 +292,7 @@
   .hero-fade-in,
   .vinyl-spin,
   .waveform-bar,
-  .mini-player-in,
-  .mini-player-out {
+  .mini-player-in {
     animation: none;
   }
 }

@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { Menu, Moon, Pause, Play, SkipBack, SkipForward, SunMedium, Volume2, VolumeX, X } from "lucide-react";
+import { ArrowUpRight, Menu, Moon, Pause, Play, SkipBack, SkipForward, SunMedium, Volume2, VolumeX, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "./shared/utils";
 import { useMusic } from "../audio/MusicProvider";
 import { formatTime, labelColorFor } from "../audio/trackDisplay";
 import { Vinyl } from "../audio/Vinyl";
-
-const MINI_PLAYER_EXIT_MS = 120;
 
 const MINI_SLIDER_CLASS =
   "h-1 w-full cursor-pointer appearance-none rounded-full bg-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring " +
@@ -51,7 +49,7 @@ function ThemeToggle() {
   );
 }
 
-function MiniPlayer() {
+function MiniPlayer({ onOpenSection }: { onOpenSection: () => void }) {
   const {
     tracks,
     track,
@@ -66,58 +64,46 @@ function MiniPlayer() {
     seek,
     changeVolume,
     toggleMute,
+    requestMusicTab,
   } = useMusic();
 
-  /* "closing" keeps the panel mounted long enough to animate out before unmounting. */
-  const [panelState, setPanelState] = useState<"closed" | "open" | "closing">("closed");
-  const isOpen = panelState === "open";
+  const [isOpen, setIsOpen] = useState(false);
 
   /* Grace period so crossing the gap to the panel does not dismiss it. */
   const graceTimer = useRef<number | null>(null);
-  const unmountTimer = useRef<number | null>(null);
 
   const clearTimers = () => {
     if (graceTimer.current) window.clearTimeout(graceTimer.current);
-    if (unmountTimer.current) window.clearTimeout(unmountTimer.current);
     graceTimer.current = null;
-    unmountTimer.current = null;
   };
 
   const open = () => {
     clearTimers();
-    setPanelState("open");
+    setIsOpen(true);
   };
 
-  const beginClose = () => {
+  const close = () => {
     clearTimers();
-
-    /* With animations suppressed there is nothing to wait for. */
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setPanelState("closed");
-      return;
-    }
-
-    setPanelState("closing");
-    unmountTimer.current = window.setTimeout(() => setPanelState("closed"), MINI_PLAYER_EXIT_MS);
+    setIsOpen(false);
   };
 
   const scheduleClose = () => {
     clearTimers();
-    graceTimer.current = window.setTimeout(beginClose, 160);
+    graceTimer.current = window.setTimeout(close, 160);
   };
 
   useEffect(() => clearTimers, []);
 
   useEffect(() => {
-    if (panelState !== "open") return;
+    if (!isOpen) return;
 
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") beginClose();
+      if (event.key === "Escape") close();
     };
 
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [panelState]);
+  }, [isOpen]);
 
   if (!track) return null;
 
@@ -161,18 +147,14 @@ function MiniPlayer() {
         ) : null}
       </button>
 
-      {panelState !== "closed" ? (
+      {isOpen ? (
         <div
           role="group"
           aria-label="Mini player"
           /* No gap to the trigger — the pointer must be able to reach the panel. */
-          className={`absolute right-0 top-full z-50 w-72 pt-2 ${panelState === "closing" ? "pointer-events-none" : ""
-            }`}
+          className="absolute right-0 top-full z-50 w-72 pt-2"
         >
-          <div
-            className={`${panelState === "closing" ? "mini-player-out" : "mini-player-in"
-              } rounded-2xl border border-border bg-popover p-3 shadow-[var(--shadow-soft)]`}
-          >
+          <div className="mini-player-in rounded-2xl border border-border bg-popover p-3 shadow-[var(--shadow-soft)]">
             <div className="flex items-center gap-2.5">
               <span className="size-10 shrink-0" aria-hidden="true">
                 <Vinyl
@@ -276,6 +258,20 @@ function MiniPlayer() {
                 />
               </div>
             </div>
+
+            <a
+              href="#wallpapers"
+              onClick={(event) => {
+                event.preventDefault();
+                requestMusicTab();
+                onOpenSection();
+                close();
+              }}
+              className="mt-3 flex items-center justify-between gap-2 rounded-xl border border-border px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              See more tracks
+              <ArrowUpRight className="size-3.5" />
+            </a>
           </div>
         </div>
       ) : null}
@@ -346,7 +342,7 @@ export function Navigation({ activeSection, onNavigate }: NavigationProps) {
             </div>
 
             <div className="flex items-center gap-2">
-              <MiniPlayer />
+              <MiniPlayer onOpenSection={() => onNavigate("wallpapers")} />
               <ThemeToggle />
               <button
                 type="button"
@@ -406,7 +402,12 @@ export function Navigation({ activeSection, onNavigate }: NavigationProps) {
           </p>
           <div className="mt-2 flex items-center gap-2">
             <ThemeToggle />
-            <MiniPlayer />
+            <MiniPlayer
+              onOpenSection={() => {
+                setIsMenuOpen(false);
+                onNavigate("wallpapers");
+              }}
+            />
           </div>
         </div>
       </div>

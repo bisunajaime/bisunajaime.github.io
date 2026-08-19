@@ -30,6 +30,9 @@ interface MusicContextValue {
   changeVolume: (value: number) => void;
   toggleMute: () => void;
   setQueue: (ids: string[]) => void;
+  /* Bumped when something asks the AI Work section to switch to the Music tab. */
+  musicTabRequest: number;
+  requestMusicTab: () => void;
 }
 
 const MusicContext = createContext<MusicContextValue | null>(null);
@@ -50,6 +53,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const [volume, setVolume] = useState(0.35);
   const [isMuted, setIsMuted] = useState(false);
   const [isReactive, setIsReactive] = useState(false);
+  const [musicTabRequest, setMusicTabRequest] = useState(0);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -213,6 +217,8 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     queueRef.current = ids;
   }, []);
 
+  const requestMusicTab = useCallback(() => setMusicTabRequest((count) => count + 1), []);
+
   const handleEnded = useCallback(() => {
     const queue = queueRef.current.length ? queueRef.current : tracks.map((item) => item.id);
 
@@ -261,6 +267,8 @@ export function MusicProvider({ children }: { children: ReactNode }) {
         changeVolume,
         toggleMute,
         setQueue,
+        musicTabRequest,
+        requestMusicTab,
       }}
     >
       {children}

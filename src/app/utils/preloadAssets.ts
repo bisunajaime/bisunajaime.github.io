@@ -55,7 +55,8 @@ export function collectAssetUrls(options: CollectOptions = {}): PreloadGroup {
     addUrl(all, wallpaper.url, includeRemote);
     addUrl(all, wallpaper.thumbnail, includeRemote);
   });
-  sampleWallpapers.forEach((wallpaper) => {
+  // Only the first screenful — the gallery grid lazy-loads the rest on scroll.
+  sampleWallpapers.slice(0, 8).forEach((wallpaper) => {
     addUrl(all, wallpaper.url, includeRemote);
     addUrl(all, wallpaper.thumbnail, includeRemote);
   });

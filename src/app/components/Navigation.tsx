@@ -1,7 +1,17 @@
-import { useEffect, useState } from "react";
-import { Menu, Moon, SunMedium, X } from "lucide-react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { Menu, Moon, Pause, Play, SkipBack, SkipForward, SunMedium, Volume2, VolumeX, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "./shared/utils";
+import { useMusic } from "../audio/MusicProvider";
+import { formatTime, labelColorFor } from "../audio/trackDisplay";
+import { Vinyl } from "../audio/Vinyl";
+
+const MINI_PLAYER_EXIT_MS = 120;
+
+const MINI_SLIDER_CLASS =
+  "h-1 w-full cursor-pointer appearance-none rounded-full bg-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring " +
+  "[&::-webkit-slider-thumb]:size-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[var(--track-accent)] " +
+  "[&::-moz-range-thumb]:size-3 [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-[var(--track-accent)]";
 
 interface NavigationProps {
   activeSection: string;
@@ -12,9 +22,9 @@ const sections = [
   { id: "hero", label: "Home" },
   { id: "about", label: "About" },
   { id: "experience", label: "Experience" },
+  { id: "wallpapers", label: "AI Work" },
   { id: "projects", label: "Projects" },
   { id: "skills", label: "Skills" },
-  { id: "wallpapers", label: "Wallpapers" },
   { id: "contact", label: "Contact" },
 ];
 
@@ -38,6 +48,238 @@ function ThemeToggle() {
     >
       {isDark ? <SunMedium className="size-4" /> : <Moon className="size-4" />}
     </button>
+  );
+}
+
+function MiniPlayer() {
+  const {
+    tracks,
+    track,
+    selectedId,
+    isPlaying,
+    currentTime,
+    duration,
+    volume,
+    isMuted,
+    toggle,
+    playTrack,
+    seek,
+    changeVolume,
+    toggleMute,
+  } = useMusic();
+
+  /* "closing" keeps the panel mounted long enough to animate out before unmounting. */
+  const [panelState, setPanelState] = useState<"closed" | "open" | "closing">("closed");
+  const isOpen = panelState === "open";
+
+  /* Grace period so crossing the gap to the panel does not dismiss it. */
+  const graceTimer = useRef<number | null>(null);
+  const unmountTimer = useRef<number | null>(null);
+
+  const clearTimers = () => {
+    if (graceTimer.current) window.clearTimeout(graceTimer.current);
+    if (unmountTimer.current) window.clearTimeout(unmountTimer.current);
+    graceTimer.current = null;
+    unmountTimer.current = null;
+  };
+
+  const open = () => {
+    clearTimers();
+    setPanelState("open");
+  };
+
+  const beginClose = () => {
+    clearTimers();
+
+    /* With animations suppressed there is nothing to wait for. */
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setPanelState("closed");
+      return;
+    }
+
+    setPanelState("closing");
+    unmountTimer.current = window.setTimeout(() => setPanelState("closed"), MINI_PLAYER_EXIT_MS);
+  };
+
+  const scheduleClose = () => {
+    clearTimers();
+    graceTimer.current = window.setTimeout(beginClose, 160);
+  };
+
+  useEffect(() => clearTimers, []);
+
+  useEffect(() => {
+    if (panelState !== "open") return;
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") beginClose();
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [panelState]);
+
+  if (!track) return null;
+
+  const index = tracks.findIndex((item) => item.id === selectedId);
+
+  /* Wraps in both directions, matching the full player's transport. */
+  const step = (delta: number) => {
+    if (tracks.length < 2) return;
+
+    const base = index < 0 ? 0 : index;
+    const next = tracks[(base + delta + tracks.length) % tracks.length];
+    if (next) playTrack(next.id);
+  };
+  const safeDuration = Number.isFinite(duration) && duration > 0 ? duration : 0;
+  const seekValue = Math.min(currentTime, safeDuration);
+  const progress = safeDuration > 0 ? (seekValue / safeDuration) * 100 : 0;
+  const muteLabel = isMuted ? "Unmute music" : "Mute music";
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={open}
+      onMouseLeave={scheduleClose}
+      onFocus={open}
+      onBlur={scheduleClose}
+      style={{ "--track-accent": labelColorFor(track.genre) } as CSSProperties}
+    >
+      <button
+        type="button"
+        onClick={toggleMute}
+        className="relative inline-flex size-11 items-center justify-center rounded-xl border border-border bg-background/75 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        aria-label={muteLabel}
+        aria-pressed={isMuted}
+        aria-expanded={isOpen}
+        title={`${muteLabel} — ${track.name}`}
+      >
+        {isMuted ? <VolumeX className="size-4" /> : <Volume2 className="size-4" />}
+        {/* Quiet cue that something is playing, so a muted tab is not a mystery. */}
+        {isPlaying && !isMuted ? (
+          <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-[var(--track-accent)]" />
+        ) : null}
+      </button>
+
+      {panelState !== "closed" ? (
+        <div
+          role="group"
+          aria-label="Mini player"
+          /* No gap to the trigger — the pointer must be able to reach the panel. */
+          className={`absolute right-0 top-full z-50 w-72 pt-2 ${panelState === "closing" ? "pointer-events-none" : ""
+            }`}
+        >
+          <div
+            className={`${panelState === "closing" ? "mini-player-out" : "mini-player-in"
+              } rounded-2xl border border-border bg-popover p-3 shadow-[var(--shadow-soft)]`}
+          >
+            <div className="flex items-center gap-2.5">
+              <span className="size-10 shrink-0" aria-hidden="true">
+                <Vinyl
+                  isSpinning={isPlaying && !isMuted}
+                  labelColor={labelColorFor(track.genre)}
+                  compact
+                />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-semibold text-foreground">
+                  {track.name}
+                </span>
+                <span className="block truncate text-xs text-muted-foreground">
+                  {track.genre ?? track.artist}
+                </span>
+              </span>
+            </div>
+
+            <div className="mt-3 flex items-center gap-2">
+              <span className="w-8 shrink-0 text-right text-[0.65rem] tabular-nums text-muted-foreground">
+                {formatTime(currentTime)}
+              </span>
+              <input
+                type="range"
+                min={0}
+                max={safeDuration}
+                step={0.01}
+                value={seekValue}
+                disabled={safeDuration <= 0}
+                onChange={(event) => seek(Number(event.target.value))}
+                aria-label="Seek"
+                className={MINI_SLIDER_CLASS}
+                style={{
+                  background: `linear-gradient(to right, var(--track-accent) ${progress}%, var(--border) ${progress}%)`,
+                }}
+              />
+              <span className="w-8 shrink-0 text-[0.65rem] tabular-nums text-muted-foreground">
+                {formatTime(safeDuration)}
+              </span>
+            </div>
+
+            <div className="mt-2 flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => step(-1)}
+                  disabled={tracks.length < 2}
+                  aria-label="Previous track"
+                  className="inline-flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40"
+                >
+                  <SkipBack className="size-3.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={toggle}
+                  aria-label={isPlaying ? "Pause" : "Play"}
+                  className="inline-flex size-9 items-center justify-center rounded-full bg-[var(--track-accent)] text-white transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  {isPlaying ? (
+                    <Pause className="size-4" />
+                  ) : (
+                    <Play className="size-4 translate-x-px" />
+                  )}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => step(1)}
+                  disabled={tracks.length < 2}
+                  aria-label="Next track"
+                  className="inline-flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40"
+                >
+                  <SkipForward className="size-3.5" />
+                </button>
+              </div>
+
+              <div className="flex min-w-0 flex-1 items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={toggleMute}
+                  aria-label={muteLabel}
+                  className="inline-flex size-8 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  {isMuted || volume === 0 ? (
+                    <VolumeX className="size-3.5" />
+                  ) : (
+                    <Volume2 className="size-3.5" />
+                  )}
+                </button>
+                <input
+                  type="range"
+                  min={0}
+                  max={1}
+                  step={0.01}
+                  value={isMuted ? 0 : volume}
+                  onChange={(event) => changeVolume(Number(event.target.value))}
+                  aria-label="Volume"
+                  className={MINI_SLIDER_CLASS}
+                  style={{
+                    background: `linear-gradient(to right, var(--track-accent) ${(isMuted ? 0 : volume) * 100}%, var(--border) ${(isMuted ? 0 : volume) * 100}%)`,
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </div>
   );
 }
 
@@ -104,6 +346,7 @@ export function Navigation({ activeSection, onNavigate }: NavigationProps) {
             </div>
 
             <div className="flex items-center gap-2">
+              <MiniPlayer />
               <ThemeToggle />
               <button
                 type="button"
@@ -159,10 +402,11 @@ export function Navigation({ activeSection, onNavigate }: NavigationProps) {
           </div>
 
           <p className="mt-6 px-1 text-xs uppercase tracking-[0.14em] text-muted-foreground">
-            Theme
+            Theme &amp; sound
           </p>
-          <div className="mt-2 flex items-center">
+          <div className="mt-2 flex items-center gap-2">
             <ThemeToggle />
+            <MiniPlayer />
           </div>
         </div>
       </div>

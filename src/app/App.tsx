@@ -7,12 +7,13 @@ import { Projects } from "./components/Projects";
 import { TechStack } from "./components/TechStack";
 import { Wallpapers } from "./components/Wallpapers";
 import { Footer } from "./components/Footer";
+import { MusicProvider } from "./audio/MusicProvider";
 
 export default function App() {
   const [activeSection, setActiveSection] = useState("hero");
   const scrollTargetRef = useRef<string | null>(null);
   const scrollEndTimeoutRef = useRef<number | null>(null);
-  const sections = ["hero", "about", "experience", "projects", "skills", "wallpapers", "contact"];
+  const sections = ["hero", "about", "experience", "wallpapers", "projects", "skills", "contact"];
 
   const updateActiveSection = () => {
     const scrollPosition = window.scrollY + 140;
@@ -75,19 +76,21 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <MusicProvider>
+      <div className="min-h-screen bg-background text-foreground">
       <Navigation activeSection={activeSection} onNavigate={handleNavigate} />
 
       <main className="pb-2">
         <Hero />
         <About />
         <Experience />
+        <Wallpapers />
         <Projects />
         <TechStack />
-        <Wallpapers />
       </main>
 
       <Footer />
-    </div>
+      </div>
+    </MusicProvider>
   );
 }

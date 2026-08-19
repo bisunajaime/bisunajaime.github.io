@@ -1,4 +1,9 @@
 :root {
-  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+  /* Site-wide stack — unchanged, still what <body> uses. */
+  --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
     "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, system-ui, sans-serif;
+
+  /* Hero typography */
+  --font-display: "Anton", var(--font-system);
+  --font-body: "Inter", var(--font-system);
 }

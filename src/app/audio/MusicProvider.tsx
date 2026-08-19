@@ -10,6 +10,18 @@ import {
 } from "react";
 import { aiMusic, type AIWorkItem } from "../../data/aiWorkData";
 
+/*
+ * iPadOS 13+ reports itself as "Macintosh", so the UA string alone is not
+ * enough — multi-touch separates an iPad from a desktop Mac.
+ */
+function isIOS() {
+  if (typeof navigator === "undefined") return false;
+
+  const ua = navigator.userAgent;
+  const isIPadOS = /Macintosh/.test(ua) && navigator.maxTouchPoints > 1;
+  return /iPad|iPhone|iPod/.test(ua) || isIPadOS;
+}
+
 /* Pool the first-load random pick is drawn from. */
 const LOFI_GENRE = "Lo-fi Hip-Hop";
 
@@ -186,24 +198,39 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   }, [volume, isMuted]);
 
   /*
-   * iOS treats volume as hardware-controlled: assigning to it is silently
-   * ignored, no error. Probe by writing a value and reading it back, so the UI
-   * can hide a slider that could never do anything. muted still works.
+   * iOS reserves audio volume for the hardware buttons. Assigning to
+   * audio.volume is accepted and reads back unchanged, but has no effect on
+   * output — so feature detection genuinely cannot see it. The platform check
+   * is load-bearing here, not a shortcut: no API reports this.
+   *
+   * The probe stays as the feature-based half, for any other environment that
+   * rejects volume writes, and reads back a frame later since a synchronous
+   * read can report a value that was never applied.
    */
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
+    if (isIOS()) {
+      setCanControlVolume(false);
+      return;
+    }
+
     const probe = 0.123;
     const original = audio.volume;
+    let frame = 0;
 
     try {
       audio.volume = probe;
-      setCanControlVolume(Math.abs(audio.volume - probe) < 0.01);
-      audio.volume = original;
+      frame = requestAnimationFrame(() => {
+        setCanControlVolume(Math.abs(audio.volume - probe) < 0.01);
+        audio.volume = original;
+      });
     } catch {
       setCanControlVolume(false);
     }
+
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {

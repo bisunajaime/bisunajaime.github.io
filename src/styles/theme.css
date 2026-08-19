@@ -242,6 +242,12 @@
     height: 1.5rem;
     background: transparent;
     cursor: pointer;
+    /*
+     * Without this the browser can claim a horizontal drag for page scrolling
+     * and the input never sees the move events — the slider looks fine and
+     * does nothing. Custom-styled range inputs on iOS Safari are prone to it.
+     */
+    touch-action: none;
   }
 
   .media-slider::-webkit-slider-runnable-track {

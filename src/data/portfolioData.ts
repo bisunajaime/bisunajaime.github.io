@@ -96,6 +96,54 @@ export const portfolioData = {
   },
   projects: [
     {
+      name: "PackPal",
+      description: "An AI travel prep app that builds a personalized packing list from a destination, trip dates, and one of 10 traveler personas. Lists adapt to real weather using Open-Meteo forecasts up to 16 days out and historical averages beyond that. Scout, the in-app AI assistant, edits the list conversationally \u2014 adding or removing items, checking things off, and answering destination questions. Also generates local insights (visa requirements, language cheat sheet, emergency contacts, safety tips, and 12 curated things to do), per-place checklists with season-aware activity suggestions, and read-only share links with QR codes so travel companions can view a trip without signing up.",
+      short_description: "AI packing lists that adapt to destination, dates, and real weather forecasts.",
+      stack: [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "Clerk",
+        "PostgreSQL",
+        "Open-Meteo API",
+        "lucide-react",
+        "Vercel"
+      ],
+      is_desktop: false,
+      learnings: "Blended deterministic data with generated output: weather forecasts and historical climate averages constrain what the model suggests, so recommendations stay grounded instead of hallucinating a season. Also built a conversational assistant that mutates real app state rather than only chatting, plus anonymous trials and public read-only share links on top of Clerk auth.",
+      cover_img: "/assets/images/packpal/cover.webp",
+      sample_ui: [],
+      demo_video: "",
+      git_url: "",
+      demo_app: "",
+      demo_url: "https://packpal-scout.vercel.app/",
+      color: "#14b8a6"
+    },
+    {
+      name: "PlateLoad",
+      description: "An Olympic barbell plate calculator that finds every symmetric way to hit a target weight using the Eleiko or Metcon plates a gym actually owns. A depth-first combination engine runs on integer math to avoid floating-point drift, with six ranking modes (Recommended, Competition, Fewest plates, Compact, Use what I have, All), sleeve capacity warnings, a warm-up percentage generator, shareable loads via URL params, and favorites/recents. Ships as an offline-capable PWA with a custom SVG barbell rendered to Eleiko and Metcon geometry.",
+      short_description: "Offline-first PWA that solves every symmetric barbell loading for a target weight.",
+      stack: [
+        "React 19",
+        "TypeScript",
+        "Vite",
+        "Tailwind CSS",
+        "vite-plugin-pwa",
+        "Vitest",
+        "oxlint"
+      ],
+      is_desktop: false,
+      learnings: "Wrote the combination search in integer math so plate totals never drift, then layered six ranking heuristics over the same solver. Also built a brand-accurate SVG barbell and made the whole thing work offline with no backend, keeping inventory and history in localStorage.",
+      cover_img: "/assets/images/plateload/cover.webp",
+      sample_ui: [],
+      demo_video: "",
+      git_url: "https://github.com/bisunajaime/plateload",
+      demo_app: "",
+      demo_url: "https://plateload.vercel.app",
+      color: "#2f6fed"
+    },
+    {
       name: "Greenwash Laundry POS",
       description: "A full-stack Point-of-Sale system for laundry services, featuring an admin dashboard with kanban-style order tracking, real-time updates via Socket.IO, SMS notifications, PDF report generation, thermal printer integration, and a Flutter-based Android mobile/tablet POS.",
       short_description: "Full-stack Laundry POS with admin dashboard, real-time updates, and Flutter Android tablet app.",

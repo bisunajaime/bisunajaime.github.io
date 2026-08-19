@@ -22,9 +22,6 @@ function isIOS() {
   return /iPad|iPhone|iPod/.test(ua) || isIPadOS;
 }
 
-/* Pool the first-load random pick is drawn from. */
-const LOFI_GENRE = "Lo-fi Hip-Hop";
-
 interface MusicContextValue {
   tracks: AIWorkItem[];
   track: AIWorkItem | undefined;
@@ -158,13 +155,11 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     disarmGestureRef.current = disarm;
   }, [ensureAudioGraph, resumeContext]);
 
-  /* Pick a random lo-fi track on first load and try to start it. */
+  /* Pick a random track from the whole library on first load and try to start it. */
   useEffect(() => {
     if (!tracks.length) return;
 
-    const lofi = tracks.filter((item) => item.genre === LOFI_GENRE);
-    const pool = lofi.length ? lofi : tracks;
-    const pick = pool[Math.floor(Math.random() * pool.length)];
+    const pick = tracks[Math.floor(Math.random() * tracks.length)];
 
     shouldAutoPlayRef.current = true;
     setSelectedId(pick.id);

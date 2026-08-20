@@ -547,16 +547,6 @@ Someone who fixes my everything
     madeWith: "MiniMax Music3",
   },
   {
-    id: "old-record",
-    name: "Old Record",
-    artist: "MiniMax Music3",
-    description: "Chill jazz, 72 BPM",
-    genre: "Jazz",
-    durationSeconds: 90,
-    audioSrc: "/assets/audio/old-record.mp3",
-    madeWith: "MiniMax Music3",
-  },
-  {
     id: "balcony-sunset",
     name: "Balcony Sunset",
     artist: "MiniMax Music3",

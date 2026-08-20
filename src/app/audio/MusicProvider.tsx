@@ -22,6 +22,20 @@ function isIOS() {
   return /iPad|iPhone|iPod/.test(ua) || isIPadOS;
 }
 
+/*
+ * Genres calm enough to start on unannounced. Synthwave here is the dark,
+ * ominous kind and Lo-fi Rap is all vocal, so both sit out the opening pick.
+ */
+const CALM_OPENING_GENRES = new Set([
+  "Lo-fi Hip-Hop",
+  "Jazz",
+  "Chillwave",
+  "Downtempo",
+  "Ambient",
+  "Acoustic",
+  "Soul",
+]);
+
 interface MusicContextValue {
   tracks: AIWorkItem[];
   track: AIWorkItem | undefined;
@@ -88,7 +102,8 @@ export function MusicProvider({ children }: { children: ReactNode }) {
 
     const Ctor: typeof AudioContext | undefined =
       window.AudioContext ??
-      (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      (window as unknown as { webkitAudioContext?: typeof AudioContext })
+        .webkitAudioContext;
     if (!Ctor) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -155,11 +170,23 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     disarmGestureRef.current = disarm;
   }, [ensureAudioGraph, resumeContext]);
 
-  /* Pick a random track from the whole library on first load and try to start it. */
+  /*
+   * First load opens on something calm. The library also holds vocal tracks
+   * about layoffs and being replaced by a model — fine to find, a strange thing
+   * to greet a first-time visitor with unprompted. So the opening pick is
+   * restricted to instrumental lo-fi and chill genres; everything else stays
+   * reachable through the player and auto-advance.
+   */
   useEffect(() => {
     if (!tracks.length) return;
 
-    const pick = tracks[Math.floor(Math.random() * tracks.length)];
+    const openers = tracks.filter(
+      (item) =>
+        !item.lyrics && item.genre && CALM_OPENING_GENRES.has(item.genre),
+    );
+    /* Never leave the player empty if the data ever stops matching. */
+    const pool = openers.length ? openers : tracks;
+    const pick = pool[Math.floor(Math.random() * pool.length)];
 
     shouldAutoPlayRef.current = true;
     setSelectedId(pick.id);
@@ -290,10 +317,15 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     queueRef.current = ids;
   }, []);
 
-  const requestMusicTab = useCallback(() => setMusicTabRequest((count) => count + 1), []);
+  const requestMusicTab = useCallback(
+    () => setMusicTabRequest((count) => count + 1),
+    [],
+  );
 
   const handleEnded = useCallback(() => {
-    const queue = queueRef.current.length ? queueRef.current : tracks.map((item) => item.id);
+    const queue = queueRef.current.length
+      ? queueRef.current
+      : tracks.map((item) => item.id);
 
     if (!queue.length) {
       setIsPlaying(false);
@@ -365,7 +397,9 @@ export function MusicProvider({ children }: { children: ReactNode }) {
         }}
         onPause={() => setIsPlaying(false)}
         onEnded={handleEnded}
-        onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
+        onTimeUpdate={(event) =>
+          setCurrentTime(event.currentTarget.currentTime)
+        }
         onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)}
         onDurationChange={(event) => setDuration(event.currentTarget.duration)}
       />

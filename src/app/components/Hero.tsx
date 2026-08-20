@@ -96,7 +96,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative isolate flex min-h-[max(38rem,88svh)] items-center overflow-hidden pb-20 pt-28 sm:pt-32"
+      className="relative isolate flex min-h-[max(38rem,80svh)] items-center overflow-hidden pb-20 pt-28 sm:pt-32"
     >
       {/*
        * Full-bleed video: anchored to the right edge, cropped by the viewport.

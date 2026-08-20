@@ -577,16 +577,6 @@ Someone who fixes my everything
     madeWith: "MiniMax Music3",
   },
   {
-    id: "record-shop",
-    name: "Record Shop",
-    artist: "MiniMax Music3",
-    description: "Lo-fi hip-hop, 70 BPM",
-    genre: "Lo-fi Hip-Hop",
-    durationSeconds: 73,
-    audioSrc: "/assets/audio/record-shop.mp3",
-    madeWith: "MiniMax Music3",
-  },
-  {
     id: "rain-on-glass",
     name: "Rain on Glass",
     artist: "MiniMax Music3",

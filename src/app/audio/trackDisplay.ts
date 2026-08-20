@@ -16,6 +16,10 @@ export const GENRE_LABEL_COLORS: Record<string, string> = {
   Chillwave: "#d6479a",       // magenta
   Downtempo: "#5566d0",       // indigo
   Ambient: "#2f9e8f",         // teal
+  Synthwave: "#8250d8",       // violet
+  "Lo-fi Rap": "#4e8f3a",     // green
+  Soul: "#c2453f",            // red
+  Acoustic: "#2f89a8",        // cyan
 };
 
 export function labelColorFor(genre?: string) {

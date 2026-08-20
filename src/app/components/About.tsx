@@ -12,7 +12,7 @@ export function About() {
                 Building practical products with calm, usable interfaces.
               </h2>
               <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                I am a full-stack developer based in the Philippines with hands-on
+                I am an AI full-stack developer based in the Philippines with hands-on
                 experience in web and mobile products. I focus on dependable
                 architecture, accessible UI, and shipping features that solve real
                 user problems.
@@ -26,7 +26,7 @@ export function About() {
               <dl className="mt-4 space-y-4 text-sm text-muted-foreground">
                 <div className="flex items-center justify-between gap-3">
                   <dt>Role</dt>
-                  <dd className="font-medium text-foreground">Full-Stack Developer</dd>
+                  <dd className="font-medium text-foreground">AI Full-Stack Developer</dd>
                 </div>
                 <div className="flex items-center justify-between gap-3">
                   <dt>Experience</dt>

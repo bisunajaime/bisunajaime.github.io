@@ -156,7 +156,7 @@ export function Hero() {
         <div className="max-w-2xl">
           <div className="text-center sm:text-left">
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">
-              Full-Stack Developer
+              AI Full-Stack Developer
             </p>
             <h1 className="mt-3 text-[clamp(2.25rem,8vw,4.75rem)] font-semibold leading-[0.95] tracking-tight text-foreground">
               Jose Jaime Bisuña

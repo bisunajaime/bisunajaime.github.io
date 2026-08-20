@@ -4,12 +4,15 @@ import { formatTime, labelColorFor, sliderFill } from "../audio/trackDisplay";
 import { Vinyl } from "../audio/Vinyl";
 import { Waveform } from "../audio/Waveform";
 import {
+  ChevronDown,
+  ListFilter,
   Pause,
   Play,
   SkipBack,
   SkipForward,
   Volume2,
   VolumeX,
+  X,
 } from "lucide-react";
 import type { AIWorkItem } from "../../data/aiWorkData";
 
@@ -23,6 +26,90 @@ function formatTotal(seconds: number) {
 }
 
 const ALL_GENRES = "All";
+
+const PANELS = [
+  { id: "tracks", label: "Tracks" },
+  { id: "lyrics", label: "Lyrics" },
+] as const;
+
+/*
+ * Lyrics arrive as the generator received them: [Section] markers on their own
+ * lines, then the lines belonging to that section. Split into blocks so the
+ * markers can be styled as structure instead of printed as literal brackets.
+ * Sections with no lines (Intro, Instrumental, Outro) are kept — they are how a
+ * reader knows the vocal drops out — but rendered as a lone marker.
+ */
+type LyricBlock = { section: string; lines: string[] };
+
+function parseLyrics(lyrics: string): LyricBlock[] {
+  const blocks: LyricBlock[] = [];
+
+  for (const raw of lyrics.split("\n")) {
+    const line = raw.trim();
+    if (!line) continue;
+
+    const marker = line.match(/^\[(.+)\]$/);
+    if (marker) {
+      blocks.push({ section: marker[1], lines: [] });
+      continue;
+    }
+
+    if (!blocks.length) blocks.push({ section: "", lines: [] });
+    blocks[blocks.length - 1].lines.push(line);
+  }
+
+  return blocks;
+}
+
+/* A chorus repeats, so it earns the accent rail that marks it on sight. */
+const isChorus = (section: string) => /chorus/i.test(section);
+
+function LyricsView({ track }: { track: AIWorkItem }) {
+  if (!track.lyrics) {
+    return (
+      <div className="flex flex-1 items-center justify-center px-6 py-12 text-center">
+        <p className="text-sm text-muted-foreground">
+          <span className="block font-semibold text-foreground">
+            Instrumental
+          </span>
+          No lyrics were written for this track.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-h-[20rem] flex-1 overflow-y-auto px-4 py-4 lg:max-h-none">
+      <div className="space-y-5">
+        {parseLyrics(track.lyrics).map((block, index) => (
+          <div
+            key={`${block.section}-${index}`}
+            className={
+              isChorus(block.section)
+                ? "border-l-2 border-[var(--track-accent)] pl-3"
+                : undefined
+            }
+          >
+            {block.section ? (
+              <p className="text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground/70">
+                {block.section}
+              </p>
+            ) : null}
+            {block.lines.length ? (
+              <p className="mt-1.5 whitespace-pre-line text-sm leading-relaxed text-foreground">
+                {block.lines.join("\n")}
+              </p>
+            ) : null}
+          </div>
+        ))}
+      </div>
+      <p className="mt-6 border-t border-border pt-3 text-xs text-muted-foreground">
+        Lyrics written for the generation prompt
+        {track.madeWith ? ` · ${track.madeWith}` : ""}
+      </p>
+    </div>
+  );
+}
 
 export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
   const {
@@ -45,19 +132,28 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
   } = useMusic();
 
   const [genre, setGenre] = useState(ALL_GENRES);
+  const [panel, setPanel] = useState<"tracks" | "lyrics">("tracks");
   const listRef = useRef<HTMLUListElement | null>(null);
 
   const genres = [
     ALL_GENRES,
     ...Array.from(
-      new Set(tracks.map((item) => item.genre).filter((value): value is string => Boolean(value))),
+      new Set(
+        tracks
+          .map((item) => item.genre)
+          .filter((value): value is string => Boolean(value)),
+      ),
     ),
   ];
   const countFor = (value: string) =>
-    value === ALL_GENRES ? tracks.length : tracks.filter((item) => item.genre === value).length;
+    value === ALL_GENRES
+      ? tracks.length
+      : tracks.filter((item) => item.genre === value).length;
 
   const visibleTracks =
-    genre === ALL_GENRES ? tracks : tracks.filter((item) => item.genre === genre);
+    genre === ALL_GENRES
+      ? tracks
+      : tracks.filter((item) => item.genre === genre);
   const visibleRuntime = visibleTracks.reduce(
     (total, item) => total + (item.durationSeconds ?? 0),
     0,
@@ -70,7 +166,9 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
   const progress = safeDuration > 0 ? (seekValue / safeDuration) * 100 : 0;
 
   /* Position within what the user can currently see, which is what prev/next should walk. */
-  const visibleIndex = visibleTracks.findIndex((item) => item.id === selectedId);
+  const visibleIndex = visibleTracks.findIndex(
+    (item) => item.id === selectedId,
+  );
   /* Transport wraps, so it is only dead when there is nowhere else to go. */
   const canStep = visibleTracks.length > 1;
 
@@ -113,7 +211,8 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
     /* If the playing track was filtered out, step onto the visible list rather than nowhere. */
     const base = visibleIndex < 0 ? 0 : visibleIndex;
     /* Wraps in both directions: forward past the last track returns to the first. */
-    const nextIndex = (base + delta + visibleTracks.length) % visibleTracks.length;
+    const nextIndex =
+      (base + delta + visibleTracks.length) % visibleTracks.length;
     const next = visibleTracks[nextIndex];
     if (next) playTrack(next.id);
   };
@@ -144,7 +243,10 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
           aria-label={isPlaying ? `Pause ${track.name}` : `Play ${track.name}`}
           className="group relative aspect-square w-full max-w-[11.5rem] shrink-0 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed"
         >
-          <Vinyl isSpinning={isPlaying} labelColor={labelColorFor(track.genre)} />
+          <Vinyl
+            isSpinning={isPlaying}
+            labelColor={labelColorFor(track.genre)}
+          />
           <span className="absolute inset-0 flex items-center justify-center">
             <span className="inline-flex size-14 items-center justify-center rounded-full bg-background/85 text-foreground opacity-0 shadow-[var(--shadow-subtle)] transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
               {isPlaying ? (
@@ -163,10 +265,14 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
           <p className="mt-1 text-sm text-muted-foreground">{track.artist}</p>
         ) : null}
         {track.description ? (
-          <p className="mt-1 text-xs text-muted-foreground">{track.description}</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {track.description}
+          </p>
         ) : null}
         {!canPlay ? (
-          <p className="mt-3 text-xs text-muted-foreground">No audio file attached yet.</p>
+          <p className="mt-3 text-xs text-muted-foreground">
+            No audio file attached yet.
+          </p>
         ) : null}
 
         {/* Seek */}
@@ -253,7 +359,9 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
               style={sliderFill((isMuted ? 0 : volume) * 100)}
             />
           ) : (
-            <span className="text-xs text-muted-foreground">Use device volume</span>
+            <span className="text-xs text-muted-foreground">
+              Use device volume
+            </span>
           )}
         </div>
 
@@ -268,48 +376,93 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
       {/* Track list */}
       <div className="flex flex-col overflow-hidden rounded-[1.5rem] border border-border lg:max-h-[38rem]">
         <div className="shrink-0 border-b border-border px-4 py-3">
-          <div className="flex items-baseline justify-between">
-            <h3 className="text-sm font-semibold text-foreground">Tracks</h3>
-            <span className="text-xs tabular-nums text-muted-foreground">
-              {visibleTracks.length} of {tracks.length} · {formatTotal(visibleRuntime)}
+          <div className="flex items-center justify-between gap-3">
+            <div
+              role="tablist"
+              aria-label="Track panel"
+              className="flex gap-1 rounded-full bg-secondary/70 p-1"
+            >
+              {PANELS.map((item) => {
+                const isActive = panel === item.id;
+
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    onClick={() => setPanel(item.id)}
+                    className={`inline-flex h-7 items-center rounded-full px-3 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                      isActive
+                        ? "bg-background text-foreground shadow-[var(--shadow-subtle)]"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
+            <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+              {panel === "tracks"
+                ? `${visibleTracks.length} of ${tracks.length} · ${formatTotal(visibleRuntime)}`
+                : track.name}
             </span>
           </div>
 
-          {/* Scroll container is separate from the flex row so focus rings are not clipped. */}
-          <div className="no-scrollbar -mx-1 mt-3 overflow-x-auto px-1 py-1">
-            <div
-              role="group"
-              aria-label="Filter tracks by genre"
-              className="flex w-max gap-1.5"
-            >
-            {genres.map((value) => {
-              const isActive = genre === value;
-
-              return (
-                <button
-                  type="button"
-                  key={value}
-                  onClick={() => setGenre(value)}
-                  aria-pressed={isActive}
-                  className={`inline-flex h-8 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${isActive
-                    ? "border-primary/25 bg-primary/12 text-primary"
-                    : "border-border bg-background text-muted-foreground hover:bg-secondary hover:text-foreground"
-                    }`}
-                >
-                  {value}
-                  <span
-                    className={`tabular-nums ${isActive ? "text-primary/70" : "text-muted-foreground/70"}`}
-                  >
-                    {countFor(value)}
-                  </span>
-                </button>
-              );
-            })}
+          {/*
+           * A native select, not a hand-rolled listbox: keyboard navigation,
+           * type-ahead, and the iOS wheel picker come for free, and there is no
+           * Radix select in this project to lean on. The chevron is decorative,
+           * so the select keeps appearance-none and paints its own.
+           */}
+          <div
+            hidden={panel !== "tracks"}
+            className="mt-3 flex items-center gap-2"
+          >
+            <div className="relative min-w-0 flex-1">
+              <ListFilter className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
+              <select
+                value={genre}
+                onChange={(event) => setGenre(event.target.value)}
+                aria-label="Filter tracks by genre"
+                className="h-9 w-full cursor-pointer appearance-none truncate rounded-xl border border-border bg-background pl-9 pr-9 text-xs font-medium text-foreground transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                {genres.map((value) => (
+                  <option key={value} value={value}>
+                    {value === ALL_GENRES ? "All genres" : value} (
+                    {countFor(value)})
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
             </div>
+            {/* Escape hatch — a filtered list with the active track hidden is easy to get stuck in. */}
+            {genre !== ALL_GENRES ? (
+              <button
+                type="button"
+                onClick={() => setGenre(ALL_GENRES)}
+                className="inline-flex h-9 shrink-0 items-center gap-1 rounded-xl px-2.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <X className="size-3.5" />
+                Clear
+              </button>
+            ) : null}
           </div>
         </div>
 
-        <ul ref={listRef} className="max-h-[20rem] flex-1 overflow-y-auto p-2 lg:max-h-none">
+        {panel === "lyrics" ? <LyricsView track={track} /> : null}
+
+        <ul
+          ref={listRef}
+          hidden={panel !== "tracks"}
+          className="max-h-[20rem] flex-1 overflow-y-auto p-2 lg:max-h-none"
+        >
+          {!visibleTracks.length ? (
+            <li className="px-3 py-8 text-center text-sm text-muted-foreground">
+              No {genre} tracks.
+            </li>
+          ) : null}
           {visibleTracks.map((item) => {
             const isSelected = item.id === selectedId;
 
@@ -322,17 +475,21 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
                   style={
                     isSelected
                       ? {
-                        backgroundColor:
-                          "color-mix(in srgb, var(--track-accent) 14%, transparent)",
-                      }
+                          backgroundColor:
+                            "color-mix(in srgb, var(--track-accent) 14%, transparent)",
+                        }
                       : undefined
                   }
-                  className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${isSelected ? "" : "hover:bg-secondary"
-                    }`}
+                  className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                    isSelected ? "" : "hover:bg-secondary"
+                  }`}
                 >
                   <span
-                    className={`inline-flex size-9 shrink-0 items-center justify-center rounded-full ${isSelected ? "bg-[var(--track-accent)] text-white" : "bg-secondary text-muted-foreground"
-                      }`}
+                    className={`inline-flex size-9 shrink-0 items-center justify-center rounded-full ${
+                      isSelected
+                        ? "bg-[var(--track-accent)] text-white"
+                        : "bg-secondary text-muted-foreground"
+                    }`}
                   >
                     {isSelected && isPlaying ? (
                       <Pause className="size-4" />
@@ -350,6 +507,14 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
                       </span>
                     ) : null}
                   </span>
+                  {item.lyrics ? (
+                    <span
+                      title="Has lyrics"
+                      className="shrink-0 rounded-full border border-border px-1.5 py-0.5 text-[0.58rem] font-semibold uppercase tracking-[0.1em] text-muted-foreground"
+                    >
+                      Lyrics
+                    </span>
+                  ) : null}
                   {item.durationSeconds ? (
                     <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
                       {formatTime(item.durationSeconds)}

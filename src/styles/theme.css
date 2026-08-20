@@ -189,6 +189,18 @@
   }
 
   /*
+   * The AI SLOP joke cursor. An inline SVG carrying the emoji, so no image file
+   * ships and the glyph comes from the viewer's own emoji font. Hotspot is
+   * centred (16 16). Safari does not support SVG cursors, so `help` stays as the
+   * fallback — the same cursor the heading had before.
+   */
+  .cursor-slop {
+    cursor:
+      url("data:image/svg+xml,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20viewBox='0%200%2032%2032'><text%20x='16'%20y='25'%20font-size='26'%20text-anchor='middle'>%F0%9F%98%AD</text></svg>") 16 16,
+      help;
+  }
+
+  /*
    * Same frosting recipe as .glass-panel, but as a bare stackable layer: no
    * tint, border, or shadow of its own. Several of these with rising blur radii
    * and offset masks ramp the frost gradually — one 20px layer leaves a visible

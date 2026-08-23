@@ -53,6 +53,18 @@ const TINT_MASK = {
     "linear-gradient(to right, #000 0%, #000 20%, rgba(0,0,0,0.26) 34%, transparent 50%)",
 };
 
+/*
+ * The bright lip of the glass. It has to sit ON the frost edge, so it moves with
+ * the ramps above — pinned at the dark position it would strand out over clear
+ * video as a free-floating vertical band. It is also far weaker in light mode:
+ * --glass-specular is rgba(255,255,255,0.7) there against rgba(235,235,245,0.16)
+ * in dark, so the same layer reads 4x hotter over an already bright frame.
+ */
+const SHEEN = {
+  dark: { left: "38%", opacity: 0.7 },
+  light: { left: "29%", opacity: 0.22 },
+};
+
 /* Solid ground under the copy, ramping off before it reaches the subject. */
 const SCRIM = {
   dark: "linear-gradient(to right, var(--background) 0%, color-mix(in srgb, var(--background) 45%, transparent) 50%, transparent 100%)",
@@ -200,8 +212,13 @@ export function Hero() {
          */}
         <div className="absolute inset-0 bg-[var(--surface-glass)] backdrop-blur-md sm:hidden" />
         <div
-          className="absolute inset-y-0 left-[38%] w-40 bg-gradient-to-r from-transparent via-[var(--glass-specular)] to-transparent opacity-70 max-sm:hidden"
-          style={{ maskImage: SPECULAR_MASK, WebkitMaskImage: SPECULAR_MASK }}
+          className="absolute inset-y-0 w-40 bg-gradient-to-r from-transparent via-[var(--glass-specular)] to-transparent max-sm:hidden"
+          style={{
+            left: SHEEN[tone].left,
+            opacity: SHEEN[tone].opacity,
+            maskImage: SPECULAR_MASK,
+            WebkitMaskImage: SPECULAR_MASK,
+          }}
         />
         <div
           className="absolute inset-0"

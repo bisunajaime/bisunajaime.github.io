@@ -58,17 +58,22 @@ type Layout = (typeof LAYOUTS)[number]["id"];
 
 const LAYOUT_KEY = "music-player-layout";
 
+/* Cover art is the better first impression — the record is the same disc on every
+ * track, the artwork is not. Anyone who prefers the turntable still gets it back on
+ * their next visit, since a stored choice wins over this. */
+const DEFAULT_LAYOUT: Layout = "cover";
+
 /* Which view you prefer is a lasting preference, not a per-visit one. Storage can
  * throw outright in a locked-down browser, so it is best-effort in both directions
  * and the default survives failure. */
 function readLayout(): Layout {
-  if (typeof window === "undefined") return "record";
+  if (typeof window === "undefined") return DEFAULT_LAYOUT;
 
   try {
     const saved = window.localStorage.getItem(LAYOUT_KEY);
-    return saved === "cover" || saved === "record" ? saved : "record";
+    return saved === "cover" || saved === "record" ? saved : DEFAULT_LAYOUT;
   } catch {
-    return "record";
+    return DEFAULT_LAYOUT;
   }
 }
 

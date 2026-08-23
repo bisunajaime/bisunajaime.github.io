@@ -44,14 +44,17 @@ const PANELS = [
 type Panel = (typeof PANELS)[number]["id"];
 
 /*
- * Two ways to look at the same track. "record" is the turntable: the disc is the
- * subject and everything stacks beneath it. "cover" makes the artwork the subject —
+ * Two ways to look at the same track. "cover" makes the artwork the subject —
  * centred in whatever space the panel has — and drops the whole control stack to the
- * bottom edge, so the eye lands on the image first and the chrome stays out of its way.
+ * bottom edge, so the eye lands on the image first and the chrome stays out of its
+ * way. "record" is the turntable: the disc is the subject and everything stacks
+ * beneath it.
+ *
+ * Order here is the order they appear in the toggle, default first.
  */
 const LAYOUTS = [
-  { id: "record", label: "Record", icon: Disc3 },
   { id: "cover", label: "Cover art", icon: ImageIcon },
+  { id: "record", label: "Record", icon: Disc3 },
 ] as const;
 
 type Layout = (typeof LAYOUTS)[number]["id"];

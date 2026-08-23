@@ -1,5 +1,13 @@
-import { useEffect, useRef, type CSSProperties, type MouseEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type MouseEvent,
+} from "react";
 import { ArrowRight, FileText, Github, Linkedin, Mail } from "lucide-react";
+import { useTheme } from "next-themes";
+import { heroMedia, isDarkTheme } from "../utils/heroMedia";
 
 /*
  * The video reaches under the frost rather than stopping at it, so there is
@@ -40,9 +48,26 @@ export function Hero() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   /*
+   * Seeded from the document so the first render already picks the right cut, then
+   * kept in sync with next-themes for later changes — the toggle, and the OS
+   * flipping under a "system" preference.
+   */
+  const { resolvedTheme } = useTheme();
+  const [isDark, setIsDark] = useState(isDarkTheme);
+
+  useEffect(() => {
+    if (resolvedTheme) setIsDark(resolvedTheme === "dark");
+  }, [resolvedTheme]);
+
+  const media = heroMedia(isDark);
+
+  /*
    * React drops the `muted` attribute on hydration often enough that iOS/Safari
    * refuses inline autoplay, so pin it on the element itself. Reduced-motion
    * users keep the poster frame instead of the loop.
+   *
+   * Re-runs on a source change: a swapped src leaves the element parked on the old
+   * frame until it reloads, and a reloaded element comes back paused.
    */
   useEffect(() => {
     const video = videoRef.current;
@@ -50,6 +75,7 @@ export function Hero() {
 
     video.muted = true;
     video.defaultMuted = true;
+    video.load();
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       video.pause();
@@ -57,7 +83,7 @@ export function Hero() {
     }
 
     void video.play().catch(() => undefined);
-  }, []);
+  }, [media.video]);
 
   const handleProjectsClick = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
@@ -112,8 +138,8 @@ export function Hero() {
             maskImage: FADE_LEFT,
             WebkitMaskImage: FADE_LEFT,
           }}
-          src="/assets/video/lofi-jaime.mp4"
-          poster="/assets/images/lofi-jaime-poster.webp"
+          src={media.video}
+          poster={media.poster}
           autoPlay
           loop
           muted

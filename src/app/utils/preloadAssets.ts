@@ -1,5 +1,6 @@
 import { portfolioData } from "../../data/portfolioData";
 import { sampleWallpapers, topWallpapers } from "../../data/wallpaperData";
+import { heroMedia } from "./heroMedia";
 
 type CollectOptions = {
   includeRemote?: boolean;
@@ -32,8 +33,10 @@ export function collectAssetUrls(options: CollectOptions = {}): PreloadGroup {
   const all = new Set<string>();
   const critical = new Set<string>();
 
-  // Hero video poster frame (paints before the loop starts)
-  addUrl(critical, "/assets/images/lofi-jaime-poster.webp", includeRemote);
+  // Hero video poster frame (paints before the loop starts). Only the cut that
+  // matches the current theme — preloading both would spend a poster's worth of
+  // bandwidth on an image this visit will never show.
+  addUrl(critical, heroMedia().poster, includeRemote);
 
   // Hero wallpapers (critical for initial render)
   const heroWallpaper = topWallpapers[0];

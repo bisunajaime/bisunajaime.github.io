@@ -9,9 +9,10 @@ import { useMusic } from "../audio/MusicProvider";
 import { formatTime, labelColorFor, sliderFill } from "../audio/trackDisplay";
 import { CoverArt } from "../audio/CoverArt";
 import { Vinyl } from "../audio/Vinyl";
-import { Waveform } from "../audio/Waveform";
 import {
   ChevronDown,
+  Disc3,
+  Image as ImageIcon,
   ListFilter,
   Pause,
   Play,
@@ -41,6 +42,76 @@ const PANELS = [
 ] as const;
 
 type Panel = (typeof PANELS)[number]["id"];
+
+/*
+ * Two ways to look at the same track. "record" is the turntable: the disc is the
+ * subject and everything stacks beneath it. "cover" makes the artwork the subject —
+ * centred in whatever space the panel has — and drops the whole control stack to the
+ * bottom edge, so the eye lands on the image first and the chrome stays out of its way.
+ */
+const LAYOUTS = [
+  { id: "record", label: "Record", icon: Disc3 },
+  { id: "cover", label: "Cover art", icon: ImageIcon },
+] as const;
+
+type Layout = (typeof LAYOUTS)[number]["id"];
+
+const LAYOUT_KEY = "music-player-layout";
+
+/* Which view you prefer is a lasting preference, not a per-visit one. Storage can
+ * throw outright in a locked-down browser, so it is best-effort in both directions
+ * and the default survives failure. */
+function readLayout(): Layout {
+  if (typeof window === "undefined") return "record";
+
+  try {
+    const saved = window.localStorage.getItem(LAYOUT_KEY);
+    return saved === "cover" || saved === "record" ? saved : "record";
+  } catch {
+    return "record";
+  }
+}
+
+function LayoutToggle({
+  layout,
+  onChange,
+}: {
+  layout: Layout;
+  onChange: (next: Layout) => void;
+}) {
+  return (
+    <div
+      role="group"
+      aria-label="Player layout"
+      /* Its own translucent chip: the panel behind it is cover art, and bare icons on
+       * an uncontrolled photo have no contrast guarantee. */
+      className="absolute right-3 top-3 z-10 flex gap-0.5 rounded-full border border-border/60 bg-background/70 p-0.5 backdrop-blur sm:right-4 sm:top-4"
+    >
+      {LAYOUTS.map(({ id, label, icon: Icon }) => {
+        const isActive = layout === id;
+
+        return (
+          <button
+            key={id}
+            type="button"
+            onClick={() => onChange(id)}
+            aria-pressed={isActive}
+            /* Icon-only, so the name has to come from the label. */
+            aria-label={`${label} layout`}
+            title={`${label} layout`}
+            className={`inline-flex size-7 items-center justify-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+              isActive
+                ? "bg-secondary text-foreground shadow-[var(--shadow-subtle)]"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Icon className="size-3.5" />
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 /* Four animated bars — the one place motion is worth spending, because it answers
  * "which of these is playing" without the user reading any text. */
@@ -269,8 +340,6 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
     duration,
     volume,
     isMuted,
-    isReactive,
-    analyserRef,
     toggle,
     playTrack,
     seek,
@@ -282,10 +351,20 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
 
   const [genre, setGenre] = useState(ALL_GENRES);
   const [panel, setPanel] = useState<Panel>("tracks");
+  const [layout, setLayout] = useState<Layout>(readLayout);
   const listRef = useRef<HTMLUListElement | null>(null);
   const coversRef = useRef<HTMLDivElement | null>(null);
   /* Tracks and Covers are two views of the same list, so both take the genre filter. */
   const isListPanel = panel === "tracks" || panel === "covers";
+  const isCoverLayout = layout === "cover";
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(LAYOUT_KEY, layout);
+    } catch {
+      /* A remembered layout is a nicety; losing it is not worth handling. */
+    }
+  }, [layout]);
 
   const genres = [
     ALL_GENRES,
@@ -387,7 +466,21 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
       style={{ "--track-accent": labelColorFor(track.genre) } as CSSProperties}
     >
       {/* Now playing */}
-      <div className="glass-panel relative isolate flex flex-col items-center overflow-hidden rounded-[1.5rem] p-6 text-center sm:p-8 lg:max-h-[38rem]">
+      <div
+        /*
+         * The grid stretches this panel to the track list's height, so the record
+         * stack has slack under it and would otherwise sit top-aligned in a tall box.
+         * `safe center` rather than plain centring: if the content ever outgrows the
+         * panel, safe falls back to flex-start instead of centring the overflow and
+         * clipping the top off against overflow-hidden. Cover layout centres itself —
+         * its hero takes the slack as flex-1 and the controls pin to the bottom.
+         */
+        className={`glass-panel relative isolate flex flex-col items-center overflow-hidden rounded-[1.5rem] p-6 text-center sm:p-8 lg:max-h-[38rem] ${
+          isCoverLayout ? "min-h-[26rem]" : "[justify-content:safe_center]"
+        }`}
+      >
+        <LayoutToggle layout={layout} onChange={setLayout} />
+
         {/*
          * The cover as the room the player sits in. Only lightly blurred, so the photo
          * still reads as a photo, then covered by a vertical ramp to the panel
@@ -411,29 +504,66 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
           </div>
         ) : null}
 
-        <button
-          type="button"
-          onClick={toggle}
-          disabled={!canPlay}
-          aria-label={isPlaying ? `Pause ${track.name}` : `Play ${track.name}`}
-          className="group relative aspect-square w-full max-w-[11.5rem] shrink-0 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed"
+        <div
+          className={
+            isCoverLayout
+              ? "flex w-full flex-1 items-center justify-center py-4"
+              : "contents"
+          }
         >
-          <Vinyl
-            isSpinning={isPlaying}
-            labelColor={labelColorFor(track.genre)}
-          />
-          <span className="absolute inset-0 flex items-center justify-center">
-            <span className="inline-flex size-14 items-center justify-center rounded-full bg-background/85 text-foreground opacity-0 shadow-[var(--shadow-subtle)] transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-              {isPlaying ? (
-                <Pause className="size-5" />
-              ) : (
-                <Play className="size-5 translate-x-px" />
-              )}
+          <button
+            type="button"
+            onClick={toggle}
+            disabled={!canPlay}
+            aria-label={isPlaying ? `Pause ${track.name}` : `Play ${track.name}`}
+            className={`group relative aspect-square w-full shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed ${
+              isCoverLayout
+                ? "max-w-[15rem] shadow-[var(--shadow-soft)]"
+                : "max-w-[11.5rem] rounded-full"
+            }`}
+          >
+            {isCoverLayout ? (
+              <CoverArt track={track} size="full" eager />
+            ) : (
+              <Vinyl
+                isSpinning={isPlaying}
+                labelColor={labelColorFor(track.genre)}
+              />
+            )}
+            {/* On cover art the scrim earns its keep — a pale photo would swallow a
+              * bare glyph. The record already supplies its own dark ground. */}
+            <span
+              className={`absolute inset-0 flex items-center justify-center transition-colors ${
+                isCoverLayout
+                  ? "group-hover:bg-black/35 group-focus-visible:bg-black/35"
+                  : ""
+              }`}
+            >
+              <span className="inline-flex size-14 items-center justify-center rounded-full bg-background/85 text-foreground opacity-0 shadow-[var(--shadow-subtle)] transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+                {isPlaying ? (
+                  <Pause className="size-5" />
+                ) : (
+                  <Play className="size-5 translate-x-px" />
+                )}
+              </span>
             </span>
-          </span>
-        </button>
+          </button>
+        </div>
 
-        <h3 className="mt-6 text-xl font-semibold tracking-tight text-foreground">
+        {/* Title through waveform. In cover layout this whole stack is pinned to the
+          * bottom edge; in record layout the wrapper dissolves and nothing moves. */}
+        <div
+          className={
+            isCoverLayout
+              ? "mt-auto flex w-full shrink-0 flex-col items-center"
+              : "contents"
+          }
+        >
+        <h3
+          className={`text-xl font-semibold tracking-tight text-foreground ${
+            isCoverLayout ? "" : "mt-6"
+          }`}
+        >
           {track.name}
         </h3>
         {track.artist ? (
@@ -539,13 +669,7 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
             </span>
           )}
         </div>
-
-        <Waveform
-          isPlaying={isPlaying}
-          progress={progress}
-          analyserRef={analyserRef}
-          isReactive={isReactive}
-        />
+        </div>
       </div>
 
       {/* Track list */}

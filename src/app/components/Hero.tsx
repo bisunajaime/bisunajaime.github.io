@@ -20,20 +20,45 @@ const FADE_LEFT =
  * Frost ramp, crisp on the right and fully frosted over the copy. Radii
  * compound because each layer frosts the output of the one beneath it, so the
  * effective blur at the far left lands well past the nav's 20px.
+ *
+ * Every ramp below ends sooner in light mode. The glass is white there
+ * (--surface-glass is rgba(255,255,255,0.75)) and so is the scrim, which over
+ * the dark cut is invisible but over the bright one is a white wash that was
+ * still ~30% strong by the time it crossed the subject's face — a soft vertical
+ * seam bleaching one half of it. The copy sits well inside the shortened ramps,
+ * so it keeps the same ground to read against.
  */
-const FROST_LAYERS = [
-  { blur: 3, stop: 82 },
-  { blur: 6, stop: 66 },
-  { blur: 12, stop: 50 },
-  { blur: 20, stop: 34 },
-];
+const FROST_LAYERS = {
+  dark: [
+    { blur: 3, stop: 82 },
+    { blur: 6, stop: 66 },
+    { blur: 12, stop: 50 },
+    { blur: 20, stop: 34 },
+  ],
+  light: [
+    { blur: 3, stop: 62 },
+    { blur: 6, stop: 52 },
+    { blur: 12, stop: 42 },
+    { blur: 20, stop: 30 },
+  ],
+};
 
 const frostMask = (stop: number) =>
   `linear-gradient(to right, #000 0%, #000 ${Math.round(stop * 0.35)}%, transparent ${stop}%)`;
 
 /* Translucent surface of the frost — the same tint the nav floats on. */
-const TINT_MASK =
-  "linear-gradient(to right, #000 0%, #000 26%, rgba(0,0,0,0.35) 48%, transparent 66%)";
+const TINT_MASK = {
+  dark: "linear-gradient(to right, #000 0%, #000 26%, rgba(0,0,0,0.35) 48%, transparent 66%)",
+  light:
+    "linear-gradient(to right, #000 0%, #000 20%, rgba(0,0,0,0.26) 34%, transparent 50%)",
+};
+
+/* Solid ground under the copy, ramping off before it reaches the subject. */
+const SCRIM = {
+  dark: "linear-gradient(to right, var(--background) 0%, color-mix(in srgb, var(--background) 45%, transparent) 50%, transparent 100%)",
+  light:
+    "linear-gradient(to right, var(--background) 0%, color-mix(in srgb, var(--background) 42%, transparent) 30%, transparent 56%)",
+};
 /* Vertical sheen sits where the frost thins out, fading at top and bottom. */
 const SPECULAR_MASK =
   "linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent)";
@@ -60,6 +85,7 @@ export function Hero() {
   }, [resolvedTheme]);
 
   const media = heroMedia(isDark);
+  const tone = isDark ? "dark" : "light";
 
   /*
    * React drops the `muted` attribute on hydration often enough that iOS/Safari
@@ -149,7 +175,7 @@ export function Hero() {
           aria-hidden="true"
           tabIndex={-1}
         />
-        {FROST_LAYERS.map((layer) => (
+        {FROST_LAYERS[tone].map((layer) => (
           <div
             key={layer.blur}
             className="frost-layer"
@@ -163,7 +189,10 @@ export function Hero() {
         ))}
         <div
           className="absolute inset-0 bg-[var(--surface-glass)]"
-          style={{ maskImage: TINT_MASK, WebkitMaskImage: TINT_MASK }}
+          style={{
+            maskImage: TINT_MASK[tone],
+            WebkitMaskImage: TINT_MASK[tone],
+          }}
         />
         {/*
          * Phones have no horizontal room for the ramp — the copy sits directly
@@ -174,7 +203,10 @@ export function Hero() {
           className="absolute inset-y-0 left-[38%] w-40 bg-gradient-to-r from-transparent via-[var(--glass-specular)] to-transparent opacity-70 max-sm:hidden"
           style={{ maskImage: SPECULAR_MASK, WebkitMaskImage: SPECULAR_MASK }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/45 to-transparent" />
+        <div
+          className="absolute inset-0"
+          style={{ backgroundImage: SCRIM[tone] }}
+        />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
       </div>
 

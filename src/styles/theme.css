@@ -189,14 +189,23 @@
   }
 
   /*
-   * The AI SLOP joke cursor. An inline SVG carrying the emoji, so no image file
-   * ships and the glyph comes from the viewer's own emoji font. Hotspot is
-   * centred (16 16). Safari does not support SVG cursors, so `help` stays as the
-   * fallback — the same cursor the heading had before.
+   * The AI SLOP joke cursor: a small "SLOP 😭" chip that replaces the pointer
+   * over the heading. An inline SVG, so no image file ships and the emoji comes
+   * from the viewer's own font.
+   *
+   * Drawn as a filled pill rather than bare text because a cursor cannot react to
+   * the theme — dark text would vanish on the dark background and vice versa. The
+   * pill carries its own contrast in both, and a hairline light edge keeps it from
+   * melting into a dark page.
+   *
+   * Hotspot sits at the pill's left edge (8 16) so the label reads to the right of
+   * where you are pointing. Cursor images are capped at 128px, which 84x32 clears.
+   * Safari does not support SVG cursors, so `help` stays as the fallback — the same
+   * cursor the heading had before.
    */
   .cursor-slop {
     cursor:
-      url("data:image/svg+xml,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20viewBox='0%200%2032%2032'><text%20x='16'%20y='25'%20font-size='26'%20text-anchor='middle'>%F0%9F%98%AD</text></svg>") 16 16,
+      url("data:image/svg+xml,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='84'%20height='32'%20viewBox='0%200%2084%2032'><rect%20x='0.5'%20y='4.5'%20width='83'%20height='23'%20rx='11.5'%20fill='%23111827'%20stroke='%23ffffff'%20stroke-opacity='0.28'/><text%20x='42'%20y='21'%20text-anchor='middle'%20font-family='ui-sans-serif,system-ui,sans-serif'%20font-size='13'%20font-weight='700'%20fill='%23ffffff'>SLOP%20%F0%9F%98%AD</text></svg>") 8 16,
       help;
   }
 

@@ -225,23 +225,11 @@ export function Wallpapers() {
         <h2 className="text-center text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           AI{" "}
           {/*
-           * Hover joke: "Work" flips to "SLOP". Both words occupy the same grid
-           * cell so the heading never reflows on the swap, and only "Work" is
-           * exposed to assistive tech — a screen reader should hear the real
-           * heading, not the punchline. group-active covers touch, which has no
-           * hover to trigger on.
+           * The joke lives entirely in the cursor now. The heading itself never
+           * changes, so nothing reflows, assistive tech only ever meets the real
+           * words, and the punchline costs the layout nothing.
            */}
-          <span className="group inline-grid cursor-slop select-none align-baseline">
-            <span className="col-start-1 row-start-1 transition-opacity duration-200 group-hover:opacity-0 group-active:opacity-0">
-              Work
-            </span>
-            <span
-              aria-hidden="true"
-              className="col-start-1 row-start-1 text-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-active:opacity-100"
-            >
-              SLOP
-            </span>
-          </span>
+          <span className="cursor-slop select-none">Work</span>
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-center text-base text-muted-foreground sm:text-lg">
           Things I generate on my own workstation — wallpapers, music, video,

@@ -1,6 +1,13 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type RefObject,
+} from "react";
 import { useMusic } from "../audio/MusicProvider";
 import { formatTime, labelColorFor, sliderFill } from "../audio/trackDisplay";
+import { CoverArt } from "../audio/CoverArt";
 import { Vinyl } from "../audio/Vinyl";
 import { Waveform } from "../audio/Waveform";
 import {
@@ -29,8 +36,150 @@ const ALL_GENRES = "All";
 
 const PANELS = [
   { id: "tracks", label: "Tracks" },
+  { id: "covers", label: "Covers" },
   { id: "lyrics", label: "Lyrics" },
 ] as const;
+
+type Panel = (typeof PANELS)[number]["id"];
+
+/* Four animated bars — the one place motion is worth spending, because it answers
+ * "which of these is playing" without the user reading any text. */
+function PlayingBars() {
+  return (
+    <span aria-hidden="true" className="flex h-3 items-end gap-[2px]">
+      {[0, 1, 2, 3].map((bar) => (
+        <span
+          key={bar}
+          className="playing-bar w-[2px] rounded-full bg-current"
+          style={{ animationDelay: `${bar * 0.15}s` }}
+        />
+      ))}
+    </span>
+  );
+}
+
+/*
+ * The whole collection at once. A cover seen one at a time is decoration; forty-two
+ * of them in a wall is a discography, and because the art was generated per track the
+ * grid is the only place that reads as a body of work.
+ *
+ * Grouped by genre when nothing is filtered — the headings give the scroll a rhythm
+ * and turn an undifferentiated 42-tile wall into nine legible runs.
+ */
+function CoversView({
+  tracks,
+  selectedId,
+  isPlaying,
+  onSelect,
+  grouped,
+  containerRef,
+}: {
+  tracks: AIWorkItem[];
+  selectedId: string | null;
+  isPlaying: boolean;
+  onSelect: (id: string) => void;
+  grouped: boolean;
+  containerRef: RefObject<HTMLDivElement | null>;
+}) {
+  if (!tracks.length) {
+    return (
+      <div className="flex flex-1 items-center justify-center px-6 py-12">
+        <p className="text-sm text-muted-foreground">No covers to show.</p>
+      </div>
+    );
+  }
+
+  const groups = grouped
+    ? Array.from(
+        tracks.reduce((map, item) => {
+          const key = item.genre ?? "Other";
+          map.set(key, [...(map.get(key) ?? []), item]);
+          return map;
+        }, new Map<string, AIWorkItem[]>()),
+      )
+    : [["", tracks] as const];
+
+  return (
+    <div
+      ref={containerRef}
+      className="max-h-[20rem] flex-1 overflow-y-auto px-3 pb-3 lg:max-h-none"
+    >
+      {groups.map(([heading, items]) => (
+        <section key={heading || "all"} className="mb-4 last:mb-0">
+          {heading ? (
+            /* Sticky so the run you are scrolling through stays named. */
+            <h4 className="sticky top-0 z-10 -mx-3 bg-background/95 px-3 pb-1.5 pt-3 text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground backdrop-blur">
+              {heading}
+              <span className="ml-1.5 tabular-nums opacity-60">
+                {items.length}
+              </span>
+            </h4>
+          ) : null}
+          <ul
+            className={`grid grid-cols-2 gap-2.5 sm:grid-cols-3 ${
+              heading ? "mt-1.5" : "mt-3"
+            }`}
+          >
+            {items.map((item) => {
+              const isSelected = item.id === selectedId;
+
+              return (
+                <li key={item.id} data-id={item.id}>
+                  <button
+                    type="button"
+                    onClick={() => onSelect(item.id)}
+                    aria-current={isSelected ? "true" : undefined}
+                    aria-label={
+                      isSelected && isPlaying
+                        ? `Pause ${item.name}`
+                        : `Play ${item.name}`
+                    }
+                    className="group/tile w-full text-left focus-visible:outline-none"
+                  >
+                    <span
+                      style={{ borderColor: labelColorFor(item.genre) }}
+                      className={`relative block aspect-square overflow-hidden transition-transform group-hover/tile:-translate-y-0.5 group-focus-visible/tile:ring-2 group-focus-visible/tile:ring-ring ${
+                        isSelected ? "border-2" : "border-0"
+                      }`}
+                    >
+                      <CoverArt track={item} size="full" />
+                      <span
+                        className={`absolute inset-0 flex items-center justify-center bg-black/45 text-white transition-opacity ${
+                          isSelected
+                            ? "opacity-100"
+                            : "opacity-0 group-hover/tile:opacity-100 group-focus-visible/tile:opacity-100"
+                        }`}
+                      >
+                        {isSelected && isPlaying ? (
+                          <Pause className="size-6" />
+                        ) : (
+                          <Play className="size-6 translate-x-px" />
+                        )}
+                      </span>
+                      {isSelected && isPlaying ? (
+                        <span className="absolute bottom-1.5 right-1.5 inline-flex items-center rounded-md bg-black/60 px-1.5 py-1 text-white">
+                          <PlayingBars />
+                        </span>
+                      ) : null}
+                    </span>
+                    <span className="mt-1.5 block truncate text-xs font-semibold text-foreground">
+                      {item.name}
+                    </span>
+                    <span className="block text-[0.68rem] tabular-nums text-muted-foreground">
+                      {item.durationSeconds
+                        ? formatTime(item.durationSeconds)
+                        : null}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ))}
+    </div>
+  );
+}
 
 /*
  * Lyrics arrive as the generator received them: [Section] markers on their own
@@ -132,8 +281,11 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
   } = useMusic();
 
   const [genre, setGenre] = useState(ALL_GENRES);
-  const [panel, setPanel] = useState<"tracks" | "lyrics">("tracks");
+  const [panel, setPanel] = useState<Panel>("tracks");
   const listRef = useRef<HTMLUListElement | null>(null);
+  const coversRef = useRef<HTMLDivElement | null>(null);
+  /* Tracks and Covers are two views of the same list, so both take the genre filter. */
+  const isListPanel = panel === "tracks" || panel === "covers";
 
   const genres = [
     ALL_GENRES,
@@ -191,7 +343,7 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
       return;
     }
 
-    const list = listRef.current;
+    const list = panel === "covers" ? coversRef.current : listRef.current;
     const row = list?.querySelector<HTMLElement>(`[data-id="${selectedId}"]`);
     if (!list || !row) return;
 
@@ -203,7 +355,7 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
     } else if (rowBounds.bottom > listBounds.bottom) {
       list.scrollTop += rowBounds.bottom - listBounds.bottom;
     }
-  }, [selectedId, genre]);
+  }, [selectedId, genre, panel]);
 
   const step = (delta: number) => {
     if (!visibleTracks.length) return;
@@ -235,7 +387,30 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
       style={{ "--track-accent": labelColorFor(track.genre) } as CSSProperties}
     >
       {/* Now playing */}
-      <div className="glass-panel flex flex-col items-center rounded-[1.5rem] p-6 text-center sm:p-8 lg:max-h-[38rem]">
+      <div className="glass-panel relative isolate flex flex-col items-center overflow-hidden rounded-[1.5rem] p-6 text-center sm:p-8 lg:max-h-[38rem]">
+        {/*
+         * The cover as the room the player sits in. Only lightly blurred, so the photo
+         * still reads as a photo, then covered by a vertical ramp to the panel
+         * background — the top keeps the image, everything from the title down sits on
+         * solid ground so no control ever competes with it.
+         *
+         * Scaled up rather than fitted: several covers have a sleeve border baked into
+         * the art, and at 1:1 that border reads as a stray frame around the panel. The
+         * zoom crops it off, and takes some of the corner lettering with it.
+         * `isolate` on the panel is what lets a -z-10 child paint above .glass-panel's
+         * own background instead of disappearing behind it.
+         */}
+        {track.thumbnail ? (
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+            <img
+              src={track.thumbnail}
+              alt=""
+              className="size-full scale-125 object-cover object-center blur-[3px]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/75 to-background" />
+          </div>
+        ) : null}
+
         <button
           type="button"
           onClick={toggle}
@@ -404,7 +579,7 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
               })}
             </div>
             <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
-              {panel === "tracks"
+              {isListPanel
                 ? `${visibleTracks.length} of ${tracks.length} · ${formatTotal(visibleRuntime)}`
                 : track.name}
             </span>
@@ -417,7 +592,7 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
            * so the select keeps appearance-none and paints its own.
            */}
           <div
-            hidden={panel !== "tracks"}
+            hidden={!isListPanel}
             className="mt-3 flex items-center gap-2"
           >
             <div className="relative min-w-0 flex-1">
@@ -453,6 +628,18 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
 
         {panel === "lyrics" ? <LyricsView track={track} /> : null}
 
+        {panel === "covers" ? (
+          <CoversView
+            tracks={visibleTracks}
+            selectedId={selectedId}
+            isPlaying={isPlaying}
+            onSelect={handleSelect}
+            /* Only group when the user has not already narrowed to one genre. */
+            grouped={genre === ALL_GENRES}
+            containerRef={coversRef}
+          />
+        ) : null}
+
         <ul
           ref={listRef}
           hidden={panel !== "tracks"}
@@ -480,22 +667,31 @@ export function MusicPlayer({ tracks }: { tracks: AIWorkItem[] }) {
                         }
                       : undefined
                   }
-                  className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                  className={`group/row flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                     isSelected ? "" : "hover:bg-secondary"
                   }`}
                 >
-                  <span
-                    className={`inline-flex size-9 shrink-0 items-center justify-center rounded-full ${
-                      isSelected
-                        ? "bg-[var(--track-accent)] text-white"
-                        : "bg-secondary text-muted-foreground"
-                    }`}
-                  >
-                    {isSelected && isPlaying ? (
-                      <Pause className="size-4" />
-                    ) : (
-                      <Play className="size-4 translate-x-px" />
-                    )}
+                  {/*
+                   * Cover art is uncontrolled, so the icon rides a scrim rather than
+                   * sitting bare on the image — a white glyph on a pale cover fails
+                   * contrast. The scrim is always on for the selected row and appears
+                   * on hover or keyboard focus for the rest.
+                   */}
+                  <span className="relative size-10 shrink-0 overflow-hidden">
+                    <CoverArt track={item} size="sm" />
+                    <span
+                      className={`absolute inset-0 flex items-center justify-center bg-black/45 text-white transition-opacity ${
+                        isSelected
+                          ? "opacity-100"
+                          : "opacity-0 group-hover/row:opacity-100 group-focus-visible/row:opacity-100"
+                      }`}
+                    >
+                      {isSelected && isPlaying ? (
+                        <Pause className="size-4" />
+                      ) : (
+                        <Play className="size-4 translate-x-px" />
+                      )}
+                    </span>
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-sm font-semibold text-foreground">

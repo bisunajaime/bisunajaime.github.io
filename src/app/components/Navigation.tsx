@@ -22,7 +22,7 @@ import { useTheme } from "next-themes";
 import { cn } from "./shared/utils";
 import { useMusic } from "../audio/MusicProvider";
 import { formatTime, labelColorFor, sliderFill } from "../audio/trackDisplay";
-import { Vinyl } from "../audio/Vinyl";
+import { CoverArt } from "../audio/CoverArt";
 import { Waveform } from "../audio/Waveform";
 
 interface NavigationProps {
@@ -266,12 +266,8 @@ function MiniPlayer({ onOpenSection }: { onOpenSection: () => void }) {
         >
           <div className="mini-player-in rounded-2xl border border-border bg-popover p-3 shadow-[var(--shadow-soft)]">
             <div className="flex items-center gap-2.5">
-              <span className="size-10 shrink-0" aria-hidden="true">
-                <Vinyl
-                  isSpinning={isPlaying && !isMuted}
-                  labelColor={labelColorFor(track.genre)}
-                  compact
-                />
+              <span className="size-10 shrink-0 overflow-hidden">
+                <CoverArt track={track} size="sm" />
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-sm font-semibold text-foreground">

@@ -8,6 +8,11 @@ export interface AIWorkItem {
   description?: string;
   /** Cover art / poster / screenshot shown in the grid tile. */
   thumbnail?: string;
+  /**
+   * Music only — the 128px cover, for list rows and the nav mini player. Rows would
+   * otherwise pull the 640px file 42 times over.
+   */
+  thumbnailSmall?: string;
   /** Full-size source opened in the lightbox. Falls back to thumbnail. */
   url?: string;
   /** Where the tile links to — track, video, or live site. */
@@ -37,6 +42,8 @@ export const aiMusic: AIWorkItem[] = [
     genre: "Lo-fi Hip-Hop",
     durationSeconds: 74,
     audioSrc: "/assets/audio/rain-study.mp3",
+    thumbnail: "/assets/images/tracks/rain-study.webp",
+    thumbnailSmall: "/assets/images/tracks/rain-study-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -47,6 +54,8 @@ export const aiMusic: AIWorkItem[] = [
     genre: "Ambient",
     durationSeconds: 118,
     audioSrc: "/assets/audio/fog-walk.mp3",
+    thumbnail: "/assets/images/tracks/fog-walk.webp",
+    thumbnailSmall: "/assets/images/tracks/fog-walk-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -57,6 +66,8 @@ export const aiMusic: AIWorkItem[] = [
     genre: "Ambient",
     durationSeconds: 71,
     audioSrc: "/assets/audio/porch-fireflies.mp3",
+    thumbnail: "/assets/images/tracks/porch-fireflies.webp",
+    thumbnailSmall: "/assets/images/tracks/porch-fireflies-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -67,6 +78,8 @@ export const aiMusic: AIWorkItem[] = [
     genre: "Lo-fi Hip-Hop",
     durationSeconds: 97,
     audioSrc: "/assets/audio/crate-digging.mp3",
+    thumbnail: "/assets/images/tracks/crate-digging.webp",
+    thumbnailSmall: "/assets/images/tracks/crate-digging-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -77,6 +90,8 @@ export const aiMusic: AIWorkItem[] = [
     genre: "Jazz",
     durationSeconds: 137,
     audioSrc: "/assets/audio/rhodes-after-hours.mp3",
+    thumbnail: "/assets/images/tracks/rhodes-after-hours.webp",
+    thumbnailSmall: "/assets/images/tracks/rhodes-after-hours-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -87,6 +102,8 @@ export const aiMusic: AIWorkItem[] = [
     genre: "Lo-fi Hip-Hop",
     durationSeconds: 136,
     audioSrc: "/assets/audio/midnight-lane.mp3",
+    thumbnail: "/assets/images/tracks/midnight-lane.webp",
+    thumbnailSmall: "/assets/images/tracks/midnight-lane-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -97,6 +114,8 @@ export const aiMusic: AIWorkItem[] = [
     genre: "Ambient",
     durationSeconds: 114,
     audioSrc: "/assets/audio/weightless.mp3",
+    thumbnail: "/assets/images/tracks/weightless.webp",
+    thumbnailSmall: "/assets/images/tracks/weightless-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -107,6 +126,8 @@ export const aiMusic: AIWorkItem[] = [
     genre: "Lo-fi Hip-Hop",
     durationSeconds: 99,
     audioSrc: "/assets/audio/headphones-on.mp3",
+    thumbnail: "/assets/images/tracks/headphones-on.webp",
+    thumbnailSmall: "/assets/images/tracks/headphones-on-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -117,6 +138,8 @@ export const aiMusic: AIWorkItem[] = [
     genre: "Ambient",
     durationSeconds: 56,
     audioSrc: "/assets/audio/after-the-rain.mp3",
+    thumbnail: "/assets/images/tracks/after-the-rain.webp",
+    thumbnailSmall: "/assets/images/tracks/after-the-rain-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -127,6 +150,8 @@ export const aiMusic: AIWorkItem[] = [
     genre: "Ambient",
     durationSeconds: 57,
     audioSrc: "/assets/audio/felt-piano.mp3",
+    thumbnail: "/assets/images/tracks/felt-piano.webp",
+    thumbnailSmall: "/assets/images/tracks/felt-piano-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -137,6 +162,8 @@ export const aiMusic: AIWorkItem[] = [
     genre: "Soul",
     durationSeconds: 115,
     audioSrc: "/assets/audio/silk-hours.mp3",
+    thumbnail: "/assets/images/tracks/silk-hours.webp",
+    thumbnailSmall: "/assets/images/tracks/silk-hours-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -147,6 +174,8 @@ export const aiMusic: AIWorkItem[] = [
     genre: "Acoustic",
     durationSeconds: 54,
     audioSrc: "/assets/audio/fireside.mp3",
+    thumbnail: "/assets/images/tracks/fireside.webp",
+    thumbnailSmall: "/assets/images/tracks/fireside-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -157,6 +186,8 @@ export const aiMusic: AIWorkItem[] = [
     genre: "Downtempo",
     durationSeconds: 55,
     audioSrc: "/assets/audio/hollow-room.mp3",
+    thumbnail: "/assets/images/tracks/hollow-room.webp",
+    thumbnailSmall: "/assets/images/tracks/hollow-room-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -167,6 +198,8 @@ export const aiMusic: AIWorkItem[] = [
     genre: "Chillwave",
     durationSeconds: 55,
     audioSrc: "/assets/audio/save-point.mp3",
+    thumbnail: "/assets/images/tracks/save-point.webp",
+    thumbnailSmall: "/assets/images/tracks/save-point-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -177,6 +210,8 @@ export const aiMusic: AIWorkItem[] = [
     genre: "Ambient",
     durationSeconds: 64,
     audioSrc: "/assets/audio/quiet-magic.mp3",
+    thumbnail: "/assets/images/tracks/quiet-magic.webp",
+    thumbnailSmall: "/assets/images/tracks/quiet-magic-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -187,6 +222,8 @@ export const aiMusic: AIWorkItem[] = [
     genre: "Synthwave",
     durationSeconds: 115,
     audioSrc: "/assets/audio/machine-handshake.mp3",
+    thumbnail: "/assets/images/tracks/machine-handshake.webp",
+    thumbnailSmall: "/assets/images/tracks/machine-handshake-sm.webp",
     madeWith: "MiniMax Music3",
     lyrics: `[Intro]
 [Verse]
@@ -213,6 +250,8 @@ What is a human for?
     genre: "Synthwave",
     durationSeconds: 130,
     audioSrc: "/assets/audio/silent-compilers.mp3",
+    thumbnail: "/assets/images/tracks/silent-compilers.webp",
+    thumbnailSmall: "/assets/images/tracks/silent-compilers-sm.webp",
     madeWith: "MiniMax Music3",
     lyrics: `[Intro]
 [Verse]
@@ -246,6 +285,8 @@ What is a human for?
     genre: "Ambient",
     durationSeconds: 115,
     audioSrc: "/assets/audio/sigterm-to-the-heart.mp3",
+    thumbnail: "/assets/images/tracks/sigterm-to-the-heart.webp",
+    thumbnailSmall: "/assets/images/tracks/sigterm-to-the-heart-sm.webp",
     madeWith: "MiniMax Music3",
     lyrics: `[Intro]
 [Verse]
@@ -277,6 +318,8 @@ The signal tears the whole world apart
     genre: "Downtempo",
     durationSeconds: 162,
     audioSrc: "/assets/audio/legacy-code.mp3",
+    thumbnail: "/assets/images/tracks/legacy-code.webp",
+    thumbnailSmall: "/assets/images/tracks/legacy-code-sm.webp",
     madeWith: "MiniMax Music3",
     lyrics: `[Intro]
 [Verse]
@@ -309,6 +352,8 @@ One more sprint through a promised land
     genre: "Lo-fi Rap",
     durationSeconds: 110,
     audioSrc: "/assets/audio/train-the-machine.mp3",
+    thumbnail: "/assets/images/tracks/train-the-machine.webp",
+    thumbnailSmall: "/assets/images/tracks/train-the-machine-sm.webp",
     madeWith: "MiniMax Music3",
     lyrics: `[Intro]
 [Verse]
@@ -344,6 +389,8 @@ The prompt is the new resume, isn't it?
     genre: "Lo-fi Rap",
     durationSeconds: 108,
     audioSrc: "/assets/audio/grace-period.mp3",
+    thumbnail: "/assets/images/tracks/grace-period.webp",
+    thumbnailSmall: "/assets/images/tracks/grace-period-sm.webp",
     madeWith: "MiniMax Music3",
     lyrics: `[Intro]
 [Verse]
@@ -379,6 +426,8 @@ Maybe leave my old key in the locks
     genre: "Lo-fi Rap",
     durationSeconds: 91,
     audioSrc: "/assets/audio/duplicate-branch.mp3",
+    thumbnail: "/assets/images/tracks/duplicate-branch.webp",
+    thumbnailSmall: "/assets/images/tracks/duplicate-branch-sm.webp",
     madeWith: "MiniMax Music3",
     lyrics: `[Intro]
 [Verse]
@@ -414,6 +463,8 @@ Someone who fixes my everything
     genre: "Chillwave",
     durationSeconds: 63,
     audioSrc: "/assets/audio/tape-dreams.mp3",
+    thumbnail: "/assets/images/tracks/tape-dreams.webp",
+    thumbnailSmall: "/assets/images/tracks/tape-dreams-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -424,6 +475,8 @@ Someone who fixes my everything
     genre: "Lo-fi Hip-Hop",
     durationSeconds: 73,
     audioSrc: "/assets/audio/night-studio.mp3",
+    thumbnail: "/assets/images/tracks/night-studio.webp",
+    thumbnailSmall: "/assets/images/tracks/night-studio-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -434,6 +487,8 @@ Someone who fixes my everything
     genre: "Lo-fi Hip-Hop",
     durationSeconds: 89,
     audioSrc: "/assets/audio/rainy-cafe.mp3",
+    thumbnail: "/assets/images/tracks/rainy-cafe.webp",
+    thumbnailSmall: "/assets/images/tracks/rainy-cafe-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -444,6 +499,8 @@ Someone who fixes my everything
     genre: "Chillwave",
     durationSeconds: 110,
     audioSrc: "/assets/audio/neon-night-drive.mp3",
+    thumbnail: "/assets/images/tracks/neon-night-drive.webp",
+    thumbnailSmall: "/assets/images/tracks/neon-night-drive-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -454,6 +511,8 @@ Someone who fixes my everything
     genre: "Jazz",
     durationSeconds: 63,
     audioSrc: "/assets/audio/rooftop-midnight.mp3",
+    thumbnail: "/assets/images/tracks/rooftop-midnight.webp",
+    thumbnailSmall: "/assets/images/tracks/rooftop-midnight-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -464,6 +523,8 @@ Someone who fixes my everything
     genre: "Lo-fi Hip-Hop",
     durationSeconds: 76,
     audioSrc: "/assets/audio/fogged-window.mp3",
+    thumbnail: "/assets/images/tracks/fogged-window.webp",
+    thumbnailSmall: "/assets/images/tracks/fogged-window-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -474,6 +535,8 @@ Someone who fixes my everything
     genre: "Chillwave",
     durationSeconds: 95,
     audioSrc: "/assets/audio/ocean-sunset.mp3",
+    thumbnail: "/assets/images/tracks/ocean-sunset.webp",
+    thumbnailSmall: "/assets/images/tracks/ocean-sunset-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -484,6 +547,8 @@ Someone who fixes my everything
     genre: "Jazz",
     durationSeconds: 81,
     audioSrc: "/assets/audio/sunday-morning-cafe.mp3",
+    thumbnail: "/assets/images/tracks/sunday-morning-cafe.webp",
+    thumbnailSmall: "/assets/images/tracks/sunday-morning-cafe-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -494,6 +559,8 @@ Someone who fixes my everything
     genre: "Jazz",
     durationSeconds: 113,
     audioSrc: "/assets/audio/blue-hour.mp3",
+    thumbnail: "/assets/images/tracks/blue-hour.webp",
+    thumbnailSmall: "/assets/images/tracks/blue-hour-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -504,6 +571,8 @@ Someone who fixes my everything
     genre: "Jazz",
     durationSeconds: 114,
     audioSrc: "/assets/audio/basement-club.mp3",
+    thumbnail: "/assets/images/tracks/basement-club.webp",
+    thumbnailSmall: "/assets/images/tracks/basement-club-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -514,6 +583,8 @@ Someone who fixes my everything
     genre: "Jazz",
     durationSeconds: 82,
     audioSrc: "/assets/audio/poolside-afternoon.mp3",
+    thumbnail: "/assets/images/tracks/poolside-afternoon.webp",
+    thumbnailSmall: "/assets/images/tracks/poolside-afternoon-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -524,6 +595,8 @@ Someone who fixes my everything
     genre: "Jazz",
     durationSeconds: 100,
     audioSrc: "/assets/audio/last-train-home.mp3",
+    thumbnail: "/assets/images/tracks/last-train-home.webp",
+    thumbnailSmall: "/assets/images/tracks/last-train-home-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -534,6 +607,8 @@ Someone who fixes my everything
     genre: "Jazz",
     durationSeconds: 86,
     audioSrc: "/assets/audio/parisian-espresso.mp3",
+    thumbnail: "/assets/images/tracks/parisian-espresso.webp",
+    thumbnailSmall: "/assets/images/tracks/parisian-espresso-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -544,6 +619,8 @@ Someone who fixes my everything
     genre: "Jazz",
     durationSeconds: 97,
     audioSrc: "/assets/audio/dim-lounge.mp3",
+    thumbnail: "/assets/images/tracks/dim-lounge.webp",
+    thumbnailSmall: "/assets/images/tracks/dim-lounge-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -554,6 +631,8 @@ Someone who fixes my everything
     genre: "Jazz",
     durationSeconds: 72,
     audioSrc: "/assets/audio/balcony-sunset.mp3",
+    thumbnail: "/assets/images/tracks/balcony-sunset.webp",
+    thumbnailSmall: "/assets/images/tracks/balcony-sunset-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -564,6 +643,8 @@ Someone who fixes my everything
     genre: "Jazz",
     durationSeconds: 107,
     audioSrc: "/assets/audio/rooftop-evening.mp3",
+    thumbnail: "/assets/images/tracks/rooftop-evening.webp",
+    thumbnailSmall: "/assets/images/tracks/rooftop-evening-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -574,6 +655,8 @@ Someone who fixes my everything
     genre: "Lo-fi Hip-Hop",
     durationSeconds: 74,
     audioSrc: "/assets/audio/rain-on-glass.mp3",
+    thumbnail: "/assets/images/tracks/rain-on-glass.webp",
+    thumbnailSmall: "/assets/images/tracks/rain-on-glass-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -584,6 +667,8 @@ Someone who fixes my everything
     genre: "Lo-fi Hip-Hop",
     durationSeconds: 130,
     audioSrc: "/assets/audio/home-videos.mp3",
+    thumbnail: "/assets/images/tracks/home-videos.webp",
+    thumbnailSmall: "/assets/images/tracks/home-videos-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -594,6 +679,8 @@ Someone who fixes my everything
     genre: "Ambient",
     durationSeconds: 129,
     audioSrc: "/assets/audio/field-at-dawn.mp3",
+    thumbnail: "/assets/images/tracks/field-at-dawn.webp",
+    thumbnailSmall: "/assets/images/tracks/field-at-dawn-sm.webp",
     madeWith: "MiniMax Music3",
   },
   {
@@ -604,6 +691,8 @@ Someone who fixes my everything
     genre: "Downtempo",
     durationSeconds: 103,
     audioSrc: "/assets/audio/empty-station.mp3",
+    thumbnail: "/assets/images/tracks/empty-station.webp",
+    thumbnailSmall: "/assets/images/tracks/empty-station-sm.webp",
     madeWith: "MiniMax Music3",
   },
 ];

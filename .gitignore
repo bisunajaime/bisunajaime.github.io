@@ -32,3 +32,6 @@ Thumbs.db
 # Optional: local netlify/vercel
 .netlify/
 .vercel/
+
+# Working notes: prompt archives, ComfyUI graphs, art/display specs.
+/guidelines/

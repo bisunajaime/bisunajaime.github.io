@@ -171,11 +171,17 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   }, [ensureAudioGraph, resumeContext]);
 
   /*
-   * First load opens on something calm. The library also holds vocal tracks
-   * about layoffs and being replaced by a model — fine to find, a strange thing
-   * to greet a first-time visitor with unprompted. So the opening pick is
-   * restricted to instrumental lo-fi and chill genres; everything else stays
-   * reachable through the player and auto-advance.
+   * First load picks a track but does NOT start it. Sound on arrival is a
+   * surprise the visitor did not ask for, and the recovery path made it worse:
+   * a blocked autoplay used to arm a document-wide listener, so the first click
+   * anywhere — a nav link, a project card — began playing music. Nothing is
+   * audible now until the transport is pressed.
+   *
+   * The pick still matters even paused, because it is the track on display and
+   * the one that plays first. The library holds vocal tracks about layoffs and
+   * being replaced by a model — fine to find, a strange thing to lead with — so
+   * the opener stays restricted to instrumental lo-fi and chill genres.
+   * Everything else stays reachable through the player and auto-advance.
    */
   useEffect(() => {
     if (!tracks.length) return;
@@ -188,7 +194,6 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     const pool = openers.length ? openers : tracks;
     const pick = pool[Math.floor(Math.random() * pool.length)];
 
-    shouldAutoPlayRef.current = true;
     setSelectedId(pick.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

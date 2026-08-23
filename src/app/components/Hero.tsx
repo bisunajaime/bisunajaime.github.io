@@ -21,27 +21,21 @@ const FADE_LEFT =
  * compound because each layer frosts the output of the one beneath it, so the
  * effective blur at the far left lands well past the nav's 20px.
  *
- * Every ramp below ends sooner in light mode. The glass is white there
- * (--surface-glass is rgba(255,255,255,0.75)) and so is the scrim, which over
- * the dark cut is invisible but over the bright one is a white wash that was
- * still ~30% strong by the time it crossed the subject's face — a soft vertical
- * seam bleaching one half of it. The copy sits well inside the shortened ramps,
- * so it keeps the same ground to read against.
+ * The blur runs the same width in both themes — it softens without lightening,
+ * so it costs the subject nothing.
+ *
+ * The two white layers below do not. --surface-glass is rgba(255,255,255,0.75)
+ * in light and the scrim is white too, so at the dark extents they wash the
+ * subject out; at 66%/100% the face visibly bleaches. They stop earlier here:
+ * far enough right to keep the long, gradual fade, short of where it costs the
+ * frame its contrast.
  */
-const FROST_LAYERS = {
-  dark: [
-    { blur: 3, stop: 82 },
-    { blur: 6, stop: 66 },
-    { blur: 12, stop: 50 },
-    { blur: 20, stop: 34 },
-  ],
-  light: [
-    { blur: 3, stop: 62 },
-    { blur: 6, stop: 52 },
-    { blur: 12, stop: 42 },
-    { blur: 20, stop: 30 },
-  ],
-};
+const FROST_LAYERS = [
+  { blur: 3, stop: 82 },
+  { blur: 6, stop: 66 },
+  { blur: 12, stop: 50 },
+  { blur: 20, stop: 34 },
+];
 
 const frostMask = (stop: number) =>
   `linear-gradient(to right, #000 0%, #000 ${Math.round(stop * 0.35)}%, transparent ${stop}%)`;
@@ -50,7 +44,7 @@ const frostMask = (stop: number) =>
 const TINT_MASK = {
   dark: "linear-gradient(to right, #000 0%, #000 26%, rgba(0,0,0,0.35) 48%, transparent 66%)",
   light:
-    "linear-gradient(to right, #000 0%, #000 20%, rgba(0,0,0,0.26) 34%, transparent 50%)",
+    "linear-gradient(to right, #000 0%, #000 22%, rgba(0,0,0,0.35) 41%, transparent 56%)",
 };
 
 /*
@@ -62,14 +56,14 @@ const TINT_MASK = {
  */
 const SHEEN = {
   dark: { left: "38%", opacity: 0.7 },
-  light: { left: "29%", opacity: 0.22 },
+  light: { left: "32%", opacity: 0.22 },
 };
 
 /* Solid ground under the copy, ramping off before it reaches the subject. */
 const SCRIM = {
   dark: "linear-gradient(to right, var(--background) 0%, color-mix(in srgb, var(--background) 45%, transparent) 50%, transparent 100%)",
   light:
-    "linear-gradient(to right, var(--background) 0%, color-mix(in srgb, var(--background) 42%, transparent) 30%, transparent 56%)",
+    "linear-gradient(to right, var(--background) 0%, color-mix(in srgb, var(--background) 45%, transparent) 36%, transparent 72%)",
 };
 /* Vertical sheen sits where the frost thins out, fading at top and bottom. */
 const SPECULAR_MASK =
@@ -187,7 +181,7 @@ export function Hero() {
           aria-hidden="true"
           tabIndex={-1}
         />
-        {FROST_LAYERS[tone].map((layer) => (
+        {FROST_LAYERS.map((layer) => (
           <div
             key={layer.blur}
             className="frost-layer"

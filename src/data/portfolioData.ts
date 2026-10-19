@@ -96,6 +96,37 @@ export const portfolioData = {
   },
   projects: [
     {
+      name: "FitForge",
+      ai_assisted: true,
+      description: "A local-first AI virtual try-on studio: upload one full-body photo, drop in screenshots of up to 12 clothes and accessories, and Qwen-Image 2.1 dresses you in the whole look, either in-process through Diffusers or on an existing ComfyUI server, including one on another PC. Try-on and refinement are the same image-edit call, so any result (or the original photo) can be restyled in plain English, and every version is kept with its lineage for before/after comparison against the original, the previous version or any other. Item labels shape the prompt, outfits with more than nine pieces are collaged into a single reference sheet, and a Pet mode resizes clothes to an animal's body while keeping its fur and markings. A closet keeps every item with its label and product link, jobs run on a single-GPU queue that survives restarts and waits for an offline ComfyUI, and a Demo mode simulates results without a GPU.",
+      short_description: "A private AI fitting room. Upload a photo of yourself, paste screenshots of clothes you're eyeing, and see the whole outfit on you, then restyle the shot with a sentence. Everything runs on your own machine.",
+      stack: [
+        "React",
+        "TypeScript",
+        "Vite",
+        "Tailwind CSS",
+        "Python",
+        "FastAPI",
+        "SQLite",
+        "ComfyUI"
+      ],
+      is_desktop: true,
+      learnings: "Designed one model-agnostic edit(images, prompt) interface that powers both try-on and text edits across a Diffusers backend, a ComfyUI client that templates API workflows and injects LoRA nodes, and a demo provider. Built a single-GPU job queue with live progress, cancellation and restart-safe persistence, and wrote prompt templates that address condition images by index so identity, pose and background survive while only the garments change.",
+      cover_img: "/assets/images/fitforge/cover.webp",
+      sample_ui: [
+        "/assets/images/fitforge/web/1.webp",
+        "/assets/images/fitforge/web/2.webp",
+        "/assets/images/fitforge/web/3.webp",
+        "/assets/images/fitforge/web/4.webp",
+        "/assets/images/fitforge/web/5.webp",
+      ],
+      demo_video: "",
+      git_url: "",
+      demo_app: "",
+      demo_url: "",
+      color: "#6d5cf0"
+    },
+    {
       name: "Branching Tales",
       ai_assisted: true,
       description: "An illustrated choose-your-own-adventure reader with nine branching stories, each told in one of five visual themes (painterly gothic, anime, cartoon, black-and-white ink, or storybook watercolour) that restyle the art, palette, typography and atmosphere effects. Readers pick a protagonist, read down one continuous scroll, and choose at every crossroads; each decision auto-saves to localStorage, and \"What if…\" branches a new playthrough from any earlier choice. Three reading layouts (immersive, split, inline) crossfade the scene art as you scroll, alongside a fog-of-war story map, rule-based achievements, ambient sound that crossfades between scenes, and spoiler-light share pages with a canvas-drawn PNG card. Every illustration was generated with ComfyUI (Qwen Image 2.1 Turbo) and the ambience with Stable Audio Open, served from Cloudflare R2.",

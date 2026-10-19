@@ -123,7 +123,7 @@ export const portfolioData = {
       demo_video: "",
       git_url: "",
       demo_app: "",
-      demo_url: "",
+      demo_url: "https://fitforge-studio.vercel.app/",
       color: "#6d5cf0"
     },
     {

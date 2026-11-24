@@ -22,7 +22,8 @@ The design comes from the Figma file **"Portfolio - Redesign"** (page `bisunajai
 | Styling | Tailwind CSS v4.1.12 (`@tailwindcss/vite`), CSS-based config via `@theme` |
 | Font | Inter variable (400–600, Latin subset), self-hosted at `public/fonts/` |
 | Icons | `lucide-react` (only `ArrowUpRight` for external links) |
-| Hosting | Vercel. `gh-pages` only hosts a redirect — never run the disabled deploy script |
+| Rendering | Prerendered at build (static HTML) + client hydration — see SEO below |
+| Hosting | Vercel (`vercel.json`: cache headers only). `gh-pages` only hosts a redirect — never run the disabled deploy script |
 
 **No testing framework is installed.**
 
@@ -32,17 +33,23 @@ The design comes from the Figma file **"Portfolio - Redesign"** (page `bisunajai
 
 ```
 /
-├── index.html                    # SPA entry: meta/OG tags, font + hero-image preloads, JSON-LD
-├── vite.config.ts                # React + Tailwind plugins, @/ alias
+├── index.html                    # Shell: icons, preloads, <!--seo-head--> placeholder, empty #root
+├── vite.config.ts                # React + Tailwind + SEO plugins; hashed bundles → /_app/
+├── vercel.json                   # Cache-Control headers (/_app immutable, fonts, images)
+├── scripts/vite-plugin-seo.ts    # Injects head tags, prerenders #root, writes sitemap.xml
 ├── public/
 │   ├── fonts/                    # inter-var-latin.woff2 (+ OFL license)
 │   ├── og-image.jpg              # 1200×630 social preview (exported from the Figma OG frame)
+│   ├── 404.html                  # Standalone not-found page (Vercel serves it with a 404 status)
+│   ├── robots.txt                # sitemap.xml is generated at build — don't add one to public/
 │   ├── assets/images/home/       # Hero + About images (WebP, 1× and 2×)
 │   ├── assets/images/<slug>/     # Project covers (cover.webp, optional cover-800.webp)
 │   └── files/                    # Resume PDF
 ├── assets/generated/             # Prompts, manifest, workflows for the generated images (raw renders git-ignored)
 └── src/
-    ├── main.tsx                  # Mounts <App />
+    ├── main.tsx                  # Hydrates the prerendered HTML (createRoot in dev)
+    ├── entry-server.tsx          # renderToString entry used by the SEO plugin at build
+    ├── seo.ts                    # Title, description, OG/Twitter tags and JSON-LD — single source
     ├── styles/
     │   ├── index.css             # Imports fonts.css, tailwind.css, theme.css
     │   ├── fonts.css             # @font-face (font-display: swap)
@@ -72,7 +79,7 @@ The design comes from the Figma file **"Portfolio - Redesign"** (page `bisunajai
 
 ```bash
 npm run dev        # Vite dev server
-npm run build      # Production build → dist/
+npm run build      # Production build → dist/ (also prerenders index.html and writes sitemap.xml)
 npx vite preview   # Serve dist/ locally
 ```
 
@@ -110,6 +117,13 @@ Rules:
 - Text in `[square brackets]` is a placeholder Jaime still has to fill — keep it as-is unless told otherwise.
 
 ---
+
+## SEO
+
+- **Edit `src/seo.ts`** for the title, description, social tags and JSON-LD; never hand-write those tags in `index.html` (it keeps only the `<!--seo-head-->` placeholder, and the build fails without it).
+- JSON-LD is a WebSite + ProfilePage + Person graph built from `homepage.ts`; every value must be visible on the page. Don't add ratings, reviews or dates that aren't real.
+- The homepage is **prerendered**: anything rendered by `<App />` must work in `renderToString` (no `window`/`document` at module scope or during render — use effects or event handlers). Hydration mismatches show up as console errors in the production build; check with `npx vite preview`.
+- One `<h1>` (the hero). Section headings are `<h2>` with `aria-labelledby`.
 
 ## Images
 

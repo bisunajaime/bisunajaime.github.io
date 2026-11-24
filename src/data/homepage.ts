@@ -77,6 +77,12 @@ export const earlierCopy: Record<string, { label: string; line: string }> = {
 
 export const impactPlaceholder = "[Add what you shipped here — 1–2 lines on impact]";
 
+/** One or two lines per job, keyed by experience name in portfolioData. Source: public/files/JaimeBisunaResume.pdf. */
+export const experienceImpact: Record<string, string> = {
+  Baret: "Delivered 175+ user stories and resolved 70+ production issues across 7 client environments. Owned role-based message routing and CI/CD.",
+  "Maliksi Creative Technologies, Inc.": "Shipped GradGuru and MyCoach, two education apps for the US market, and led their Flutter v1 to v2 migration.",
+};
+
 export const about = {
   paragraphs: [
     "I focus on dependable architecture, accessible UI, and shipping features that solve real user problems — clean UI systems on the front, reliable APIs behind them.",

@@ -1,5 +1,5 @@
 import { portfolioData } from "../../data/portfolioData";
-import { impactPlaceholder } from "../../data/homepage";
+import { experienceImpact, impactPlaceholder } from "../../data/homepage";
 import { ExperienceItem } from "./ExperienceItem";
 
 // "August 2024" → "Aug 2024"
@@ -20,7 +20,8 @@ export function Experience() {
               company={companyLabel(job.name)}
               website={job.website}
               dates={`${shortMonth(job.from)} – ${shortMonth(job.to)}`}
-              impact={impactPlaceholder}
+              impact={experienceImpact[job.name] ?? impactPlaceholder}
+              isPlaceholder={!experienceImpact[job.name]}
             />
           ))}
         </ol>

@@ -18,6 +18,8 @@ export const hero = {
 export const work = {
   intro: "Recent projects I built. All six are AI-assisted.",
   featuredCount: 6,
+  /** Shown first, in this order; every other project keeps its portfolioData order. */
+  pinned: ["Greenwash Laundry POS", "PackPal", "PlateLoad"],
 };
 
 const RESULT_PLACEHOLDER = "[Add project result here]";

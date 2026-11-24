@@ -5,7 +5,9 @@ import { EarlierWorkRow } from "./EarlierWorkRow";
 
 type Project = (typeof portfolioData.projects)[number] & { short_description?: string };
 
-const projects = portfolioData.projects as Project[];
+const all = portfolioData.projects as Project[];
+const pinned = work.pinned.flatMap((name) => all.filter((p) => p.name === name));
+const projects = [...pinned, ...all.filter((p) => !pinned.includes(p))];
 const featured = projects.slice(0, work.featuredCount);
 
 // Older projects collapse to one line each; entries sharing a label (the two NeedL apps) become one row.

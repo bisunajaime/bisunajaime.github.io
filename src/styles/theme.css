@@ -1,432 +1,112 @@
-@custom-variant dark (&:is(.dark *));
+/*
+ * Design tokens — mirror the Figma "Portfolio - Redesign" variables and text styles.
+ * Tailwind's default colours and radii are cleared so only these tokens exist.
+ * Spacing uses Tailwind's default 4px scale, which matches space/4 … space/128 exactly.
+ *
+ * Fluid type: each size runs from its mobile value at 390px to its desktop value at 1440px.
+ */
+@theme {
+  --color-*: initial;
+  --color-bg: #fafaf9; /* page background */
+  --color-surface: #ffffff; /* cards, contact, footer */
+  --color-border: #e7e5e4; /* dividers, card edges (decorative) */
+  --color-placeholder: #eeece9; /* image placeholder fill */
+  --color-fg: #1c1917; /* headings + body · 16.7:1 on bg */
+  --color-fg-muted: #57534e; /* secondary copy · 7.3:1 on bg */
+  --color-fg-subtle: #78716c; /* meta, dates · 4.6:1 on bg */
+  --color-accent: #2f5d3a; /* links, primary button · 7.3:1 on bg */
+  --color-accent-hover: #244a2e; /* hover/pressed · 9.6:1 on bg */
+  --color-on-accent: #ffffff; /* text on accent · 7.6:1 */
 
-:root {
-  color-scheme: light;
-  --font-size: 16px;
-  --font-weight-medium: 600;
-  --font-weight-normal: 400;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
-  /* Apple-inspired semantic system: monochrome + one accent */
-  --background: #ffffff;
-  --foreground: #1d1d1f;
-  --card: #ffffff;
-  --card-foreground: #1d1d1f;
-  --popover: #ffffff;
-  --popover-foreground: #1d1d1f;
-  --primary: #007aff;
-  --primary-foreground: #ffffff;
-  --secondary: #f5f5f7;
-  --secondary-foreground: #1d1d1f;
-  --muted: #f2f2f5;
-  --muted-foreground: rgba(60, 60, 67, 0.78);
-  --accent: #eaf2ff;
-  --accent-foreground: #005fcc;
-  --destructive: #d93025;
-  --destructive-foreground: #ffffff;
-  --border: rgba(60, 60, 67, 0.18);
-  --input: rgba(60, 60, 67, 0.12);
-  --input-background: #f5f5f7;
-  --switch-background: #d1d1d6;
-  --ring: rgba(0, 122, 255, 0.34);
+  --radius-*: initial;
+  --radius-sm: 6px;
+  --radius-md: 12px;
 
-  --chart-1: #007aff;
-  --chart-2: #5a5a60;
-  --chart-3: #7a7a80;
-  --chart-4: #9a9aa0;
-  --chart-5: #b8b8be;
+  --container-content: 70rem; /* 1120 */
+  --container-headline: 55rem; /* 880 */
+  --container-text: 40rem; /* 640 */
 
-  --radius: 1rem;
-  --radius-sm: 0.75rem;
-  --radius-md: 0.875rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
-
-  --page-max-width: 76rem;
-  --section-padding-y: clamp(3.5rem, 8vw, 6rem);
-
-  --surface-glass: rgba(255, 255, 255, 0.75);
-  --surface-glass-border: rgba(255, 255, 255, 0.85);
-  /* Specular sheen along a frosted edge — the bright lip of real glass. */
-  --glass-specular: rgba(255, 255, 255, 0.7);
-  --shadow-soft: 0 20px 50px -38px rgba(0, 0, 0, 0.38);
-  --shadow-subtle: 0 12px 30px -24px rgba(0, 0, 0, 0.22);
-
-  --sidebar: #f8f8fa;
-  --sidebar-foreground: #1d1d1f;
-  --sidebar-primary: #007aff;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #eaf2ff;
-  --sidebar-accent-foreground: #005fcc;
-  --sidebar-border: rgba(60, 60, 67, 0.18);
-  --sidebar-ring: rgba(0, 122, 255, 0.34);
-}
-
-.dark {
-  color-scheme: dark;
-  --background: #0a0a0a;
-  --foreground: #f5f5f7;
-  --card: #111113;
-  --card-foreground: #f5f5f7;
-  --popover: #121214;
-  --popover-foreground: #f5f5f7;
-  --primary: #0a84ff;
-  --primary-foreground: #ffffff;
-  --secondary: #1a1a1d;
-  --secondary-foreground: #f5f5f7;
-  --muted: #1c1c1f;
-  --muted-foreground: rgba(235, 235, 245, 0.72);
-  --accent: #1b2737;
-  --accent-foreground: #9fcbff;
-  --destructive: #ff453a;
-  --destructive-foreground: #ffffff;
-  --border: rgba(235, 235, 245, 0.2);
-  --input: rgba(235, 235, 245, 0.16);
-  --input-background: #1c1c1f;
-  --switch-background: #323236;
-  --ring: rgba(10, 132, 255, 0.4);
-
-  --chart-1: #0a84ff;
-  --chart-2: #8e8e93;
-  --chart-3: #6a6a6f;
-  --chart-4: #4d4d52;
-  --chart-5: #343438;
-
-  --surface-glass: rgba(16, 16, 19, 0.78);
-  --surface-glass-border: rgba(235, 235, 245, 0.16);
-  --glass-specular: rgba(235, 235, 245, 0.16);
-  --shadow-soft: 0 20px 50px -36px rgba(0, 0, 0, 0.72);
-  --shadow-subtle: 0 12px 30px -24px rgba(0, 0, 0, 0.58);
-
-  --sidebar: #121214;
-  --sidebar-foreground: #f5f5f7;
-  --sidebar-primary: #0a84ff;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1b2737;
-  --sidebar-accent-foreground: #9fcbff;
-  --sidebar-border: rgba(235, 235, 245, 0.2);
-  --sidebar-ring: rgba(10, 132, 255, 0.4);
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-input-background: var(--input-background);
-  --color-switch-background: var(--switch-background);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --radius-sm: var(--radius-sm);
-  --radius-md: var(--radius-md);
-  --radius-lg: var(--radius-lg);
-  --radius-xl: var(--radius-xl);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  /* Display — 36/44 → 56/64, Semi Bold, -2% */
+  --text-display: clamp(2.25rem, 1.7857rem + 1.9048vw, 3.5rem);
+  --text-display--line-height: clamp(2.75rem, 2.2857rem + 1.9048vw, 4rem);
+  --text-display--letter-spacing: -0.02em;
+  --text-display--font-weight: 600;
+  /* Heading 2 — 26/34 → 32/40, Semi Bold, -1% */
+  --text-h2: clamp(1.625rem, 1.4857rem + 0.5714vw, 2rem);
+  --text-h2--line-height: clamp(2.125rem, 1.9857rem + 0.5714vw, 2.5rem);
+  --text-h2--letter-spacing: -0.01em;
+  --text-h2--font-weight: 600;
+  /* Heading 3 — 20/28 → 22/30, Semi Bold, -0.5% */
+  --text-h3: clamp(1.25rem, 1.2036rem + 0.1905vw, 1.375rem);
+  --text-h3--line-height: clamp(1.75rem, 1.7036rem + 0.1905vw, 1.875rem);
+  --text-h3--letter-spacing: -0.005em;
+  --text-h3--font-weight: 600;
+  /* Lead — 18/28 → 20/32 */
+  --text-lead: clamp(1.125rem, 1.0786rem + 0.1905vw, 1.25rem);
+  --text-lead--line-height: clamp(1.75rem, 1.6571rem + 0.381vw, 2rem);
+  /* Body — 16/24 → 18/28 */
+  --text-body: clamp(1rem, 0.9536rem + 0.1905vw, 1.125rem);
+  --text-body--line-height: clamp(1.5rem, 1.4071rem + 0.381vw, 1.75rem);
+  /* Small — 15/22 */
+  --text-small: 0.9375rem;
+  --text-small--line-height: 1.375rem;
+  /* UI/Label — 16/24 Medium */
+  --text-label: 1rem;
+  --text-label--line-height: 1.5rem;
+  --text-label--font-weight: 500;
+  /* UI/Tag — 14/20 Medium (the size floor) */
+  --text-tag: 0.875rem;
+  --text-tag--line-height: 1.25rem;
+  --text-tag--font-weight: 500;
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-
   html {
-    font-size: var(--font-size);
-    scroll-behavior: smooth;
-    overflow-x: hidden;
-  }
-
-  body {
-    @apply bg-background text-foreground antialiased;
-    font-family: var(--font-system);
-    line-height: 1.5;
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    overflow-x: hidden;
-    background-image:
-      radial-gradient(circle at 8% -12%,
-        color-mix(in srgb, var(--primary) 9%, transparent),
-        transparent 35%),
-      radial-gradient(circle at 90% 2%,
-        color-mix(in srgb, var(--primary) 6%, transparent),
-        transparent 34%);
-    background-attachment: fixed;
   }
 
-  a {
-    @apply text-foreground;
-  }
-}
-
-@layer utilities {
-  .glass-panel {
-    background-color: var(--surface-glass);
-    border: 1px solid var(--surface-glass-border);
-    backdrop-filter: saturate(180%) blur(20px);
-    box-shadow: var(--shadow-subtle);
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 
-  /*
-   * The AI SLOP joke cursor: a small "SLOP 😭" chip that replaces the pointer
-   * over the heading. An inline SVG, so no image file ships and the emoji comes
-   * from the viewer's own font.
-   *
-   * Drawn as a filled pill rather than bare text because a cursor cannot react to
-   * the theme — dark text would vanish on the dark background and vice versa. The
-   * pill carries its own contrast in both, and a hairline light edge keeps it from
-   * melting into a dark page.
-   *
-   * Hotspot sits at the pill's left edge (8 16) so the label reads to the right of
-   * where you are pointing. Cursor images are capped at 128px, which 84x32 clears.
-   * Safari does not support SVG cursors, so `help` stays as the fallback — the same
-   * cursor the heading had before.
-   */
-  .cursor-slop {
-    cursor:
-      url("data:image/svg+xml,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='84'%20height='32'%20viewBox='0%200%2084%2032'><rect%20x='0.5'%20y='4.5'%20width='83'%20height='23'%20rx='11.5'%20fill='%23111827'%20stroke='%23ffffff'%20stroke-opacity='0.28'/><text%20x='42'%20y='21'%20text-anchor='middle'%20font-family='ui-sans-serif,system-ui,sans-serif'%20font-size='13'%20font-weight='700'%20fill='%23ffffff'>SLOP%20%F0%9F%98%AD</text></svg>") 8 16,
-      help;
+  /* Anchor targets land with breathing room above them. */
+  [id] {
+    scroll-margin-top: 1rem;
   }
 
-  /*
-   * Same frosting recipe as .glass-panel, but as a bare stackable layer: no
-   * tint, border, or shadow of its own. Several of these with rising blur radii
-   * and offset masks ramp the frost gradually — one 20px layer leaves a visible
-   * seam where it stops, a ramp does not. Each layer frosts what the layer
-   * beneath it already frosted, so the radii compound.
-   */
-  .frost-layer {
-    position: absolute;
-    inset: 0;
-    backdrop-filter: saturate(180%) blur(var(--frost-blur, 20px));
-    -webkit-backdrop-filter: saturate(180%) blur(var(--frost-blur, 20px));
-    mask-image: var(--frost-mask);
-    -webkit-mask-image: var(--frost-mask);
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 
-  /*
-   * Anton ships a single weight (400) and has no italic. font-synthesis: none
-   * stops the browser faking a bold or oblique face if anything ever tries.
-   */
-  .font-display {
-    font-family: var(--font-display);
-    font-weight: 400;
-    font-style: normal;
-    font-synthesis: none;
-  }
-
-  .font-body {
-    font-family: var(--font-body);
-    font-synthesis: none;
-  }
-
-  .hero-fade-in {
-    animation: hero-fade-in 360ms ease-out both;
-  }
-
-  .vinyl-spin {
-    animation: vinyl-spin 6s linear infinite;
-  }
-
-  /* Pause rather than unset the animation, so the record holds its angle. */
-  .vinyl-paused {
-    animation-play-state: paused;
-  }
-
-  .playing-bar {
-    animation: playing-bar 900ms ease-in-out infinite;
-    height: 100%;
-  }
-
-  .waveform-bar {
-    animation: waveform-pulse 1.5s ease-in-out infinite;
-    transform-origin: center;
-  }
-
-  .waveform-paused {
-    animation-play-state: paused;
-  }
-
-  /* Anchored to the trigger, so it reads as unfolding from the button. */
-  .mini-player-in {
-    animation: mini-player-in 140ms cubic-bezier(0.16, 1, 0.3, 1) both;
-    transform-origin: top right;
-  }
-
-  /*
-   * Media sliders. The element is 24px tall for a usable touch target while the
-   * visible bar stays 6px — a 4-6px tall input is effectively unhittable on a
-   * phone. Fill comes from --slider-pct so the track pseudo-element can be
-   * styled from CSS rather than an inline background.
-   */
-  .media-slider {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    height: 1.5rem;
-    background: transparent;
-    cursor: pointer;
-    /*
-     * Without this the browser can claim a horizontal drag for page scrolling
-     * and the input never sees the move events — the slider looks fine and
-     * does nothing. Custom-styled range inputs on iOS Safari are prone to it.
-     */
-    touch-action: none;
-  }
-
-  .media-slider::-webkit-slider-runnable-track {
-    height: 6px;
-    border-radius: 9999px;
-    background: linear-gradient(to right,
-        var(--track-accent) var(--slider-pct, 0%),
-        var(--border) var(--slider-pct, 0%));
-  }
-
-  .media-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 16px;
-    width: 16px;
-    margin-top: -5px;
-    border-radius: 9999px;
-    background: var(--track-accent);
-    box-shadow: var(--shadow-subtle);
-  }
-
-  .media-slider::-moz-range-track {
-    height: 6px;
-    border-radius: 9999px;
-    background: var(--border);
-  }
-
-  .media-slider::-moz-range-progress {
-    height: 6px;
-    border-radius: 9999px;
-    background: var(--track-accent);
-  }
-
-  .media-slider::-moz-range-thumb {
-    height: 16px;
-    width: 16px;
-    border: 0;
-    border-radius: 9999px;
-    background: var(--track-accent);
-  }
-
-  .media-slider:focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
-  }
-
-  .media-slider:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
-
-  /* Keeps the row scrollable by wheel, trackpad, drag and keyboard — just hides the bar. */
-  .no-scrollbar {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-}
-
-@keyframes mini-player-in {
-  from {
-    opacity: 0;
-    transform: translateY(-4px) scale(0.97);
-  }
-
-  to {
-    opacity: 1;
-    transform: none;
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
   }
 }
 
-@keyframes waveform-pulse {
-
-  0%,
-  100% {
-    transform: scaleY(0.55);
-  }
-
-  50% {
-    transform: scaleY(1);
+/* Section frame: 20px gutters on phones, 32px from 768px; content caps at 1120 (→ 160px margins at 1440). */
+@utility page-gutter {
+  padding-inline: 1.25rem;
+  @media (width >= 48rem) {
+    padding-inline: 2rem;
   }
 }
 
-/* Bars rise and fall out of phase, driven by per-bar animation-delay. */
-@keyframes playing-bar {
-
-  0%,
-  100% {
-    height: 30%;
-  }
-
-  50% {
-    height: 100%;
-  }
-}
-
-@keyframes vinyl-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes hero-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-  .hero-fade-in,
-  .vinyl-spin,
-  .waveform-bar,
-  .mini-player-in {
-    animation: none;
-  }
-
-  /* Without the animation the bars would collapse, so pin them to a legible height. */
-  .playing-bar {
-    animation: none;
-    height: 60%;
+/* Section rhythm: 64px top/bottom on phones, 96px from 768px. */
+@utility section-y {
+  padding-block: 4rem;
+  @media (width >= 48rem) {
+    padding-block: 6rem;
   }
 }

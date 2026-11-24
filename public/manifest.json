@@ -1,6 +1,6 @@
 {
   "short_name": "Jaime Bisuña",
-  "name": "Jose Jaime Bisuña — AI Full-Stack Developer",
+  "name": "Jose Jaime Bisuña — Full-Stack Developer",
   "description": "Full-stack developer based in the Philippines, building web and mobile products.",
   "icons": [
     {
@@ -21,6 +21,6 @@
   ],
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#0a0a0a",
-  "background_color": "#ffffff"
+  "theme_color": "#fafaf9",
+  "background_color": "#fafaf9"
 }

@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
+import { seo } from './scripts/vite-plugin-seo'
 
 export default defineConfig({
   plugins: [
@@ -9,6 +10,8 @@ export default defineConfig({
     // Tailwind is not being actively used – do not remove them
     react(),
     tailwindcss(),
+    // Prerenders the homepage at build time (see the file for what else it generates).
+    seo(),
   ],
   resolve: {
     alias: {

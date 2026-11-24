@@ -2,11 +2,14 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { createServer, type Plugin, type ResolvedConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { headTags } from "../src/seo";
 
 const ROOT_EMPTY = '<div id="root"></div>';
+const HEAD_PLACEHOLDER = "<!--seo-head-->";
 
 /**
- * Build-time SEO for the single-page site:
+ * SEO for the single-page site:
+ * - injects the <head> tags and JSON-LD from src/seo.ts into index.html (dev and build);
  * - prerenders the homepage into dist/index.html so crawlers and no-JS clients get the real content
  *   (the client then hydrates it; see src/main.tsx).
  */
@@ -14,12 +17,15 @@ export function seo(): Plugin {
   let config: ResolvedConfig;
   return {
     name: "portfolio-seo",
-    apply: "build",
     configResolved(resolved) {
       config = resolved;
     },
+    transformIndexHtml(html) {
+      if (!html.includes(HEAD_PLACEHOLDER)) throw new Error(`[portfolio-seo] ${HEAD_PLACEHOLDER} not found in index.html`);
+      return html.replace(HEAD_PLACEHOLDER, headTags());
+    },
     async closeBundle() {
-      if (config.build.ssr) return;
+      if (config.command !== "build" || config.build.ssr) return;
       const outDir = resolve(config.root, config.build.outDir);
 
       // Load the app through Vite's SSR loader so TSX and aliases resolve exactly as in the client build.

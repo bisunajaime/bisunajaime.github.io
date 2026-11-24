@@ -5,7 +5,8 @@ import { TextLink } from "./ui/TextLink";
 export type ProjectCardProps = {
   name: string;
   summary: string;
-  result: string;
+  /** Optional one-line outcome; omitted when there isn't one. */
+  result?: string;
   tags: string[];
   cover: string;
   /** Optional 800w copy of the cover for phones and 1x screens. */
@@ -32,7 +33,7 @@ export function ProjectCard({ name, summary, result, tags, cover, coverSmall, de
       <div className="flex flex-col gap-4 p-6 lg:p-8">
         <h3 className="text-h3 text-fg">{name}</h3>
         <p className="text-body text-fg-muted">{summary}</p>
-        <p className="text-small text-fg-subtle">{result}</p>
+        {result && <p className="text-small text-fg-muted">{result}</p>}
         <ul aria-label={`${name} is built with`} className="flex flex-wrap gap-2">
           {tags.map((tag) => (
             <Tag key={tag}>{tag}</Tag>

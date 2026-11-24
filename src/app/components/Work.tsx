@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { portfolioData } from "../../data/portfolioData";
-import { earlierCopy, projectCopy, resultPlaceholder, work } from "../../data/homepage";
+import { earlierCopy, projectCopy, work } from "../../data/homepage";
 import { ProjectCard } from "./ProjectCard";
 import { EarlierWorkRow } from "./EarlierWorkRow";
 import { SecondaryButton } from "./ui/SecondaryButton";
@@ -55,7 +55,7 @@ export function Work() {
                   <ProjectCard
                     name={p.name}
                     summary={copy?.summary ?? p.short_description ?? p.description}
-                    result={copy?.result ?? resultPlaceholder}
+                    result={copy?.result}
                     tags={copy?.tags ?? p.stack.slice(0, 4)}
                     cover={p.cover_img}
                     coverSmall={copy?.coverSmall}

@@ -24,10 +24,8 @@ export const work = {
   pinned: ["Greenwash Laundry POS", "PackPal", "PlateLoad"],
 };
 
-const RESULT_PLACEHOLDER = "[Add project result here]";
-
 /** Card copy for featured projects, keyed by project name in portfolioData. */
-/** coverSmall: optional 800w copy of cover_img for phones and 1x screens. */
+/** result: optional one-line outcome, shown under the summary only when set. coverSmall: optional 800w copy of cover_img for phones and 1x screens. */
 export const projectCopy: Record<string, { summary: string; tags: string[]; result?: string; coverSmall?: string }> = {
   Unlockr: {
     coverSmall: "/assets/images/unlockr/cover-800.webp",
@@ -61,7 +59,6 @@ export const projectCopy: Record<string, { summary: string; tags: string[]; resu
   },
 };
 
-export const resultPlaceholder = RESULT_PLACEHOLDER;
 export const missingDemoPlaceholder = "[Add demo link]";
 
 /** One-line copy for "Earlier work"; projects sharing a label (the two NeedL apps) collapse into one row. */

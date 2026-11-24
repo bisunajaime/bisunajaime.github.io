@@ -20,6 +20,12 @@ export default defineConfig({
     },
   },
 
+  // Hashed JS/CSS go to /_app/ (not /assets/, which also holds unhashed public images) so
+  // vercel.json can cache them for a year without catching images that change in place.
+  build: {
+    assetsDir: '_app',
+  },
+
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
 })

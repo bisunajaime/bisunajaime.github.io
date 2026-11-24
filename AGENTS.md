@@ -22,6 +22,7 @@ The design comes from the Figma file **"Portfolio - Redesign"** (page `bisunajai
 | Styling | Tailwind CSS v4.1.12 (`@tailwindcss/vite`), CSS-based config via `@theme` |
 | Font | Inter variable (400–600, Latin subset), self-hosted at `public/fonts/` |
 | Icons | `lucide-react` (only `ArrowUpRight` for external links) |
+| Dependencies | Runtime: `react`, `react-dom`, `lucide-react` only. Install with **npm** (Vercel uses `package-lock.json`) |
 | Rendering | Prerendered at build (static HTML) + client hydration — see SEO below |
 | Hosting | Vercel (`vercel.json`: cache headers only). `gh-pages` only hosts a redirect — never run the disabled deploy script |
 
@@ -83,7 +84,7 @@ npm run build      # Production build → dist/ (also prerenders index.html and 
 npx vite preview   # Serve dist/ locally
 ```
 
-Type-check ad hoc (there is no tsconfig or script). `@types/react-dom` isn't installed, so expect one error about `react-dom/client`; everything else should be clean:
+Type-check ad hoc (there is no tsconfig or script). The React type packages aren't dependencies, so add them to the one-off run (`-p @types/react@18.3 -p @types/react-dom@18.3`) or expect missing-declaration errors for `react`/`react-dom`:
 
 ```bash
 npx -p typescript@5 tsc --noEmit --strict --skipLibCheck --target es2022 \

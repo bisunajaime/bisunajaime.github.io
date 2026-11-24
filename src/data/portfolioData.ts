@@ -1,22 +1,14 @@
 export const portfolioData = {
   experiences: [
     {
+      // One role on the same product; the FiveP period (from April 2023) is folded in, matching the resume.
       name: "Baret",
       role: "Full Stack Developer",
-      from: "August 2024",
+      from: "March 2023",
       to: "January 2026",
       cover_img: "/assets/images/experience/baret.webp",
       website: "https://baret.tech",
       color: "#d1b1fdff"
-    },
-    {
-      name: "FiveP",
-      role: "Full Stack Developer",
-      from: "April 2023",
-      to: "August 2024",
-      cover_img: "/assets/images/experience/fivep.webp",
-      website: "https://fivep.com.au",
-      color: "#ffaf6eff"
     },
     {
       name: "Maliksi Creative Technologies, Inc.",

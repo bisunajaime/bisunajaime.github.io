@@ -209,7 +209,7 @@ export const portfolioData = {
       name: "PackPal",
       ai_assisted: true,
       description: "An AI travel prep app that builds a personalized packing list from a destination, trip dates, and one of 10 traveler personas. Lists adapt to real weather using Open-Meteo forecasts up to 16 days out and historical averages beyond that. Scout, the in-app AI assistant, edits the list conversationally \u2014 adding or removing items, checking things off, and answering destination questions. Also generates local insights (visa requirements, language cheat sheet, emergency contacts, safety tips, and 12 curated things to do), per-place checklists with season-aware activity suggestions, and read-only share links with QR codes so travel companions can view a trip without signing up.",
-      short_description: "Smart travel packing list generator. Tell it where you're going, what you'll do, and how you travel — get a personalized, weather-aware packing list with an AI trip assistant.",
+      short_description: "Smart travel packing list generator. Tell it where you're going, what you'll do, and how you travel, and get a personalized, weather-aware packing list with an AI trip assistant.",
       stack: [
         "Next.js",
         "React",

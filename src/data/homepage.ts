@@ -10,8 +10,8 @@ export const links = {
 };
 
 export const hero = {
-  //   keeps "Bisuña —" together; ‑ is a non-breaking hyphen so "full-stack" never splits.
-  headline: "Hi, I'm Jaime Bisuña — a full‑stack developer building web and mobile products.",
+  // The hyphen in "full‑stack" is non-breaking (U+2011) so the word never splits across lines.
+  headline: "Hi, I'm Jaime Bisuña, a full‑stack developer building web and mobile products.",
   lead: "5+ years shipping React, TypeScript and .NET/C# apps and the APIs behind them. Lately I build AI-assisted tools. Based in Metro Manila, Philippines.",
 };
 
@@ -34,12 +34,12 @@ export const projectCopy: Record<string, { summary: string; tags: string[]; resu
   },
   FitForge: {
     coverSmall: "/assets/images/fitforge/cover-800.webp",
-    summary: "A private AI fitting room. Upload a photo, add screenshots of clothes you like, and see the whole outfit on you — then restyle it with a sentence. Runs on your own machine.",
+    summary: "A private AI fitting room. Upload a photo, add screenshots of clothes you like, and see the whole outfit on you, then restyle it with a sentence. Runs on your own machine.",
     tags: ["React", "TypeScript", "FastAPI", "ComfyUI"],
   },
   "Branching Tales": {
     coverSmall: "/assets/images/branchingtales/cover-800.webp",
-    summary: "Illustrated choose-your-own-adventure stories. Pick a protagonist, make choices the story remembers, and find every ending — each tale drawn in its own art style.",
+    summary: "Illustrated choose-your-own-adventure stories. Pick a protagonist, make choices the story remembers, and find every ending. Each tale is drawn in its own art style.",
     tags: ["Next.js", "TypeScript", "ComfyUI", "Cloudflare R2"],
   },
   PackPal: {
@@ -84,7 +84,7 @@ export const experienceImpact: Record<string, string> = {
 
 export const about = {
   paragraphs: [
-    "I focus on dependable architecture, accessible UI, and shipping features that solve real user problems — clean UI systems on the front, reliable APIs behind them.",
+    "I focus on dependable architecture, accessible UI, and shipping features that solve real user problems, with clean UI systems on the front and reliable APIs behind them.",
     "Lately I build AI-assisted apps that run on local models: image generation with ComfyUI on my own workstation, and assistants through OpenRouter.",
   ],
   skills: [

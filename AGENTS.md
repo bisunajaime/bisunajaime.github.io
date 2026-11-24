@@ -105,7 +105,7 @@ Rules:
 
 ## Content
 
-- **Facts** (projects, links, covers, stack, experience) come from `portfolioData.ts`. Projects named in `work.pinned` (homepage.ts) come first, then the rest in data order; the first `work.featuredCount` (6) are cards and the rest become one-line "Earlier work" rows.
+- **Facts** (projects, links, covers, stack, experience) come from `portfolioData.ts`. Projects named in `work.pinned` (homepage.ts) come first, then the rest in data order; the first `work.featuredCount` (6) are cards and the rest become one-line "Earlier work" rows. Only `work.initialCount` (2) cards show at first; a "Show N more projects" button (`SecondaryButton`) reveals the rest.
 - **Wording** for the homepage lives in `homepage.ts`. A project without an entry in `projectCopy` falls back to its `short_description`, the first four `stack` items and the result placeholder, so newly added projects still render.
 - Text in `[square brackets]` is a placeholder Jaime still has to fill — keep it as-is unless told otherwise.
 

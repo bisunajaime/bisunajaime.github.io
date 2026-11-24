@@ -18,6 +18,8 @@ export const hero = {
 export const work = {
   intro: "Recent projects I built. All six are AI-assisted.",
   featuredCount: 6,
+  /** Cards shown before "Show more"; the rest of the featured cards are revealed on demand. */
+  initialCount: 2,
   /** Shown first, in this order; every other project keeps its portfolioData order. */
   pinned: ["Greenwash Laundry POS", "PackPal", "PlateLoad"],
 };

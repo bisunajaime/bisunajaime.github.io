@@ -35,3 +35,8 @@ Thumbs.db
 
 # Working notes: prompt archives, ComfyUI graphs, art/display specs.
 /guidelines/
+
+# Raw image renders (web-ready copies live in public/); keep prompts, manifest and workflows
+assets/generated/*.png
+assets/generated/*.jpg
+assets/generated/*.log

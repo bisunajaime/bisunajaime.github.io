@@ -1,0 +1,74 @@
+[
+  {
+    "name": "hero-bg-desktop-01",
+    "prompt": "A wide, calm background photograph for the top of a personal website. The left two thirds of the frame is an almost empty, evenly lit off-white plaster wall with a very fine matte texture, left clear for text. In the right third, morning sunlight passing through an unseen window casts the soft, blurred shadows of a few slender leaves and one thin vertical window frame onto the wall. The shadows are pale warm grey, faint and low in contrast, diffused at the edges. The view is straight-on to the wall; there is no floor, no furniture, no objects and no horizon. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "width": 4352,
+    "height": 1856,
+    "seed": 1101,
+    "use": "Desktop Hero background + OG image crop"
+  },
+  {
+    "name": "hero-bg-desktop-02",
+    "prompt": "A wide, calm background photograph for the top of a personal website. The left two thirds of the frame is an almost empty, evenly lit off-white plaster wall with a very fine matte texture, left clear for text. In the right third, morning sunlight passing through an unseen window casts the soft, blurred shadows of a few slender leaves and one thin vertical window frame onto the wall. The shadows are pale warm grey, faint and low in contrast, diffused at the edges. The view is straight-on to the wall; there is no floor, no furniture, no objects and no horizon. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "width": 4352,
+    "height": 1856,
+    "seed": 1102,
+    "use": "Desktop Hero background + OG image crop"
+  },
+  {
+    "name": "hero-bg-desktop-03",
+    "prompt": "A wide, calm background photograph for the top of a personal website. The left two thirds of the frame is an almost empty, evenly lit off-white plaster wall with a very fine matte texture, left clear for text. In the right third, morning sunlight passing through an unseen window casts the soft, blurred shadows of a few slender leaves and one thin vertical window frame onto the wall. The shadows are pale warm grey, faint and low in contrast, diffused at the edges. The view is straight-on to the wall; there is no floor, no furniture, no objects and no horizon. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "width": 4352,
+    "height": 1856,
+    "seed": 1103,
+    "use": "Desktop Hero background + OG image crop"
+  },
+  {
+    "name": "hero-bg-mobile-01",
+    "prompt": "A tall portrait background photograph for the top of a personal website on a phone. Almost the whole frame is an empty, evenly lit off-white plaster wall with a very fine matte texture, left clear for text. Only in the top right corner, morning sunlight from an unseen window casts the very faint, blurred shadows of two slender leaves onto the wall. The shadows are pale warm grey, barely visible and diffused at the edges. The view is straight-on to the wall; there is no floor, no furniture, no objects and no horizon. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "width": 1536,
+    "height": 2752,
+    "seed": 2101,
+    "use": "Mobile Hero background"
+  },
+  {
+    "name": "hero-bg-mobile-02",
+    "prompt": "A tall portrait background photograph for the top of a personal website on a phone. Almost the whole frame is an empty, evenly lit off-white plaster wall with a very fine matte texture, left clear for text. Only in the top right corner, morning sunlight from an unseen window casts the very faint, blurred shadows of two slender leaves onto the wall. The shadows are pale warm grey, barely visible and diffused at the edges. The view is straight-on to the wall; there is no floor, no furniture, no objects and no horizon. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "width": 1536,
+    "height": 2752,
+    "seed": 2102,
+    "use": "Mobile Hero background"
+  },
+  {
+    "name": "hero-bg-mobile-03",
+    "prompt": "A tall portrait background photograph for the top of a personal website on a phone. Almost the whole frame is an empty, evenly lit off-white plaster wall with a very fine matte texture, left clear for text. Only in the top right corner, morning sunlight from an unseen window casts the very faint, blurred shadows of two slender leaves onto the wall. The shadows are pale warm grey, barely visible and diffused at the edges. The view is straight-on to the wall; there is no floor, no furniture, no objects and no horizon. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "width": 1536,
+    "height": 2752,
+    "seed": 2103,
+    "use": "Mobile Hero background"
+  },
+  {
+    "name": "about-desk-01",
+    "prompt": "A calm still-life photograph of the corner of a pale oak desk standing against an off-white plaster wall beside a window in early morning. The objects are grouped in the right half of the frame: a closed matte grey laptop lying flat, a small stack of two plain notebooks with blank light-grey covers, a deep cobalt-blue ceramic mug, and a small green plant in a plain white ceramic pot. The left half of the frame is open desk surface and empty wall. Eye-level side view, slightly above the desk. Sunlight from the left casts long, soft shadows of the objects across the desk. The cobalt-blue mug is the only saturated colour in the image. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "width": 2560,
+    "height": 1600,
+    "seed": 3101,
+    "use": "About section image (desktop + mobile)"
+  },
+  {
+    "name": "about-desk-02",
+    "prompt": "A calm still-life photograph of the corner of a pale oak desk standing against an off-white plaster wall beside a window in early morning. The objects are grouped in the right half of the frame: a closed matte grey laptop lying flat, a small stack of two plain notebooks with blank light-grey covers, a deep cobalt-blue ceramic mug, and a small green plant in a plain white ceramic pot. The left half of the frame is open desk surface and empty wall. Eye-level side view, slightly above the desk. Sunlight from the left casts long, soft shadows of the objects across the desk. The cobalt-blue mug is the only saturated colour in the image. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "width": 2560,
+    "height": 1600,
+    "seed": 3102,
+    "use": "About section image (desktop + mobile)"
+  },
+  {
+    "name": "about-desk-03",
+    "prompt": "A calm still-life photograph of the corner of a pale oak desk standing against an off-white plaster wall beside a window in early morning. The objects are grouped in the right half of the frame: a closed matte grey laptop lying flat, a small stack of two plain notebooks with blank light-grey covers, a deep cobalt-blue ceramic mug, and a small green plant in a plain white ceramic pot. The left half of the frame is open desk surface and empty wall. Eye-level side view, slightly above the desk. Sunlight from the left casts long, soft shadows of the objects across the desk. The cobalt-blue mug is the only saturated colour in the image. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "width": 2560,
+    "height": 1600,
+    "seed": 3103,
+    "use": "About section image (desktop + mobile)"
+  }
+]

@@ -1,0 +1,307 @@
+[
+  {
+    "file": "hero-bg-desktop-01.png",
+    "prompt": "A wide, calm background photograph for the top of a personal website. The left two thirds of the frame is an almost empty, evenly lit off-white plaster wall with a very fine matte texture, left clear for text. In the right third, morning sunlight passing through an unseen window casts the soft, blurred shadows of a few slender leaves and one thin vertical window frame onto the wall. The shadows are pale warm grey, faint and low in contrast, diffused at the edges. The view is straight-on to the wall; there is no floor, no furniture, no objects and no horizon. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "seed": 1101,
+    "size": [
+      4352,
+      1856
+    ],
+    "settings": {
+      "model": "minimax_h3_image_pruned_int8_convrot",
+      "text_encoder": "qwen3vl_32b_minimax_h3_int8_convrot",
+      "vae": "minimax_h3_image_vae_fp16",
+      "steps": 6,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "prompt_expander": false
+    },
+    "use": "Desktop Hero background + OG image crop",
+    "selected": false,
+    "reason": "Leaf shadows cover ~half the frame, behind the text."
+  },
+  {
+    "file": "hero-bg-desktop-02.png",
+    "prompt": "A wide, calm background photograph for the top of a personal website. The left two thirds of the frame is an almost empty, evenly lit off-white plaster wall with a very fine matte texture, left clear for text. In the right third, morning sunlight passing through an unseen window casts the soft, blurred shadows of a few slender leaves and one thin vertical window frame onto the wall. The shadows are pale warm grey, faint and low in contrast, diffused at the edges. The view is straight-on to the wall; there is no floor, no furniture, no objects and no horizon. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "seed": 1102,
+    "size": [
+      4352,
+      1856
+    ],
+    "settings": {
+      "model": "minimax_h3_image_pruned_int8_convrot",
+      "text_encoder": "qwen3vl_32b_minimax_h3_int8_convrot",
+      "vae": "minimax_h3_image_vae_fp16",
+      "steps": 6,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "prompt_expander": false
+    },
+    "use": "Desktop Hero background + OG image crop",
+    "selected": false,
+    "reason": "Dense, busy leaves; competes with content."
+  },
+  {
+    "file": "hero-bg-desktop-03.png",
+    "prompt": "A wide, calm background photograph for the top of a personal website. The left two thirds of the frame is an almost empty, evenly lit off-white plaster wall with a very fine matte texture, left clear for text. In the right third, morning sunlight passing through an unseen window casts the soft, blurred shadows of a few slender leaves and one thin vertical window frame onto the wall. The shadows are pale warm grey, faint and low in contrast, diffused at the edges. The view is straight-on to the wall; there is no floor, no furniture, no objects and no horizon. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "seed": 1103,
+    "size": [
+      4352,
+      1856
+    ],
+    "settings": {
+      "model": "minimax_h3_image_pruned_int8_convrot",
+      "text_encoder": "qwen3vl_32b_minimax_h3_int8_convrot",
+      "vae": "minimax_h3_image_vae_fp16",
+      "steps": 6,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "prompt_expander": false
+    },
+    "use": "Desktop Hero background + OG image crop",
+    "selected": true,
+    "reason": "Sparsest leaves + one clean window-frame line; smallest lit area, so it stays clear of the headline."
+  },
+  {
+    "file": "hero-bg-mobile-01.png",
+    "prompt": "A tall portrait background photograph for the top of a personal website on a phone. Almost the whole frame is an empty, evenly lit off-white plaster wall with a very fine matte texture, left clear for text. Only in the top right corner, morning sunlight from an unseen window casts the very faint, blurred shadows of two slender leaves onto the wall. The shadows are pale warm grey, barely visible and diffused at the edges. The view is straight-on to the wall; there is no floor, no furniture, no objects and no horizon. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "seed": 2101,
+    "size": [
+      1536,
+      2752
+    ],
+    "settings": {
+      "model": "minimax_h3_image_pruned_int8_convrot",
+      "text_encoder": "qwen3vl_32b_minimax_h3_int8_convrot",
+      "vae": "minimax_h3_image_vae_fp16",
+      "steps": 6,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "prompt_expander": false
+    },
+    "use": "Mobile Hero background",
+    "selected": false,
+    "reason": "Faint lit edge runs the full height behind text."
+  },
+  {
+    "file": "hero-bg-mobile-02.png",
+    "prompt": "A tall portrait background photograph for the top of a personal website on a phone. Almost the whole frame is an empty, evenly lit off-white plaster wall with a very fine matte texture, left clear for text. Only in the top right corner, morning sunlight from an unseen window casts the very faint, blurred shadows of two slender leaves onto the wall. The shadows are pale warm grey, barely visible and diffused at the edges. The view is straight-on to the wall; there is no floor, no furniture, no objects and no horizon. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "seed": 2102,
+    "size": [
+      1536,
+      2752
+    ],
+    "settings": {
+      "model": "minimax_h3_image_pruned_int8_convrot",
+      "text_encoder": "qwen3vl_32b_minimax_h3_int8_convrot",
+      "vae": "minimax_h3_image_vae_fp16",
+      "steps": 6,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "prompt_expander": false
+    },
+    "use": "Mobile Hero background",
+    "selected": false,
+    "reason": "Hard vertical lit edge runs the full height behind text."
+  },
+  {
+    "file": "hero-bg-mobile-03.png",
+    "prompt": "A tall portrait background photograph for the top of a personal website on a phone. Almost the whole frame is an empty, evenly lit off-white plaster wall with a very fine matte texture, left clear for text. Only in the top right corner, morning sunlight from an unseen window casts the very faint, blurred shadows of two slender leaves onto the wall. The shadows are pale warm grey, barely visible and diffused at the edges. The view is straight-on to the wall; there is no floor, no furniture, no objects and no horizon. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "seed": 2103,
+    "size": [
+      1536,
+      2752
+    ],
+    "settings": {
+      "model": "minimax_h3_image_pruned_int8_convrot",
+      "text_encoder": "qwen3vl_32b_minimax_h3_int8_convrot",
+      "vae": "minimax_h3_image_vae_fp16",
+      "steps": 6,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "prompt_expander": false
+    },
+    "use": "Mobile Hero background",
+    "selected": true,
+    "reason": "Light and leaves contained in the top-right; the wall behind the text stays even."
+  },
+  {
+    "file": "about-desk-01.png",
+    "prompt": "A calm still-life photograph of the corner of a pale oak desk standing against an off-white plaster wall beside a window in early morning. The objects are grouped in the right half of the frame: a closed matte grey laptop lying flat, a small stack of two plain notebooks with blank light-grey covers, a deep cobalt-blue ceramic mug, and a small green plant in a plain white ceramic pot. The left half of the frame is open desk surface and empty wall. Eye-level side view, slightly above the desk. Sunlight from the left casts long, soft shadows of the objects across the desk. The cobalt-blue mug is the only saturated colour in the image. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "seed": 3101,
+    "size": [
+      2560,
+      1600
+    ],
+    "settings": {
+      "model": "minimax_h3_image_pruned_int8_convrot",
+      "text_encoder": "qwen3vl_32b_minimax_h3_int8_convrot",
+      "vae": "minimax_h3_image_vae_fp16",
+      "steps": 6,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "prompt_expander": false
+    },
+    "use": "About section image (desktop + mobile)",
+    "selected": false,
+    "reason": "Was the pick; superseded by its green-mug edit after the accent changed from blue to forest green."
+  },
+  {
+    "file": "about-desk-02.png",
+    "prompt": "A calm still-life photograph of the corner of a pale oak desk standing against an off-white plaster wall beside a window in early morning. The objects are grouped in the right half of the frame: a closed matte grey laptop lying flat, a small stack of two plain notebooks with blank light-grey covers, a deep cobalt-blue ceramic mug, and a small green plant in a plain white ceramic pot. The left half of the frame is open desk surface and empty wall. Eye-level side view, slightly above the desk. Sunlight from the left casts long, soft shadows of the objects across the desk. The cobalt-blue mug is the only saturated colour in the image. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "seed": 3102,
+    "size": [
+      2560,
+      1600
+    ],
+    "settings": {
+      "model": "minimax_h3_image_pruned_int8_convrot",
+      "text_encoder": "qwen3vl_32b_minimax_h3_int8_convrot",
+      "vae": "minimax_h3_image_vae_fp16",
+      "steps": 6,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "prompt_expander": false
+    },
+    "use": "About section image (desktop + mobile)",
+    "selected": false,
+    "reason": "Laptop lid shows a logo mark."
+  },
+  {
+    "file": "about-desk-03.png",
+    "prompt": "A calm still-life photograph of the corner of a pale oak desk standing against an off-white plaster wall beside a window in early morning. The objects are grouped in the right half of the frame: a closed matte grey laptop lying flat, a small stack of two plain notebooks with blank light-grey covers, a deep cobalt-blue ceramic mug, and a small green plant in a plain white ceramic pot. The left half of the frame is open desk surface and empty wall. Eye-level side view, slightly above the desk. Sunlight from the left casts long, soft shadows of the objects across the desk. The cobalt-blue mug is the only saturated colour in the image. The style is a soft, quiet daylight photograph in a warm neutral palette: off-white plaster and pale stone, early-morning sunlight coming from the left, gentle diffused shadows with soft edges, a fine matte texture, low contrast, and a lot of calm empty space. Colours stay muted and close to warm white and light warm grey. The image contains no text, letters or numbers. No people appear.",
+    "seed": 3103,
+    "size": [
+      2560,
+      1600
+    ],
+    "settings": {
+      "model": "minimax_h3_image_pruned_int8_convrot",
+      "text_encoder": "qwen3vl_32b_minimax_h3_int8_convrot",
+      "vae": "minimax_h3_image_vae_fp16",
+      "steps": 6,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "prompt_expander": false
+    },
+    "use": "About section image (desktop + mobile)",
+    "selected": false,
+    "reason": "Objects too small/far; reads empty."
+  },
+  {
+    "file": "hero-bg-desktop-final.jpg",
+    "source": "hero-bg-desktop-03.png",
+    "size": [
+      2880,
+      1340
+    ],
+    "processing": "Crop (0,80)-(3645,1776) so the lit patch starts at x≈1080 of 1440; Lanczos to 2x; JPEG q82",
+    "use": "Desktop Hero fill: bg color + image at 40% opacity",
+    "final": true
+  },
+  {
+    "file": "hero-bg-mobile-final.jpg",
+    "source": "hero-bg-mobile-03.png",
+    "size": [
+      780,
+      1308
+    ],
+    "processing": "Top-anchored crop to 390:654; Lanczos to 2x; JPEG q82",
+    "use": "Mobile Hero fill: bg color + image at 40% opacity",
+    "final": true
+  },
+  {
+    "file": "about-desk-final.jpg",
+    "source": "about-desk-01-green-4102.png",
+    "size": [
+      1056,
+      660
+    ],
+    "processing": "Lanczos to 2x of 528x330; JPEG q82",
+    "use": "About image: desktop 528x330 (under bio), mobile 350x219 (between bio and skills)",
+    "final": true
+  },
+  {
+    "file": "og-image-bg-final.jpg",
+    "source": "hero-bg-desktop-03.png",
+    "size": [
+      2400,
+      1260
+    ],
+    "processing": "Left-anchored full-height crop to 1200:630; Lanczos to 2x; JPEG q82",
+    "use": "OG image frame (1200x630) background at 40% opacity, live text on top",
+    "final": true
+  },
+  {
+    "file": "about-desk-01-green-4101.png",
+    "source": "about-desk-01.png",
+    "mode": "reference-image edit",
+    "prompt": "<Picture 1> is a calm still-life photograph of the corner of a pale oak desk beside a window, with a closed matte grey laptop, a small stack of two plain notebooks, a deep cobalt-blue ceramic mug and a small green plant in a plain white pot, lit by warm morning sunlight from the left. The target image is <Picture 1> with only the colour of the mug changed: the mug is now a deep, muted forest-green glazed ceramic mug, a dark green with a slight grey undertone, with the same soft glossy glaze and the same highlights and reflections. Everything else stays exactly as in <Picture 1>: the mug keeps its shape, handle, size and position, and the desk, laptop, notebooks, plant, pot, wall, window, sunlight, shadows, framing and camera angle are unchanged. The image contains no text, letters or numbers. No people appear.",
+    "seed": 4101,
+    "settings": {
+      "steps": 6,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "prompt_expander": false,
+      "reference_scaled_to_mp": 4.0
+    },
+    "selected": false,
+    "reason": "Mug recoloured, but the whole scene shifted cooler and the wall light weakened."
+  },
+  {
+    "file": "about-desk-01-green-4102.png",
+    "source": "about-desk-01.png",
+    "mode": "reference-image edit",
+    "prompt": "<Picture 1> is a calm still-life photograph of the corner of a pale oak desk beside a window, with a closed matte grey laptop, a small stack of two plain notebooks, a deep cobalt-blue ceramic mug and a small green plant in a plain white pot, lit by warm morning sunlight from the left. The target image is <Picture 1> with only the colour of the mug changed: the mug is now a deep, muted forest-green glazed ceramic mug, a dark green with a slight grey undertone, with the same soft glossy glaze and the same highlights and reflections. Everything else stays exactly as in <Picture 1>: the mug keeps its shape, handle, size and position, and the desk, laptop, notebooks, plant, pot, wall, window, sunlight, shadows, framing and camera angle are unchanged. The image contains no text, letters or numbers. No people appear.",
+    "seed": 4102,
+    "settings": {
+      "steps": 6,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "prompt_expander": false,
+      "reference_scaled_to_mp": 4.0
+    },
+    "selected": true,
+    "reason": "Closest to the original: same warm side light, framing and objects; mug now muted forest green to match the new accent."
+  },
+  {
+    "file": "about-desk-01-green-4103.png",
+    "source": "about-desk-01.png",
+    "mode": "reference-image edit",
+    "prompt": "<Picture 1> is a calm still-life photograph of the corner of a pale oak desk beside a window, with a closed matte grey laptop, a small stack of two plain notebooks, a deep cobalt-blue ceramic mug and a small green plant in a plain white pot, lit by warm morning sunlight from the left. The target image is <Picture 1> with only the colour of the mug changed: the mug is now a deep, muted forest-green glazed ceramic mug, a dark green with a slight grey undertone, with the same soft glossy glaze and the same highlights and reflections. Everything else stays exactly as in <Picture 1>: the mug keeps its shape, handle, size and position, and the desk, laptop, notebooks, plant, pot, wall, window, sunlight, shadows, framing and camera angle are unchanged. The image contains no text, letters or numbers. No people appear.",
+    "seed": 4103,
+    "settings": {
+      "steps": 6,
+      "cfg": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "prompt_expander": false,
+      "reference_scaled_to_mp": 4.0
+    },
+    "selected": false,
+    "reason": "Sunlight flattened; lost the warmth that ties it to the hero."
+  }
+]

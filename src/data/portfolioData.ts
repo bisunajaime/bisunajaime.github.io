@@ -1,6 +1,15 @@
 export const portfolioData = {
   experiences: [
     {
+      name: "Independent",
+      role: "Freelance Full-Stack Developer",
+      from: "January 2026",
+      to: "Present",
+      cover_img: "",
+      website: "",
+      color: ""
+    },
+    {
       // One role on the same product; the FiveP period (from April 2023) is folded in, matching the resume.
       name: "Baret",
       role: "Full Stack Developer",
@@ -12,9 +21,9 @@ export const portfolioData = {
     },
     {
       name: "Maliksi Creative Technologies, Inc.",
-      role: "Junior Software Engineer",
+      role: "Mobile Developer",
       from: "May 2021",
-      to: "April 2023",
+      to: "March 2023",
       cover_img: "/assets/images/experience/maliksi.webp",
       website: "https://maliksi.io",
       color: "#aebeffff"

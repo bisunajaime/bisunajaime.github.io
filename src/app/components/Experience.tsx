@@ -1,9 +1,9 @@
 import { portfolioData } from "../../data/portfolioData";
-import { experienceImpact, impactPlaceholder } from "../../data/homepage";
+import { experienceImpact } from "../../data/homepage";
 import { ExperienceItem } from "./ExperienceItem";
 
-// "August 2024" → "Aug 2024"
-const shortMonth = (date: string) => date.replace(/^(\w{3})\w*/, "$1");
+// "August 2024" → "Aug 2024"; anything else ("Present") is left alone.
+const shortMonth = (date: string) => date.replace(/^([A-Z][a-z]{2})[a-z]*(?= \d{4}$)/, "$1");
 // "Maliksi Creative Technologies, Inc." → "Maliksi Creative Technologies"
 const companyLabel = (name: string) => name.replace(/,?\s+Inc\.?$/, "");
 
@@ -20,8 +20,7 @@ export function Experience() {
               company={companyLabel(job.name)}
               website={job.website}
               dates={`${shortMonth(job.from)} – ${shortMonth(job.to)}`}
-              impact={experienceImpact[job.name] ?? impactPlaceholder}
-              isPlaceholder={!experienceImpact[job.name]}
+              impact={experienceImpact[job.name]}
             />
           ))}
         </ol>

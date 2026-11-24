@@ -75,10 +75,9 @@ export const earlierCopy: Record<string, { label: string; line: string }> = {
   "Covid19-Tracker": { label: "Covid19-Tracker", line: "Case counts and status by country, built during the COVID-19 quarantine." },
 };
 
-export const impactPlaceholder = "[Add what you shipped here — 1–2 lines on impact]";
-
-/** One or two lines per job, keyed by experience name in portfolioData. Source: public/files/JaimeBisunaResume.pdf. */
+/** One or two lines per job, keyed by experience name in portfolioData; jobs without one show no line. Source: public/files/JaimeBisunaResume.pdf. */
 export const experienceImpact: Record<string, string> = {
+  Independent: "Sole engineer on three production apps for a services business: a POS app, a B2B client portal and a payroll system.",
   Baret: "Delivered 175+ user stories and resolved 70+ production issues across 7 client environments. Owned role-based message routing and CI/CD.",
   "Maliksi Creative Technologies, Inc.": "Shipped GradGuru and MyCoach, two education apps for the US market, and led their Flutter v1 to v2 migration.",
 };

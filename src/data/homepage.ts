@@ -76,9 +76,9 @@ export const earlierCopy: Record<string, { label: string; line: string }> = {
 
 /** One or two lines per job, keyed by experience name in portfolioData; jobs without one show no line. Source: public/files/JaimeBisunaResume.pdf. */
 export const experienceImpact: Record<string, string> = {
-  Independent: "Sole engineer on three production apps for a services business: a POS app, a B2B client portal and a payroll system.",
-  Baret: "Delivered 175+ user stories and resolved 70+ production issues across 7 client environments. Owned role-based message routing and CI/CD.",
-  "Maliksi Creative Technologies, Inc.": "Shipped GradGuru and MyCoach, two education apps for the US market, and led their Flutter v1 to v2 migration.",
+  Independent: "Only engineer on three production apps for a services business, used by 50 to 100 people. Cut each payroll run from 2 to 3 days to about a day.",
+  Baret: "Built role-based messaging rules for a Microsoft Teams clinical app used by 7 Australian health services, plus inter-organization messaging.",
+  "Maliksi Creative Technologies, Inc.": "Shipped GradGuru and MyCoach for US community college students, led their Flutter v2 migration and cut release time to minutes with Fastlane.",
 };
 
 export const about = {
